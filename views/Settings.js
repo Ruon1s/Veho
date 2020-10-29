@@ -1,10 +1,12 @@
 import React from 'react';
-import { Container, Text } from 'native-base';
+import { Container, Text, Content } from 'native-base';
 
 const Settings = () => {
     return (
         <Container>
-            <Text>Settings</Text>
+            <Content padder>
+                <Text>Settings</Text>
+            </Content>
         </Container>
     );
 }

@@ -1,15 +1,17 @@
 import React from 'react';
-import { Container, Text, Button } from 'native-base';
+import { Container, Text, Button, Content } from 'native-base';
 
 const Home = ({ navigation }) => {
     return (
         <Container>
-            <Text>Home</Text>
-            <Button onPress={() => navigation.replace('Auth')}>
-                <Text>
-                    Logout
+            <Content padder>
+                <Text>Home</Text>
+                <Button onPress={() => navigation.replace('Auth')}>
+                    <Text>
+                        Logout
                 </Text>
-            </Button>
+                </Button>
+            </Content>
         </Container>
     );
 }
