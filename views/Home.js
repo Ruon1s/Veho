@@ -1,20 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Container, Text, Button } from 'native-base';
 
-const Home = () => {
+const Home = ({ navigation }) => {
     return (
-        <View style={ styles.center }>
+        <Container>
             <Text>Home</Text>
-        </View>
+            <Button onPress={() => navigation.replace('Auth')}>
+                <Text>
+                    Logout
+                </Text>
+            </Button>
+        </Container>
     );
 }
-
-const styles = StyleSheet.create({
-    center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-});
 
 export default Home;

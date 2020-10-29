@@ -1,14 +1,21 @@
 import React from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { Container, Text, Form, Input, Button, Item, Label } from 'native-base';
 
 const ResetPasswordForm = ({ toLogin }) => {
     return (
-        <View>
+        <Form>
             <Text> Reset password </Text>
-            <TextInput placeholder="Email" keyboardType="email-address" />
+            <Item fixedLabel>
+                <Label keyboardType="email-address">Email</Label>
+                <Input />
+            </Item>
             <Button title="Reset" />
-            <Text onPress={ toLogin }>Back</Text>
-        </View>
+            <Button onPress={toLogin}>
+                <Text>
+                    Back
+                </Text>
+            </Button>
+        </Form>
     );
 }
 

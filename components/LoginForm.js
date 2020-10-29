@@ -1,17 +1,31 @@
 import React from 'react';
-import { View, Button, TextInput, Text } from 'react-native';
+import { Container, Button, Input, Form, Text, Item, Label } from 'native-base';
 
 const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
     return (
-        <View>
-            <Text> Login </Text>
-            <TextInput placeholder="Email" keyboardType="email-address" />
-            <TextInput placeholder="Password" secureTextEntry={ true } />
-            <Button title="Login" onPress={ () => navigation.replace('App') } />
+        <Container>
+            <Form>
+                <Text>Login</Text>
+                <Item fixedLabel>
+                    <Label>Email</Label>
+                    <Input keyboardType="email-address" />
+                </Item>
+                <Item fixedLabel>
+                    <Label>Password</Label>
+                    <Input secureTextEntry={true} />
+                </Item>
 
-            <Text onPress={ toResetPassword }>Forgot password?</Text>
-            <Text onPress={ toRegister }>Register</Text>
-        </View>
+                <Button onPress={() => navigation.replace('App')}>
+                    <Text>Login</Text>
+                </Button>
+                <Button onPress={toResetPassword}>
+                    <Text>Forgot password?</Text>
+                </Button>
+                <Button onPress={toRegister}>
+                    <Text>Register</Text>
+                </Button>
+            </Form>
+        </Container>
     );
 };
 
