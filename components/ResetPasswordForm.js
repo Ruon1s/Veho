@@ -1,7 +1,11 @@
 import React from 'react';
 import { Container, Text, Form, Input, Button, Item, Label, Content } from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 
 const ResetPasswordForm = ({ toLogin }) => {
+
+    const btnMargin = 8
+
     return (
         <Content padder>
             <Form>
@@ -10,12 +14,22 @@ const ResetPasswordForm = ({ toLogin }) => {
                     <Label keyboardType="email-address">Email</Label>
                     <Input />
                 </Item>
-                <Button title="Reset" />
-                <Button onPress={toLogin}>
-                    <Text>
-                        Back
-                </Text>
-                </Button>
+                <Grid>
+                    <Col>
+                        <Button full style={{ margin: btnMargin }} >
+                            <Text>
+                                Reset
+                            </Text>
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button onPress={toLogin} full transparent style={{ margin: btnMargin }} >
+                            <Text>
+                                Back
+                            </Text>
+                        </Button>
+                    </Col>
+                </Grid>
             </Form>
         </Content>
     );
