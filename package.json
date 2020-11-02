@@ -6,7 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "vows --spec"
+    "test": "mocha spec"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
