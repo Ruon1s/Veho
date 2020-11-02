@@ -7,7 +7,7 @@ import QueueInfo from '../components/QueueInfo';
 const Home = ({ navigation }) => {
     const btnMargin = 8
     /*
-        testing ci
+       yes
      */
 
     /* Functions needed, GET:
@@ -30,7 +30,7 @@ const Home = ({ navigation }) => {
                 <Button
                 full
                 style={{ marginTop: btnMargin }}
-                transparent 
+                transparent
                 onPress={ () => navigation.navigate('ChargingView')}>
                     <Text>ChargingView</Text>
                 </Button>
