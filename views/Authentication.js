@@ -22,7 +22,10 @@ const Authentication = ({ navigation }) => {
                     : null}
 
                 {active === 'register' ?
-                    <RegisterForm toLogin={() => setActive('login')} />
+                    <RegisterForm 
+                    toLogin={ () => setActive('login') }
+                    navigation={ navigation }
+                    />
                     : null}
             </Content>
         </Container>
