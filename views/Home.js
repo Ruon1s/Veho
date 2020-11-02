@@ -24,6 +24,14 @@ const Home = ({ navigation }) => {
                     <Text>Queue</Text>
                 </Button>
 
+                <Button
+                full
+                style={{ marginTop: btnMargin }}
+                transparent 
+                onPress={ () => navigation.navigate('ChargingView')}>
+                    <Text>ChargingView</Text>
+                </Button>
+
                 <Button full style={{ marginTop: btnMargin }} transparent onPress={() => navigation.replace('Auth')}>
                     <Text>
                         Logout
