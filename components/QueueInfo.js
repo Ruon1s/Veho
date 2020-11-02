@@ -6,6 +6,7 @@ const QueueInfo = (props) => {
     const [free, setFree] = useState(0)
     const [queue, setQueue] = useState(0)
 
+    // useEffect to update numbers in text whenever there's a change
     return (<>
         <Text>Free spots: {free}</Text>
         <Text>Number of cars in queue: {queue}</Text>
