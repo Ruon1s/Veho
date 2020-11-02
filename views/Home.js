@@ -1,11 +1,11 @@
 import React from 'react';
 import { Container, Text, Button, Content, Header, Body, Title } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import GlobalStyles from '../GlobalStyles';
 import BatteryInfo from '../components/BatteryInfo';
 import QueueInfo from '../components/QueueInfo';
 
 const Home = ({ navigation }) => {
-    const btnMargin = 8
     /*
        yes
      */
@@ -23,19 +23,19 @@ const Home = ({ navigation }) => {
                 <BatteryInfo batteryStatus={54} />
                 <QueueInfo />
 
-                <Button full style={{ marginTop: btnMargin }}>
+                <Button full style={GlobalStyles.button}>
                     <Text>Queue</Text>
                 </Button>
 
                 <Button
-                full
-                style={{ marginTop: btnMargin }}
-                transparent
-                onPress={ () => navigation.navigate('ChargingView')}>
+                    full
+                    style={GlobalStyles.button}
+                    transparent
+                    onPress={() => navigation.navigate('ChargingView')}>
                     <Text>ChargingView</Text>
                 </Button>
 
-                <Button full style={{ marginTop: btnMargin }} transparent onPress={() => navigation.replace('Auth')}>
+                <Button full style={GlobalStyles.button} transparent onPress={() => navigation.replace('Auth')}>
                     <Text>
                         Logout
                     </Text>

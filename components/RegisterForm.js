@@ -1,8 +1,8 @@
 import React from 'react';
+import GlobalStyles from '../GlobalStyles';
 import { Button, Form, Input, Container, Text, Item, Label, Content } from 'native-base';
 
 const RegisterForm = ({ navigation, toLogin }) => {
-    const btnMargin = 8
     return (
         <Form>
             <Text>Register</Text>
@@ -27,16 +27,16 @@ const RegisterForm = ({ navigation, toLogin }) => {
                 <Label>Retype password</Label>
                 <Input secureTextEntry />
             </Item>
-            <Button 
-            full 
-            style={{ margin: btnMargin }}
-            onPress={ () => navigation.replace('AddCarDetails') }
-             >
+            <Button
+                full
+                style={GlobalStyles.button}
+                onPress={() => navigation.replace('AddCarDetails')}
+            >
                 <Text>
                     Register
                 </Text>
             </Button>
-            <Button full transparent style={{ margin: btnMargin }} onPress={toLogin}>
+            <Button full transparent style={GlobalStyles.button} onPress={toLogin}>
                 <Text>Back to login</Text>
             </Button>
         </Form>

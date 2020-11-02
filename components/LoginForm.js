@@ -1,11 +1,9 @@
 import React from 'react';
 import { Container, Button, Input, Form, Text, Item, Label, Content } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import GlobalStyles from '../GlobalStyles';
 
 const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
-
-    const btnMargin = 8
-
     return (
         <Form>
             <Text>Login</Text>
@@ -20,18 +18,18 @@ const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
 
             <Grid>
                 <Col>
-                    <Button style={{ margin: btnMargin }} full onPress={() => navigation.replace('App')}>
+                    <Button style={GlobalStyles.button} full onPress={() => navigation.replace('App')}>
                         <Text>Login</Text>
                     </Button>
                 </Col>
                 <Col>
-                    <Button style={{ margin: btnMargin }} full onPress={toRegister}>
+                    <Button style={GlobalStyles.button} full onPress={toRegister}>
                         <Text>Register</Text>
                     </Button>
                 </Col>
             </Grid>
 
-            <Button transparent full onPress={toResetPassword}>
+            <Button transparent style={GlobalStyles.button} full onPress={toResetPassword}>
                 <Text>Forgot password?</Text>
             </Button>
         </Form>

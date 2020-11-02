@@ -14,8 +14,8 @@ const Stack = createStackNavigator();
 const TabNavigator = () => {
     return (
         <Tab.Navigator>
-            <Tab.Screen name='Home' component={ Home } />
-            <Tab.Screen name='Settings' component={ Settings } />
+            <Tab.Screen name='Home' component={Home} />
+            <Tab.Screen name='Settings' component={Settings} />
         </Tab.Navigator>
     );
 }
@@ -24,10 +24,10 @@ const Navigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name='Auth' component={ Authentication } />
-                <Stack.Screen name='AddCarDetails' component={ AddCarDetails } />
-                <Stack.Screen name='App' component={ TabNavigator } />
-                <Stack.Screen name='ChargingView' component={ ChargingView } />
+                <Stack.Screen name='Auth' component={Authentication} />
+                <Stack.Screen name='AddCarDetails' component={AddCarDetails} />
+                <Stack.Screen name='App' component={TabNavigator} />
+                <Stack.Screen name='ChargingView' component={ChargingView} />
             </Stack.Navigator>
         </NavigationContainer>
     );

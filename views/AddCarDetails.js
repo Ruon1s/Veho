@@ -7,8 +7,8 @@ const AddCarDetails = ({ navigation }) => {
             <Body>
                 <Text>Welcome!</Text>
                 <Button
-                full
-                onPress={ () => navigation.replace('App') }>
+                    full
+                    onPress={() => navigation.replace('App')}>
                     <Text>Save</Text>
                 </Button>
             </Body>
