@@ -8,7 +8,6 @@ const BatteryInfo = (props) => {
     const [batteryStatus, setBatteryStatus] = useState(props.batteryStatus)
 
     // GET-function from parent changes shown batteryStatus
-
     return (
         <Content style={styles.batteryContent}>
             <Grid style={styles.batteryGrid}>
@@ -26,8 +25,8 @@ const BatteryInfo = (props) => {
 // StyleSheet is needed to get custom content working. Global style will be used for colors and fonts
 const styles = StyleSheet.create({
     batteryContent: {
-        width: '100%',
-        alignContent: 'center'
+        paddingLeft: '30%',
+        paddingRight: '30%',
     },
     batteryGrid: {
         width: 150,

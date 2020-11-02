@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { Container, Text, Button, Content, Header, Body, Title } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import GlobalStyles from '../GlobalStyles';
@@ -8,7 +9,7 @@ import QueueInfo from '../components/QueueInfo';
 const Home = ({ navigation }) => {
     /*
        yes
-     */
+    */
 
     /* Functions needed, GET:
         - battery %
@@ -16,30 +17,41 @@ const Home = ({ navigation }) => {
         - the length of queue
     */
 
+    // What is the modern way to create flex-layout to get those buttons to the bottom of the screen?
+
     return (
         <Container>
             <Content padder>
-                <Text>Home</Text>
-                <BatteryInfo batteryStatus={54} />
-                <QueueInfo />
+                <View >
+                    <Text>Home</Text>
+                    <BatteryInfo batteryStatus={54} />
+                    <QueueInfo />
+                </View>
 
-                <Button full style={GlobalStyles.button}>
-                    <Text>Queue</Text>
-                </Button>
-
-                <Button
-                    full
-                    style={GlobalStyles.button}
-                    transparent
-                    onPress={() => navigation.navigate('ChargingView')}>
-                    <Text>ChargingView</Text>
-                </Button>
-
-                <Button full style={GlobalStyles.button} transparent onPress={() => navigation.replace('Auth')}>
-                    <Text>
-                        Logout
-                    </Text>
-                </Button>
+                <View>
+                    <Button full style={GlobalStyles.button}>
+                        <Text>Queue</Text>
+                    </Button>
+                    <Grid>
+                        <Col>
+                            <Button
+                                full
+                                style={GlobalStyles.button}
+                                onPress={() => navigation.navigate('ChargingView')}>
+                                <Text>ChargingView</Text>
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                full
+                                style={GlobalStyles.button}
+                                warning
+                                onPress={() => navigation.replace('Auth')}>
+                                <Text>Logout</Text>
+                            </Button>
+                        </Col>
+                    </Grid>
+                </View>
             </Content>
         </Container >
     );
