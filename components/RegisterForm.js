@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, Input, Container, Text, Item, Label, Content } from 'native-base';
 
-const RegisterForm = ({ toLogin }) => {
+const RegisterForm = ({ navigation, toLogin }) => {
     const btnMargin = 8
     return (
         <Form>
@@ -20,17 +20,21 @@ const RegisterForm = ({ toLogin }) => {
                 <Input />
             </Item>
             <Item fixedLabel>
-                <Label secureTextEntry={true}>Password</Label>
-                <Input />
+                <Label>Password</Label>
+                <Input secureTextEntry />
             </Item>
             <Item fixedLabel>
-                <Label secureTextEntry={true}>Retype password</Label>
-                <Input />
+                <Label>Retype password</Label>
+                <Input secureTextEntry />
             </Item>
-            <Button full style={{ margin: btnMargin }} >
+            <Button 
+            full 
+            style={{ margin: btnMargin }}
+            onPress={ () => navigation.replace('AddCarDetails') }
+             >
                 <Text>
                     Register
-                        </Text>
+                </Text>
             </Button>
             <Button full transparent style={{ margin: btnMargin }} onPress={toLogin}>
                 <Text>Back to login</Text>
