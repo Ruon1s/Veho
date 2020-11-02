@@ -6,6 +6,9 @@ import QueueInfo from '../components/QueueInfo';
 
 const Home = ({ navigation }) => {
     const btnMargin = 8
+    /*
+        testing ci
+     */
 
     /* Functions needed, GET:
         - battery %
