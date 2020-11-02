@@ -7,7 +7,6 @@ const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
     const btnMargin = 8
 
     return (
-        reeeeeeeeeeeeeee
         <Form>
             <Text>Login</Text>
             <Item fixedLabel>
