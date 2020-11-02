@@ -10,8 +10,7 @@ const QueueInfo = (props) => {
     return (<>
         <Text>Free spots: {free}</Text>
         <Text>Number of cars in queue: {queue}</Text>
-    </>
-    )
+    </>)
 }
 
 export default QueueInfo
