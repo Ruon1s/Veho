@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Expo from "expo";
 import * as Font from 'expo-font';
 import Navigator from './navigators/Navigator';
@@ -13,7 +13,7 @@ const App = () => {
     setFontReady(true);
   }
   useEffect(() => {
-   loadFonts();
+    loadFonts();
   }, []);
 
   if (!fontReady) {

@@ -25,8 +25,8 @@ const Navigator = () => {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name='Auth' component={Authentication} />
-                <Stack.Screen name='AddCarDetails' component={AddCarDetails} />
                 <Stack.Screen name='App' component={TabNavigator} />
+                <Stack.Screen name='AddCarDetails' component={AddCarDetails} />
                 <Stack.Screen name='ChargingView' component={ChargingView} />
             </Stack.Navigator>
         </NavigationContainer>

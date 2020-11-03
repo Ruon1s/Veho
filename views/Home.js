@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Text, Button, Content, Header, Body, Title, View, Footer } from 'native-base';
+import { Container, Text, Button, View } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import GlobalStyles from '../GlobalStyles';
 import BatteryInfo from '../components/BatteryInfo';

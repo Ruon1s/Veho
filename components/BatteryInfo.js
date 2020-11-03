@@ -26,7 +26,8 @@ const BatteryInfo = (props) => {
 const styles = StyleSheet.create({
     batteryContent: {
         height: 170,
-        alignItems: 'center'
+        alignItems: 'center',
+        margin: 8
     },
     batteryGrid: {
         width: 170,
