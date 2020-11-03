@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { Container, Button, Input, Form, Text, Item, Label, Content } from 'native-base';
+import { Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
@@ -9,7 +9,7 @@ const BatteryInfo = (props) => {
 
     // GET-function from parent changes shown batteryStatus
     return (
-        <Content style={styles.batteryContent}>
+        <View style={styles.batteryContent}>
             <Grid style={styles.batteryGrid}>
                 <Row size={3}>
                     <Icon name="bolt" size={50} color="#000"></Icon>
@@ -18,15 +18,15 @@ const BatteryInfo = (props) => {
                     <Text style={styles.batteryText}>{batteryStatus}%</Text>
                 </Row>
             </Grid>
-        </Content>
+        </View>
     );
 };
 
 // StyleSheet is needed to get custom content working. Global style will be used for colors and fonts
 const styles = StyleSheet.create({
     batteryContent: {
-        paddingLeft: '30%',
-        paddingRight: '30%',
+        height: 150,
+        alignItems: 'center'
     },
     batteryGrid: {
         width: 150,

@@ -1,6 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Container, Text, Button, Content, Header, Body, Title } from 'native-base';
+import { Container, Text, Button, Content, Header, Body, Title, View, Footer } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import GlobalStyles from '../GlobalStyles';
 import BatteryInfo from '../components/BatteryInfo';
@@ -21,12 +20,9 @@ const Home = ({ navigation }) => {
 
     return (
         <Container>
-            <Content padder>
-                <View >
-                    <Text>Home</Text>
-                    <BatteryInfo batteryStatus={54} />
-                    <QueueInfo />
-                </View>
+            <View padder style={{ flex: 1, justifyContent: 'space-around', marginBottom: 60 }}>
+                <QueueInfo />
+                <BatteryInfo batteryStatus={54} />
 
                 <View>
                     <Button full style={GlobalStyles.button}>
@@ -52,7 +48,7 @@ const Home = ({ navigation }) => {
                         </Col>
                     </Grid>
                 </View>
-            </Content>
+            </View>
         </Container >
     );
 }
