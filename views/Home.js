@@ -6,21 +6,15 @@ import BatteryInfo from '../components/BatteryInfo';
 import QueueInfo from '../components/QueueInfo';
 
 const Home = ({ navigation }) => {
-    /*
-       yes
-    */
-
     /* Functions needed, GET:
-        - battery %
-        - # of free spots in parking space
-        - the length of queue
+          - battery %
+          - # of free spots in parking space
+          - the length of queue
     */
-
-    // What is the modern way to create flex-layout to get those buttons to the bottom of the screen?
 
     return (
         <Container>
-            <View padder style={{ flex: 1, justifyContent: 'space-around', marginBottom: 60 }}>
+            <View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
                 <QueueInfo />
                 <BatteryInfo batteryStatus={54} />
 

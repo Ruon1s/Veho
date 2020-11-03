@@ -12,7 +12,7 @@ const BatteryInfo = (props) => {
         <View style={styles.batteryContent}>
             <Grid style={styles.batteryGrid}>
                 <Row size={3}>
-                    <Icon name="bolt" size={50} color="#000"></Icon>
+                    <Icon name="bolt" size={75} color="#000"></Icon>
                 </Row>
                 <Row size={1}>
                     <Text style={styles.batteryText}>{batteryStatus}%</Text>
@@ -25,14 +25,14 @@ const BatteryInfo = (props) => {
 // StyleSheet is needed to get custom content working. Global style will be used for colors and fonts
 const styles = StyleSheet.create({
     batteryContent: {
-        height: 150,
+        height: 170,
         alignItems: 'center'
     },
     batteryGrid: {
-        width: 150,
-        height: 150,
+        width: 170,
+        height: 170,
         backgroundColor: 'rgba(255,255,255,1.0)',
-        borderRadius: 150,
+        borderRadius: 170,
         alignItems: 'center',
         padding: 30,
         borderStyle: 'solid',
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     batteryText: {
         width: '100%',
         textAlign: 'center',
-        fontSize: 24
+        fontSize: 28
     }
 });
 
