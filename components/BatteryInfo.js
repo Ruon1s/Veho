@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     batteryGrid: {
         width: 170,
         height: 170,
-        backgroundColor: 'rgba(255,255,255,1.0)',
+        backgroundColor: 'white',
         borderRadius: 170,
         alignItems: 'center',
         padding: 30,

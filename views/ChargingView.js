@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Container, Text, View } from 'native-base';
+import { Container, Text, View, Button } from 'native-base';
 import BatteryInfo from '../components/BatteryInfo';
+import GlobalStyles from '../GlobalStyles';
 
 const ChargingView = () => {
     const [estimated, setEstimated] = useState(0)
