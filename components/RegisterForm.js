@@ -1,5 +1,5 @@
 import React from 'react';
-import GlobalStyles from '../GlobalStyles';
+import GlobalStyles from '../styles/GlobalStyles';
 import { Button, Form, Input, Container, Text, Item, Label, Content } from 'native-base';
 
 const RegisterForm = ({ navigation, toLogin }) => {

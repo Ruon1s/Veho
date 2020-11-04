@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Text, Form, Input, Button, Item, Label, Content } from 'native-base';
-import GlobalStyles from '../GlobalStyles';
+import GlobalStyles from '../styles/GlobalStyles';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
 const ResetPasswordForm = ({ toLogin }) => {

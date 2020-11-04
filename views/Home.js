@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Text, Button, View } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import GlobalStyles from '../GlobalStyles';
+import GlobalStyles from '../styles/GlobalStyles';
 import BatteryInfo from '../components/BatteryInfo';
 import QueueInfo from '../components/QueueInfo';
 

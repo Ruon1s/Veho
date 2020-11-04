@@ -1,0 +1,19 @@
+{
+    "Colors": {
+        "Official": {
+            "Color1": "#000000",
+            "Color2": "#FFFFFF"
+        },
+        "Additional": {
+            "Cyan": "#00ADEF",
+            "Radical red": "#FB3664",
+            "Platinum": "#EAEAEA",
+            "Malachite": "#4FD966"
+        }
+    },
+    "Fonts": {
+        "Headline": "Open Sans Bold",
+        "Subheading": "Open Sans Bold",
+        "Body": "Open Sans Light"
+    }
+}

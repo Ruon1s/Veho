@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Button, Input, Form, Text, Item, Label, Content } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import GlobalStyles from '../GlobalStyles';
+import GlobalStyles from '../styles/GlobalStyles';
 
 const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
     return (
