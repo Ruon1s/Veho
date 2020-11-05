@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     batteryText: {
         width: '100%',
         textAlign: 'center',
-        fontSize: 28
+        fontSize: 24
     }
 });
 
