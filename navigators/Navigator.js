@@ -23,7 +23,7 @@ const TabNavigator = () => {
 const Navigator = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name='Auth' component={Authentication} />
                 <Stack.Screen name='App' component={TabNavigator} />
                 <Stack.Screen name='AddCarDetails' component={AddCarDetails} />

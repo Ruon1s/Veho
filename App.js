@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Text } from 'native-base';
 import * as Expo from "expo";
 import * as Font from 'expo-font';
 import Navigator from './navigators/Navigator';
@@ -7,8 +8,10 @@ const App = () => {
   const [fontReady, setFontReady] = useState(false);
   const loadFonts = async () => {
     await Font.loadAsync({
+      OpenSans_Light: require("./assets/fonts/OpenSans-Light.ttf"),
+      OpenSans_Bold: require("./assets/fonts/OpenSans-Bold.ttf"),
       Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
     });
     setFontReady(true);
   }
@@ -18,8 +21,10 @@ const App = () => {
 
   if (!fontReady) {
     console.log('Waiting for fonts...');
-    return (
+    return (<>
+      <Text>Waiting for fonts...</Text>
       <Expo.AppLoading />
+    </>
     );
   }
 

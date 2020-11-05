@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Text, Button, View } from 'native-base';
+import { Container, Content, Text, Button, View, StyleProvider, Body, Title } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import getTheme from '../native-base-theme/components';
+import platform from '../native-base-theme/variables/platform';
 import GlobalStyles from '../styles/GlobalStyles';
 import BatteryInfo from '../components/BatteryInfo';
 import QueueInfo from '../components/QueueInfo';
+import CustomHeader from '../components/CustomHeader';
 
 const Home = ({ navigation }) => {
     const [state, setState] = useState({
@@ -27,38 +30,44 @@ const Home = ({ navigation }) => {
           - the length of queue
     */
 
+    // platform.js contains the color and font variables ordered by veho 
     return (
-        <Container>
-            <View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
-                <QueueInfo free={state.free} queue={state.queue} queuePosition={state.queuePosition} />
-                <BatteryInfo batteryStatus={54} />
+        <StyleProvider style={getTheme(platform)}>
+            <Container>
+                <CustomHeader title='Home' />
 
-                <View>
-                    <Button full style={GlobalStyles.button} onPress={handleClick}>
-                        <Text>Queue</Text>
-                    </Button>
-                    <Grid>
-                        <Col>
-                            <Button
-                                full
-                                style={GlobalStyles.button}
-                                onPress={() => navigation.navigate('ChargingView')}>
-                                <Text>ChargingView</Text>
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button
-                                full
-                                style={GlobalStyles.button}
-                                warning
-                                onPress={() => navigation.replace('Auth')}>
-                                <Text>Logout</Text>
-                            </Button>
-                        </Col>
-                    </Grid>
+                <View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
+                    <QueueInfo free={state.free} queue={state.queue} queuePosition={state.queuePosition} />
+                    <BatteryInfo batteryStatus={54} />
+
+                    <View>
+                        <Button full onPress={handleClick}
+                            style={GlobalStyles.button}>
+                            <Text>Queue</Text>
+                        </Button>
+                        <Grid>
+                            <Col>
+                                <Button
+                                    full
+                                    onPress={() => navigation.navigate('ChargingView')}
+                                    style={GlobalStyles.button}>
+                                    <Text>ChargingView</Text>
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    full
+                                    danger transparent
+                                    onPress={() => navigation.replace('Auth')}
+                                    style={GlobalStyles.button}>
+                                    <Text>Logout</Text>
+                                </Button>
+                            </Col>
+                        </Grid>
+                    </View>
                 </View>
-            </View>
-        </Container >
+            </Container >
+        </StyleProvider>
     );
 }
 
