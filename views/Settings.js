@@ -1,11 +1,13 @@
 import React from 'react';
 import { Container, Text, Content } from 'native-base';
+import CustomHeader from '../components/CustomHeader';
 
 const Settings = () => {
     return (
         <Container>
+            <CustomHeader title='Settings' />
             <Content padder>
-                <Text>Settings</Text>
+
             </Content>
         </Container>
     );
