@@ -299,7 +299,7 @@ export default {
   },
 
   // Title
-  titleFontfamily: 'OpenSans-Bold',
+  titleFontfamily: 'OpenSans_Bold',
   titleFontSize: platform === PLATFORM.IOS ? 17 : 19,
   subTitleFontSize: platform === PLATFORM.IOS ? 11 : 14,
   subtitleColor: platform === PLATFORM.IOS ? '#8e8e93' : '#FFF',
