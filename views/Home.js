@@ -38,7 +38,7 @@ const Home = ({ navigation }) => {
 
                 <View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
                     <QueueInfo free={state.free} queue={state.queue} queuePosition={state.queuePosition} />
-                    <BatteryInfo batteryStatus={54} />
+                    <BatteryInfo batteryStatus={20} />
 
                     <View>
                         <Button full onPress={handleClick}
