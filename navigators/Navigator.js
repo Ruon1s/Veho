@@ -21,7 +21,7 @@ const TabNavigator = () => {
 
                 switch (route.name) {
                     case 'Home': {
-                        iconName = 'home'
+                        iconName = 'bolt'
                         color = focused ? '#000' : '#999999'
                         break;
                     }

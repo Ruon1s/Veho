@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View } from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
 const BatteryInfo = (props) => {
@@ -12,7 +12,7 @@ const BatteryInfo = (props) => {
         <View style={styles.batteryContent}>
             <Grid style={styles.batteryGrid}>
                 <Row size={3}>
-                    <Icon name="bolt" size={75} color="#000"></Icon>
+                    <Icon name="bolt" size={68} color="#000"></Icon>
                 </Row>
                 <Row size={1}>
                     <Text style={styles.batteryText}>{batteryStatus}%</Text>
