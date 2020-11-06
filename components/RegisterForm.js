@@ -5,25 +5,23 @@ import { Button, Form, Input, Container, Text, Item, Label, Content } from 'nati
 const RegisterForm = ({ navigation, toLogin }) => {
     return (
         <Form>
-            <Text>Register</Text>
-
-            <Item fixedLabel>
+            <Item floatingLabel>
                 <Label>First Name</Label>
                 <Input />
             </Item>
-            <Item fixedLabel>
+            <Item floatingLabel>
                 <Label>Last Name</Label>
                 <Input />
             </Item>
-            <Item fixedLabel>
+            <Item floatingLabel>
                 <Label keyboardType='email-address'>Email</Label>
                 <Input />
             </Item>
-            <Item fixedLabel>
+            <Item floatingLabel>
                 <Label>Password</Label>
                 <Input secureTextEntry />
             </Item>
-            <Item fixedLabel>
+            <Item floatingLabel>
                 <Label>Retype password</Label>
                 <Input secureTextEntry />
             </Item>

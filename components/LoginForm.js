@@ -6,12 +6,11 @@ import GlobalStyles from '../styles/GlobalStyles';
 const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
     return (
         <Form>
-            <Text>Login</Text>
-            <Item fixedLabel>
+            <Item floatingLabel>
                 <Label>Email</Label>
                 <Input keyboardType="email-address" />
             </Item>
-            <Item fixedLabel>
+            <Item floatingLabel>
                 <Label>Password</Label>
                 <Input secureTextEntry={true} />
             </Item>

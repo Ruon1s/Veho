@@ -6,8 +6,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 const ResetPasswordForm = ({ toLogin }) => {
     return (
         <Form>
-            <Text> Reset password </Text>
-            <Item fixedLabel>
+            <Item floatingLabel>
                 <Label keyboardType="email-address">Email</Label>
                 <Input />
             </Item>
@@ -28,7 +27,6 @@ const ResetPasswordForm = ({ toLogin }) => {
                 </Col>
             </Grid>
         </Form>
-
     );
 }
 

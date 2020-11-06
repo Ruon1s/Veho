@@ -1,16 +1,14 @@
 import React from 'react';
 import { Content, Container, Text, Button } from 'native-base';
+import CustomHeader from '../components/CustomHeader';
+import RegisterCarForm from '../components/RegisterCarForm';
 
 const AddCarDetails = ({ navigation }) => {
     return (
         <Container>
+            <CustomHeader title='Add car details' />
             <Content padder>
-                <Text>Welcome!</Text>
-                <Button
-                    full
-                    onPress={() => navigation.replace('App')}>
-                    <Text>Save</Text>
-                </Button>
+                <RegisterCarForm navigation={navigation} />
             </Content>
         </Container>
     );
