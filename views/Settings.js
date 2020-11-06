@@ -1,15 +1,19 @@
 import React from 'react';
-import { Container, Text, Content } from 'native-base';
+import { Container, Text, Content, StyleProvider } from 'native-base';
 import CustomHeader from '../components/CustomHeader';
+import getTheme from '../native-base-theme/components';
+import platform from '../native-base-theme/variables/platform';
 
 const Settings = () => {
     return (
-        <Container>
-            <CustomHeader title='Settings' />
-            <Content padder>
+        <StyleProvider style={getTheme(platform)}>
+            <Container>
+                <CustomHeader title='Settings' />
+                <Content padder>
 
-            </Content>
-        </Container>
+                </Content>
+            </Container>
+        </StyleProvider>
     );
 }
 
