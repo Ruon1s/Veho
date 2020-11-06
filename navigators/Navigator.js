@@ -7,13 +7,28 @@ import AddCarDetails from '../views/AddCarDetails';
 import Home from '../views/Home';
 import Settings from '../views/Settings';
 import ChargingView from '../views/ChargingView';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const TabNavigator = () => {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={({ route }) => ({
+            tabBarIcon: () => {
+                let iconName;
+
+                switch (route.name) {
+                    case 'Home': iconName = 'home'
+                        break;
+                    case 'Settings': iconName = 'cog'
+                        break;
+                }
+
+                return <Icon name={iconName} size={24} />
+            }
+        })
+        }>
             <Tab.Screen name='Home' component={Home} />
             <Tab.Screen name='Settings' component={Settings} />
         </Tab.Navigator>
