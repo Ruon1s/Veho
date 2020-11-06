@@ -13,7 +13,7 @@ const Authentication = ({ navigation }) => {
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>
-                <CustomHeader title={active} />
+                <CustomHeader title='Authentication' />
                 <Content padder>
                     {active === 'login' &&
                         <LoginForm
