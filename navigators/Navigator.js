@@ -7,7 +7,7 @@ import AddCarDetails from '../views/AddCarDetails';
 import Home from '../views/Home';
 import Settings from '../views/Settings';
 import ChargingView from '../views/ChargingView';
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -15,20 +15,32 @@ const Stack = createStackNavigator();
 const TabNavigator = () => {
     return (
         <Tab.Navigator screenOptions={({ route }) => ({
-            tabBarIcon: () => {
+            tabBarIcon: ({ focused }) => {
                 let iconName;
+                let color;
 
                 switch (route.name) {
-                    case 'Home': iconName = 'home'
+                    case 'Home': {
+                        iconName = 'home'
+                        color = focused ? '#000' : '#999999'
                         break;
-                    case 'Settings': iconName = 'cog'
+                    }
+                    case 'Settings': {
+                        iconName = 'cog'
+                        color = focused ? '#000' : '#999999'
                         break;
+                    }
                 }
-
-                return <Icon name={iconName} size={24} />
+                return <Icon name={iconName} size={24} color={color} />
             }
-        })
-        }>
+        })}
+            tabBarOptions={{
+                activeTintColor: '#000',
+                inactiveTintColor: '#999999',
+                activeBackgroundColor: '#FFFFFF',
+                inactiveBackgroundColor: '#FFFFFF'
+            }}
+        >
             <Tab.Screen name='Home' component={Home} />
             <Tab.Screen name='Settings' component={Settings} />
         </Tab.Navigator>
