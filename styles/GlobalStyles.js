@@ -6,7 +6,8 @@ const GlobalStyles = StyleSheet.create({
     button: {
         margin: 8,
         marginEnd: 4,
-        marginStart: 4
+        marginStart: 4,
+        marginBottom: 4
     }
 });
 
