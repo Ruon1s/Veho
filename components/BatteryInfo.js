@@ -15,8 +15,8 @@ const BatteryInfo = (props) => {
     const Default = () => {
         return (
             <Grid style={styles.batteryGrid}>
-                <Row size={3}>
-                    <Icon name="bolt" size={68} color="#000"></Icon>
+                <Row size={2}>
+                    <Icon name="bolt" size={56} color="#000"></Icon>
                 </Row>
                 <Row size={1}>
                     <Text style={styles.batteryText}>{batteryStatus}%</Text>
@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         borderRadius: 170,
         alignItems: 'center',
-        padding: 30
+        padding: 34,
+        paddingTop: 40
     },
     batteryText: {
         width: '100%',
