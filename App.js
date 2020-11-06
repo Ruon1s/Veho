@@ -22,7 +22,7 @@ const App = () => {
   if (!fontReady) {
     console.log('Waiting for fonts...');
     return (<>
-      <Text>Waiting for fonts...</Text>
+      <Text>Installing fonts...</Text>
       <Expo.AppLoading />
     </>
     );

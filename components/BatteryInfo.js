@@ -3,13 +3,17 @@ import { StyleSheet } from 'react-native';
 import { Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import { VictoryPie } from 'victory-native';
 
 const BatteryInfo = (props) => {
     const [batteryStatus, setBatteryStatus] = useState(props.batteryStatus)
+    const data = [
+        { x: `${batteryStatus}%`, y: batteryStatus },
+        { x: 'null', y: 100 - batteryStatus }
+    ]
 
-    // GET-function from parent changes shown batteryStatus
-    return (
-        <View style={styles.batteryContent}>
+    const Default = () => {
+        return (
             <Grid style={styles.batteryGrid}>
                 <Row size={3}>
                     <Icon name="bolt" size={68} color="#000"></Icon>
@@ -17,7 +21,14 @@ const BatteryInfo = (props) => {
                 <Row size={1}>
                     <Text style={styles.batteryText}>{batteryStatus}%</Text>
                 </Row>
-            </Grid>
+            </Grid>)
+    }
+
+    // GET-function from parent changes shown batteryStatus
+    return (
+        <View style={styles.batteryContent}>
+            <Default />
+            <VictoryPie standalone={true} width={170} height={170} colorScale={['#000', '#EAEAEA']} innerRadius={80} padding={10} data={data} />
         </View>
     );
 };
@@ -25,20 +36,18 @@ const BatteryInfo = (props) => {
 // StyleSheet is needed to get custom content working. Global style will be used for colors and fonts
 const styles = StyleSheet.create({
     batteryContent: {
-        height: 170,
+        height: 180,
         alignItems: 'center',
         margin: 8
     },
     batteryGrid: {
+        position: 'absolute',
         width: 170,
         height: 170,
-        backgroundColor: 'white',
+        backgroundColor: '#FFFFFF',
         borderRadius: 170,
         alignItems: 'center',
-        padding: 30,
-        borderStyle: 'solid',
-        borderColor: 'black',
-        borderWidth: 1
+        padding: 30
     },
     batteryText: {
         width: '100%',
