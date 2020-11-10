@@ -5,7 +5,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 import * as Notifications from 'expo-notifications';
 
 const createNotification = () => {
-
+    // need to study more on how to create notification object and send it to listeners
 }
 
 const NotificationTest = () => {
