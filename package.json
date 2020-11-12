@@ -30,7 +30,9 @@
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
     "victory-native": "^35.3.0",
-    "expo-notifications": "~0.7.2"
+    "expo-notifications": "~0.7.2",
+    "expo-permissions": "~9.3.0",
+    "expo-constants": "~9.2.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

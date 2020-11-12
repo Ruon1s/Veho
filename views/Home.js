@@ -7,6 +7,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 import BatteryInfo from '../components/BatteryInfo';
 import QueueInfo from '../components/QueueInfo';
 import CustomHeader from '../components/CustomHeader';
+import NotificationTest from '../components/NotificationTest';
 
 const Home = ({ navigation }) => {
     const [state, setState] = useState({
@@ -14,6 +15,8 @@ const Home = ({ navigation }) => {
         free: 0,
         queuePosition: 0
     });
+
+    const [batteryStatus, setBatteryStatus] = useState(54)
 
     // QueueInfo re-renders according to this state change
     const handleClick = () => {
@@ -38,8 +41,7 @@ const Home = ({ navigation }) => {
 
                 <View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
                     <QueueInfo free={state.free} queue={state.queue} queuePosition={state.queuePosition} />
-                    <BatteryInfo batteryStatus={54} />
-
+                    <BatteryInfo batteryStatus={batteryStatus} />
                     <View>
                         <Button full onPress={handleClick}
                             style={GlobalStyles.button}>

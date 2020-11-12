@@ -3,10 +3,10 @@ import { StyleSheet } from 'react-native';
 import { Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import { VictoryPie } from 'victory-native';
+import { VictoryPie, VictoryLabel } from 'victory-native';
 
 const BatteryInfo = (props) => {
-    const [batteryStatus, setBatteryStatus] = useState(props.batteryStatus)
+    const batteryStatus = props.batteryStatus
     const data = [
         { x: `${batteryStatus}%`, y: batteryStatus },
         { x: 'null', y: 100 - batteryStatus }
@@ -28,7 +28,18 @@ const BatteryInfo = (props) => {
     return (
         <View style={styles.batteryContent}>
             <Default />
-            <VictoryPie standalone={true} width={170} height={170} colorScale={['#000', '#EAEAEA']} innerRadius={80} padding={10} data={data} />
+            <VictoryPie
+                standalone={true}
+                width={170}
+                height={170}
+                colorScale={['#000', '#EAEAEA']}
+                innerRadius={80}
+                padding={10}
+                data={data}
+                labelComponent={<VictoryLabel
+                    style={{ fill: '#FFF' }}
+                />}
+            />
         </View>
     );
 };
