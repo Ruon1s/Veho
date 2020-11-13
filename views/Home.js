@@ -7,7 +7,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 import BatteryInfo from '../components/BatteryInfo';
 import QueueInfo from '../components/QueueInfo';
 import CustomHeader from '../components/CustomHeader';
-import { schedulePushNotification, registerForPushNotificationsAsync } from '../services/NotificationService';
+import { schedulePushNotification } from '../services/NotificationService';
 
 const Home = ({ navigation }) => {
     // State: for queue information
@@ -18,7 +18,6 @@ const Home = ({ navigation }) => {
     });
 
     const [batteryStatus, setBatteryStatus] = useState(54)
-
 
     // QueueInfo re-renders according to this state change
     const handleClick = () => {
@@ -34,8 +33,6 @@ const Home = ({ navigation }) => {
           - # of free spots in parking space
           - the length of queue
     */
-
-    // platform.js contains the color and font variables ordered by veho 
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>

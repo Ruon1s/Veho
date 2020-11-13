@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import Navigator from './navigators/Navigator';
-import { schedulePushNotification, registerForPushNotificationsAsync } from './services/NotificationService';
+import { registerForPushNotificationsAsync } from './services/NotificationService';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
