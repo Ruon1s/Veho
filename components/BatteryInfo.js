@@ -6,7 +6,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 
 const BatteryInfo = (props) => {
-    const [batteryStatus, setBatteryStatus] = useState(props.batteryStatus)
+    const batteryStatus = props.batteryStatus
     const data = [
         { x: `${batteryStatus}%`, y: batteryStatus },
         { x: 'null', y: 100 - batteryStatus }

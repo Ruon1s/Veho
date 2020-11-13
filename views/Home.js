@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Container, Content, Text, Button, View, StyleProvider, Body, Title } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import getTheme from '../native-base-theme/components';
@@ -9,8 +9,17 @@ import QueueInfo from '../components/QueueInfo';
 import CustomHeader from '../components/CustomHeader';
 import { AUTH, GRANT, UNAME, PASS } from "@env";
 import * as SecureStore from 'expo-secure-store';
+import { schedulePushNotification } from '../services/NotificationService';
 
 const Home = ({ navigation }) => {
+    // State: for queue information
+    const [state, setState] = useState({
+        queue: 0,
+        free: 0,
+        queuePosition: 0
+    });
+
+    const [batteryStatus, setBatteryStatus] = useState(54)
 
     const fetchSoc = async () => {
         const token = await SecureStore.getItemAsync('token');
@@ -72,11 +81,6 @@ const Home = ({ navigation }) => {
         }
     }
 
-    const [state, setState] = useState({
-        queue: 0,
-        free: 0,
-        queuePosition: 0
-    });
 
     // QueueInfo re-renders according to this state change
     const handleClick = () => {
@@ -92,8 +96,6 @@ const Home = ({ navigation }) => {
           - # of free spots in parking space
           - the length of queue
     */
-
-    // platform.js contains the color and font variables ordered by veho 
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>
@@ -101,7 +103,11 @@ const Home = ({ navigation }) => {
 
                 <View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
                     <QueueInfo free={state.free} queue={state.queue} queuePosition={state.queuePosition} />
-                    <BatteryInfo batteryStatus={20} />
+                    <BatteryInfo batteryStatus={batteryStatus} />
+
+                    <Button full transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
+                        <Text>Test notification</Text>
+                    </Button>
 
                     <View>
                         <Button full onPress={fetchToken}
@@ -138,7 +144,7 @@ const Home = ({ navigation }) => {
                     </View>
                 </View>
             </Container >
-        </StyleProvider>
+        </StyleProvider >
     );
 }
 

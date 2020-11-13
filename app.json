@@ -16,6 +16,12 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "useNextNotificationsApi": true,
+      "permissions": [
+        "VIBRATE"
+      ]
+    },
     "ios": {
       "supportsTablet": true
     },
