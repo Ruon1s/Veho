@@ -7,8 +7,72 @@ import GlobalStyles from '../styles/GlobalStyles';
 import BatteryInfo from '../components/BatteryInfo';
 import QueueInfo from '../components/QueueInfo';
 import CustomHeader from '../components/CustomHeader';
+import { AUTH, GRANT, UNAME, PASS } from "@env";
+import * as SecureStore from 'expo-secure-store';
 
 const Home = ({ navigation }) => {
+
+    const fetchSoc = async () => {
+        const token = await SecureStore.getItemAsync('token');
+        try {
+          const headers = {
+            'Cache-Control': 'no-cache',
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+          }
+    
+          const options = {
+            method: 'GET',
+            withCredentials: true,
+            headers,
+          }
+    
+          const response = await fetch('https://api.connect-business.net/fleet/v1/fleets/DF89D145A29C43BE80FC2464B54405F9/vehicles.dynamic/C0NNECT0000000100', options);
+          //const toJSON = await response.json();
+          // HTML response (404/500), response.text
+          const toJSON = await response.text();
+    
+          console.log("Token: " + token)
+          console.log(JSON.stringify(toJSON))
+          console.log("Some random item from API: " + JSON.stringify(toJSON.totalEcoScore))
+        } catch (error) {
+            console.log(error);
+        }
+      }
+
+      const fetchToken = async () => {
+        try {
+    
+          const data = {
+            'grant_type': GRANT,
+            'username': UNAME,
+            'password': PASS
+          }
+    
+          const headers = {
+            'Cache-Control': 'no-cache',
+            'Authorization': AUTH,
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+          }
+    
+          const formBody = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
+    
+          const options = {
+            method: 'POST',
+            headers,
+            body: formBody,
+          }
+    
+          const response = await fetch('https://api.connect-business.net/fleet/v1/oauth/token', options);
+          const toJSON = await response.json();
+    
+          console.log("Token: " + JSON.stringify(toJSON.access_token));
+          await SecureStore.setItemAsync('token', JSON.stringify(toJSON.access_token));
+        } catch (error) {
+            console.log(error);
+        }
+      }
+    
     const [state, setState] = useState({
         queue: 0,
         free: 0,
@@ -41,6 +105,14 @@ const Home = ({ navigation }) => {
                     <BatteryInfo batteryStatus={20} />
 
                     <View>
+                        <Button full onPress={fetchToken}
+                            style={GlobalStyles.button}>
+                            <Text>(DEV) Get Token</Text>
+                        </Button>
+                        <Button full onPress={fetchSoc}
+                            style={GlobalStyles.button}>
+                            <Text>(DEV) Refresh SOC</Text>
+                        </Button>
                         <Button full onPress={handleClick}
                             style={GlobalStyles.button}>
                             <Text>Queue</Text>
