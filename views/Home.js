@@ -1,7 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Constants from 'expo-constants';
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
 import { Container, Content, Text, Button, View, StyleProvider, Body, Title } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import getTheme from '../native-base-theme/components';
@@ -10,15 +7,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 import BatteryInfo from '../components/BatteryInfo';
 import QueueInfo from '../components/QueueInfo';
 import CustomHeader from '../components/CustomHeader';
-import { schedulePushNotification } from '../services/NotificationService';
-
-Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: false,
-        shouldSetBadge: false,
-    }),
-});
+import { schedulePushNotification, registerForPushNotificationsAsync } from '../services/NotificationService';
 
 const Home = ({ navigation }) => {
     // State: for queue information
@@ -29,10 +18,7 @@ const Home = ({ navigation }) => {
     });
 
     const [batteryStatus, setBatteryStatus] = useState(54)
-    const [expoPushToken, setExpoPushToken] = useState('');
-    const [notification, setNotification] = useState(false);
-    const notificationListener = useRef();
-    const responseListener = useRef();
+
 
     // QueueInfo re-renders according to this state change
     const handleClick = () => {
@@ -42,23 +28,6 @@ const Home = ({ navigation }) => {
             setState({ queuePosition: 1 })
         }
     }
-
-    useEffect(() => {
-        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(notification);
-        });
-
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
-        });
-
-        return () => {
-            Notifications.removeNotificationSubscription(notificationListener);
-            Notifications.removeNotificationSubscription(responseListener);
-        };
-    }, []);
 
     /* Functions needed, GET:
           - battery %
@@ -109,37 +78,6 @@ const Home = ({ navigation }) => {
             </Container >
         </StyleProvider>
     );
-}
-
-const registerForPushNotificationsAsync = async () => {
-    let token;
-    if (Constants.isDevice) {
-        const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-        let finalStatus = existingStatus;
-        if (existingStatus !== 'granted') {
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            finalStatus = status;
-        }
-        if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
-            return;
-        }
-        token = (await Notifications.getExpoPushTokenAsync()).data;
-        console.log('Your token: ' + token);
-    } else {
-        alert('Must use physical device for Push Notifications');
-    }
-
-    if (Platform.OS === 'android') {
-        Notifications.setNotificationChannelAsync('default', {
-            name: 'default',
-            importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
-            lightColor: '#FF231F7C',
-        });
-    }
-
-    return token;
 }
 
 export default Home;
