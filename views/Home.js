@@ -30,11 +30,10 @@ const Home = ({ navigation }) => {
           const response = await fetch('https://api.connect-business.net/fleet/v1/fleets/DF89D145A29C43BE80FC2464B54405F9/vehicles.dynamic/C0NNECT0000000100', options);
           //const toJSON = await response.json();
           // HTML response (404/500), response.text
-          const toJSON = await response.text();
-    
-          console.log("Token: " + token)
-          console.log(JSON.stringify(toJSON))
-          console.log("Some random item from API: " + JSON.stringify(toJSON.totalEcoScore))
+          const toJSON = await response.json();
+
+          console.log(toJSON);
+
         } catch (error) {
             console.log(error);
         }
@@ -62,12 +61,10 @@ const Home = ({ navigation }) => {
             headers,
             body: formBody,
           }
-    
+          
           const response = await fetch('https://api.connect-business.net/fleet/v1/oauth/token', options);
           const toJSON = await response.json();
-    
-          console.log("Token: " + JSON.stringify(toJSON.access_token));
-          await SecureStore.setItemAsync('token', JSON.stringify(toJSON.access_token));
+          await SecureStore.setItemAsync('token', toJSON.access_token);
         } catch (error) {
             console.log(error);
         }
