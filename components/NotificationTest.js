@@ -54,7 +54,7 @@ const NotificationTest = () => {
                 style={GlobalStyles.button}
                 full
                 onPress={async () => {
-                    await schedulePushNotification();
+                    await schedulePushNotification('Test', 'Hello', 123);
                 }}
             >
                 <Text>Press to schedule a notification</Text>
@@ -63,16 +63,21 @@ const NotificationTest = () => {
     );
 }
 
-const schedulePushNotification = async () => {
-    await Notifications.scheduleNotificationAsync({
-        content: {
-            title: "You've got mail! 📬",
-            body: 'Here is the notification body',
-            data: { data: 'goes here' },
-        },
-        trigger: { seconds: 2 },
-    });
-}
+// call: await schedulePushNotification('string','string',any)
+const schedulePushNotification = async (title, body, data) => {
+    if (title !== null && body !== null && data !== null) {
+        await Notifications.scheduleNotificationAsync({
+            content: {
+                title: title,
+                body: body,
+                data: { data: data },
+            },
+            trigger: { seconds: 2 },
+        });
+    } else {
+        console.log('must pass all data to pushNotification')
+    };
+};
 
 const registerForPushNotificationsAsync = async () => {
     let token;
