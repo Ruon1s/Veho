@@ -10,6 +10,8 @@ import CustomHeader from '../components/CustomHeader';
 import { AUTH, GRANT, UNAME, PASS } from "@env";
 import * as SecureStore from 'expo-secure-store';
 import { schedulePushNotification } from '../services/NotificationService';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
 const Home = ({ navigation }) => {
     // State: for queue information
@@ -91,6 +93,24 @@ const Home = ({ navigation }) => {
         }
     }
 
+    //Function that handles adding user to the queue
+    const addToQueue = async () => {
+        try {
+            const db = firebase.firestore();
+            const user = firebase.auth().currentUser;
+            const timestamp = Date.now();
+
+            const response = await db.collection('queue').add({
+                time: timestamp,
+                user_id: 'test_uid', //Just for testing, switch to user.uid when auth is ready
+            });
+
+            console.log(`Response: ${response}`);
+        } catch (error) {
+            console.log(`Error adding user to the queue: ${ error.message }`);
+        }
+    }
+
     /* Functions needed, GET:
           - battery %
           - # of free spots in parking space
@@ -118,7 +138,7 @@ const Home = ({ navigation }) => {
                             style={GlobalStyles.button}>
                             <Text>(DEV) Refresh SOC</Text>
                         </Button>
-                        <Button full onPress={handleClick}
+                        <Button full onPress={addToQueue}
                             style={GlobalStyles.button}>
                             <Text>Queue</Text>
                         </Button>

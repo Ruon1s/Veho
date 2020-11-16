@@ -2,11 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text } from 'native-base';
 import * as Expo from "expo";
 import * as Font from 'expo-font';
-import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
+import * as firebase from 'firebase';
 import Navigator from './navigators/Navigator';
 import { registerForPushNotificationsAsync } from './services/NotificationService';
+import { firebaseConfig } from './utils/firebaseConfig';
+import { LogBox } from 'react-native';
+
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -32,8 +37,12 @@ const App = () => {
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
     });
     setFontReady(true);
-  }
+  };
+
   useEffect(() => {
+
+    LogBox.ignoreLogs(['Setting a timer for a long period of time']); // <-- Hide unnecessary warnings with android and firestore
+    
     loadFonts();
 
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));

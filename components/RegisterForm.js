@@ -14,8 +14,8 @@ const RegisterForm = ({ navigation, toLogin }) => {
                 <Input />
             </Item>
             <Item floatingLabel>
-                <Label keyboardType='email-address'>Email</Label>
-                <Input />
+                <Label>Email</Label>
+                <Input keyboardType='email-address' />
             </Item>
             <Item floatingLabel>
                 <Label>Password</Label>
