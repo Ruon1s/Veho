@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Button, Input, Form, Text, Item, Label, Content } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import GlobalStyles from '../styles/GlobalStyles';
@@ -15,7 +15,7 @@ const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
 
     const login = async () => {
         let check = true;
-       await firebase.auth().signInWithEmailAndPassword(inputs.email, inputs.password).catch(function(error) {
+        await firebase.auth().signInWithEmailAndPassword(inputs.email, inputs.password).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;

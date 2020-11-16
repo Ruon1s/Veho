@@ -11,6 +11,15 @@ import firebase from 'firebase';
 const Authentication = ({ navigation }) => {
     const [active, setActive] = useState('login');
 
+    //If the user is found and authenticated, redirect to home
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user !== null) {
+                navigation.replace('App');
+            }
+        })
+    }, []);
+
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>
