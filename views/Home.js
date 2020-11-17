@@ -29,7 +29,7 @@ const Home = ({ navigation }) => {
 
     useEffect(() => {
         const unsubscribeQueueListener = firebase.firestore().collection('queue').orderBy('time', 'asc').onSnapshot(snapShot => {   //Check how many people are in the queue and update the state according to that. Also check if the user is found on the queue
-            
+
             setState((state) => ({                                                                                                  //Get the queue size (How many documents there are in the collection)                                                                       
                 ...state,
                 queue: snapShot.size
@@ -65,7 +65,7 @@ const Home = ({ navigation }) => {
                     ...state,
                     freeSpots: state.freeSpots.concat(document.id)
                 }));
-            }); 
+            });
         });
 
         getChargingDocId();
@@ -89,7 +89,7 @@ const Home = ({ navigation }) => {
                 ...state,
                 spotAvailable: true,
             }));
-        } else {                    
+        } else {
             setState(state => ({                                                                                            //Change the availability to false if the conditions change
                 ...state,
                 spotAvailable: false
@@ -108,7 +108,7 @@ const Home = ({ navigation }) => {
                 }));
             }
         } catch (error) {
-            console.log(`Error while getting chargingDoc: ${ error.message }`);
+            console.log(`Error while getting chargingDoc: ${error.message}`);
         }
     }
 
@@ -183,7 +183,7 @@ const Home = ({ navigation }) => {
             const user = firebase.auth().currentUser;                                       //Get the curren user
             const timestamp = Date.now();                                                   //Create a timestamp
             const token = (await Notifications.getExpoPushTokenAsync()).data;               //Get the token for the notifications
-            
+
             const response = await firebase.firestore().collection('queue').add({           //Add a new document to the queue collection
                 time: timestamp,
                 user_id: user.uid,
@@ -205,7 +205,7 @@ const Home = ({ navigation }) => {
                 type: 'success',
             });
         } catch (error) {
-            console.log(`Error adding user to the queue: ${ error.message }`);
+            console.log(`Error adding user to the queue: ${error.message}`);
         }
     }
 
@@ -227,7 +227,7 @@ const Home = ({ navigation }) => {
                 type: 'success'
             });
         } catch (error) {
-            console.log(`Error while removing from queue: ${ error.message }`);
+            console.log(`Error while removing from queue: ${error.message}`);
         }
     }
 
@@ -258,7 +258,7 @@ const Home = ({ navigation }) => {
 
             navigation.navigate('ChargingView');                                            //Navigate to charging view
         } catch (error) {
-            console.log(`Error while going to charging view: ${ error.message }`);
+            console.log(`Error while going to charging view: ${error.message}`);
         }
     }
 
@@ -291,46 +291,46 @@ const Home = ({ navigation }) => {
                                 <Text>(DEV) Refresh SOC</Text>
                             </Button>
                             {state.inQueue && state.spotAvailable ?
-                            <>
-                                <Button full style={ GlobalStyles.button } onPress={ startCharging } >
-                                    <Text>Start Charging</Text>
+                                <>
+                                    <Button full style={GlobalStyles.button} onPress={startCharging} >
+                                        <Text>Start Charging</Text>
+                                    </Button>
+                                    <Button full style={GlobalStyles.button} onPress={removeFromQueue}>
+                                        <Text>Leave Queue</Text>
+                                    </Button>
+                                </>
+                                :
+                                null}
+                            {!state.inQueue && !state.spotAvailable && !state.charging ?
+                                <Button full style={GlobalStyles.button} onPress={addToQueue} disabled={state.adding}>
+                                    <Text>Queue</Text>
                                 </Button>
-                                <Button full style={ GlobalStyles.button } onPress={ removeFromQueue }>
+                                :
+                                null}
+                            {state.inQueue && !state.spotAvailable ?
+                                <Button full style={GlobalStyles.button} onPress={removeFromQueue}>
                                     <Text>Leave Queue</Text>
                                 </Button>
-                            </>
-                            :
-                            null}
-                            {!state.inQueue && !state.spotAvailable && !state.charging ? 
-                            <Button full style={ GlobalStyles.button } onPress={ addToQueue } disabled={ state.adding }>
-                                <Text>Queue</Text>
-                            </Button>
-                            :
-                            null}
-                            {state.inQueue && !state.spotAvailable ?
-                            <Button full style={ GlobalStyles.button } onPress={ removeFromQueue }>
-                                <Text>Leave Queue</Text>
-                            </Button>
-                            :
-                            null}
+                                :
+                                null}
                             {!state.inQueue && state.spotAvailable ?
-                            <Button full style={ GlobalStyles.button } onPress={ startCharging }>
-                                <Text>Start Charging</Text>
-                            </Button>
-                            :
-                            null}
+                                <Button full style={GlobalStyles.button} onPress={startCharging}>
+                                    <Text>Start Charging</Text>
+                                </Button>
+                                :
+                                null}
                             {state.charging ?
-                            <Button full style={ GlobalStyles.button } onPress={ () => navigation.navigate('ChargingView') }>
-                                <Text>To Charging View</Text>
-                            </Button>
-                            :
-                            null}
+                                <Button full style={GlobalStyles.button} onPress={() => navigation.navigate('ChargingView')}>
+                                    <Text>To Charging View</Text>
+                                </Button>
+                                :
+                                null}
                             <Grid>
                                 <Col>
                                     <Button
                                         full
                                         danger transparent
-                                        onPress={ logout }
+                                        onPress={logout}
                                         style={GlobalStyles.button}>
                                         <Text>Logout</Text>
                                     </Button>

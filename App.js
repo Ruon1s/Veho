@@ -42,7 +42,7 @@ const App = () => {
   useEffect(() => {
 
     LogBox.ignoreLogs(['Setting a timer for a long period of time']); // <-- Hide unnecessary warnings with android and firestore
-    
+
     loadFonts();
 
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
