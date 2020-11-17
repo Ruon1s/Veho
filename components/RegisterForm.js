@@ -2,9 +2,8 @@ import React from 'react';
 import GlobalStyles from '../styles/GlobalStyles';
 import { Button, Form, Input, Container, Text, Item, Label, Content } from 'native-base';
 import useRegisterForm from '../hooks/RegisterHook.js';
-import firebase from 'firebase'
-
-
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
 
 
@@ -16,25 +15,61 @@ const RegisterForm = ({ navigation, toLogin}) => {
         handleLastNameChange,
         handleConfirmPasswordChange,
         handlePasswordChange,
-        inputs
+        inputs,
+        errors
     } = useRegisterForm();
 
     const register = async () => {
-            console.log("register pushed")
             let check = true;
-            await firebase.auth().createUserWithEmailAndPassword(inputs.email, inputs.password).catch(function(error) {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode);
-                console.log(errorMessage);
-                check = false
-            });
-            if(check === true) {
-                navigation.replace('AddCarDetails')
+            console.log('inputs', inputs);
+            if(inputs.firstName !== '' && inputs.lastName !== '' && inputs.email !== '' && inputs.password !== '' && inputs.confirmPassword !== '' && inputs.password === inputs.confirmPassword) {
+                await firebase.auth().createUserWithEmailAndPassword(inputs.email, inputs.password).catch(function (error) {
+                    // Handle Errors here.
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorCode);
+                    console.log(errorMessage);
+                    check = false
+                });
+                await firebase.auth().signInWithEmailAndPassword(inputs.email, inputs.password).catch(function(error) {
+                    // Handle Errors here.
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.log(errorCode);
+                    console.log(errorMessage);
+                    check = false;
+                });
+                const db = firebase.firestore();
+                (await db.collection('users').add({
+                    email: inputs.email,
+                    firstname: inputs.firstName,
+                    lastname: inputs.lastName
+                }));
+
+                if (check === true) {
+                    navigation.replace('AddCarDetails')
+                } else {
+                    console.log("account not created")
+                }
             } else {
-                console.log("account not created")
+                if(inputs.firstName === ''){
+                     handleFirstNameChange(inputs.firstName)
+                }
+                if(inputs.lastName === ''){
+                    await handleLastNameChange(inputs.lastName)
+                }
+                if(inputs.email === ''){
+                    await handleEmailChange(inputs.email)
+                }
+                if(inputs.password === ''){
+                    await handlePasswordChange(inputs.password)
+                }
+                if(inputs.confirmPassword === ''){
+                   await handleConfirmPasswordChange(inputs.confirmPassword)
+                }
+
             }
+        console.log("register pushed", errors)
     };
 
     return (
@@ -64,6 +99,7 @@ const RegisterForm = ({ navigation, toLogin}) => {
             <Item floatingLabel>
                 <Label>Password</Label>
                 <Input
+
                 secureTextEntry
                 value={inputs.password}
                 onChangeText={handlePasswordChange}
@@ -77,8 +113,10 @@ const RegisterForm = ({ navigation, toLogin}) => {
                 onChangeText={handleConfirmPasswordChange}
                 />
             </Item>
+            {errors.firstName || errors.lastName || errors.email || errors.password || !inputs.firstName || !inputs.lastName || !inputs.email || !inputs.password || !inputs.confirmPassword ?
             <Button
                 full
+                disabled
                 style={GlobalStyles.button}
                 onPress={register}
             >
@@ -86,6 +124,15 @@ const RegisterForm = ({ navigation, toLogin}) => {
                     Register
                 </Text>
             </Button>
+                :
+                <Button
+                    full
+                    style={GlobalStyles.button}
+                    onPress={register}
+                >
+                    <Text>
+                        Register
+                    </Text></Button>}
             <Button full transparent style={GlobalStyles.button} onPress={toLogin}>
                 <Text>Back to login</Text>
             </Button>

@@ -6,12 +6,12 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
     return (
         <Form>
             <Item floatingLabel>
-                <Label>Your car ID</Label>
+                <Label>Your car VIN</Label>
                 <Input />
             </Item>
 
             <Item floatingLabel>
-                <Label>Retype your car ID</Label>
+                <Label>Retype your car VIN</Label>
                 <Input />
             </Item>
 
