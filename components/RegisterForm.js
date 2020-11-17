@@ -5,9 +5,6 @@ import useRegisterForm from '../hooks/RegisterHook.js';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 
-
-
-
 const RegisterForm = ({ navigation, toLogin }) => {
     const {
         handleEmailChange,
@@ -31,6 +28,7 @@ const RegisterForm = ({ navigation, toLogin }) => {
                 console.log(errorMessage);
                 check = false
             });
+
             await firebase.auth().signInWithEmailAndPassword(inputs.email, inputs.password).catch(function (error) {
                 // Handle Errors here.
                 var errorCode = error.code;
@@ -39,12 +37,14 @@ const RegisterForm = ({ navigation, toLogin }) => {
                 console.log(errorMessage);
                 check = false;
             });
+
             const db = firebase.firestore();
-            (await db.collection('users').add({
+
+            await db.collection('users').add({
                 email: inputs.email,
                 firstname: inputs.firstName,
                 lastname: inputs.lastName
-            }));
+            });
 
             if (check === true) {
                 navigation.replace('AddCarDetails')
@@ -67,7 +67,6 @@ const RegisterForm = ({ navigation, toLogin }) => {
             if (inputs.confirmPassword === '') {
                 await handleConfirmPasswordChange(inputs.confirmPassword)
             }
-
         }
         console.log("register pushed", errors)
     };
@@ -75,7 +74,7 @@ const RegisterForm = ({ navigation, toLogin }) => {
     return (
         <Form>
             <Item floatingLabel>
-                <Label>First Name {errors.firstName && inputs.firstName.length >= 0 && <Text style={{ color: "#FB3664" }}>*{errors.firstName.firstName[0]}</Text>}</Label>
+                <Label>First Name {errors.firstName && inputs.firstName.length >= 0 && <Text style={{ color: "#FB3664" }}>*Must be at least 3 characters</Text>}</Label>
                 <Input
                     value={inputs.firstName}
                     onChangeText={handleFirstNameChange}
@@ -83,14 +82,14 @@ const RegisterForm = ({ navigation, toLogin }) => {
 
             </Item>
             <Item floatingLabel>
-                <Label>Last Name {errors.lastName && inputs.lastName.length >= 0 && <Text style={{ color: "#FB3664" }}>*{errors.lastName.lastName[0]}</Text>}</Label>
+                <Label>Last Name {errors.lastName && inputs.lastName.length >= 0 && <Text style={{ color: "#FB3664" }}>*Must be at least 3 characters</Text>}</Label>
                 <Input
                     value={inputs.lastName}
                     onChangeText={handleLastNameChange}
                 />
             </Item>
             <Item floatingLabel>
-                <Label>Email {errors.email && inputs.email.length >= 0 && <Text style={{ color: "#FB3664" }}>*{errors.email.email[0]}</Text>}</Label>
+                <Label>Email {errors.email && inputs.email.length >= 0 && <Text style={{ color: "#FB3664" }}>*Not a valid email</Text>}</Label>
                 <Input
                     keyboardType='email-address'
                     value={inputs.email}
@@ -98,7 +97,7 @@ const RegisterForm = ({ navigation, toLogin }) => {
                 />
             </Item>
             <Item floatingLabel>
-                <Label>Password  {errors.password && inputs.password.length >= 0 && <Text style={{ color: "#FB3664" }}>*{errors.password.password[0]}</Text>}</Label>
+                <Label>Password  {errors.password && inputs.password.length >= 0 && <Text style={{ color: "#FB3664" }}>*Not strong enough</Text>}</Label>
                 <Input
                     secureTextEntry
                     value={inputs.password}
