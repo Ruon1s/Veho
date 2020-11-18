@@ -91,6 +91,7 @@ const RegisterForm = ({ navigation, toLogin }) => {
             <Item floatingLabel>
                 <Label>Email {errors.email && inputs.email.length >= 0 && <Text style={{ color: "#FB3664" }}>*Not a valid email</Text>}</Label>
                 <Input
+                    autoCapitalize='none'
                     keyboardType='email-address'
                     value={inputs.email}
                     onChangeText={handleEmailChange}
@@ -99,6 +100,7 @@ const RegisterForm = ({ navigation, toLogin }) => {
             <Item floatingLabel>
                 <Label>Password  {errors.password && inputs.password.length >= 0 && <Text style={{ color: "#FB3664" }}>*Not strong enough</Text>}</Label>
                 <Input
+                    autoCapitalize='none'
                     secureTextEntry
                     value={inputs.password}
                     onChangeText={handlePasswordChange}
@@ -107,6 +109,7 @@ const RegisterForm = ({ navigation, toLogin }) => {
             <Item floatingLabel>
                 <Label>Retype password</Label>
                 <Input
+                    autoCapitalize='none'
                     secureTextEntry
                     value={inputs.confirmPassword}
                     onChangeText={handleConfirmPasswordChange}
