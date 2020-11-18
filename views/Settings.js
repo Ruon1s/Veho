@@ -12,8 +12,6 @@ const Settings = () => {
                 <CustomHeader title='Settings' />
                 <Content padder>
                     <Text>As everything else in the app, settings page is still heavily under development</Text>
-                    <Text />
-                    <NotificationTest />
                 </Content>
             </Container>
         </StyleProvider>

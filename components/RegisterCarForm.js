@@ -14,21 +14,19 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
     } = useRegisterCarForm();
 
     const registerVehicle = async () => {
-        console.log('vin',inputs.vin)
+        console.log('vin', inputs.vin)
         //if(inputs.vin === inputs.confirmVin) {
-            const user = firebase.auth().currentUser;
-            console.log(user)
-            const db = firebase.firestore();
-            db.collection('cars').add({
-                uid: user.uid,
-                vin: inputs.vin
-            })
+        const user = firebase.auth().currentUser;
+        console.log(user)
+        const db = firebase.firestore();
 
+        db.collection('cars').add({
+            uid: user.uid,
+            vin: inputs.vin
+        })
 
         navigation.replace('App')
     };
-
-
 
     return (
         <Form>
@@ -56,9 +54,7 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
                     style={GlobalStyles.button}
                     onPress={registerVehicle}>
                     <Text>Save</Text>
-                </Button>
-                :
-                <Button
+                </Button> : <Button
                     full
                     style={GlobalStyles.button}
                     onPress={registerVehicle}>
