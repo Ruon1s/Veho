@@ -30,7 +30,7 @@ const Home = ({ navigation }) => {
 
     useEffect(() => {
         const user = firebase.auth().currentUser        // To display user id @Home, change to name later
-        console.log('Current User: ' + user)
+        // console.log('Current User: ' + user)
         setCurrentUser(user.uid)
     }, []);
 
