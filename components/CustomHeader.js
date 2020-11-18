@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Header, Body, Title, Left, Right, Button } from 'native-base';
+import { Header, Body, Title, Left, Right, Button, Subtitle } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 // For cleaner code, need in many views anyway
@@ -12,6 +12,7 @@ const CustomHeader = (props) => {
         </Left>
         <Body>
             <Title>{props.title}</Title>
+            {props.subtitle != null && <Subtitle>{props.subtitle}</Subtitle>}
         </Body>
         <Right />
     </Header>)

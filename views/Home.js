@@ -26,6 +26,13 @@ const Home = ({ navigation }) => {
         spotAvailable: false,              //If there is spot available
     });
     const [batteryStatus, setBatteryStatus] = useState(54)
+    const [currentUser, setCurrentUser] = useState('')
+
+    useEffect(() => {
+        const user = firebase.auth().currentUser
+        console.log('Current User: ' + user)
+        setCurrentUser(user.uid)
+    }, []);
 
     useEffect(() => {
         const unsubscribeQueueListener = firebase.firestore().collection('queue').orderBy('time', 'asc').onSnapshot(snapShot => {   //Check how many people are in the queue and update the state according to that. Also check if the user is found on the queue
@@ -132,7 +139,7 @@ const Home = ({ navigation }) => {
 
             const carsRef = db.collection('cars');
             const snapshot = await carsRef.where('uid', '==', user.uid).get();
-            if(snapshot.empty){
+            if (snapshot.empty) {
                 console.log('No documents.');
                 return;
             }
@@ -156,7 +163,6 @@ const Home = ({ navigation }) => {
 
     const fetchToken = async () => {
         try {
-
             const data = {
                 'grant_type': GRANT,
                 'username': UNAME,
@@ -188,7 +194,6 @@ const Home = ({ navigation }) => {
 
     const addToQueue = async () => {                                                        //Function that handles adding user to the queue
         try {
-
             setState((state) => ({                                                          //Change the state to adding to disable the button
                 ...state,
                 adding: true
@@ -247,7 +252,6 @@ const Home = ({ navigation }) => {
 
     const startCharging = async () => {                                                     //Function that will take user to the charging view when there are free spots avalaible.
         try {
-
             setState(state => ({                                                            //Just to disable the button
                 ...state,
                 adding: true,
@@ -285,7 +289,7 @@ const Home = ({ navigation }) => {
         <Root>
             <StyleProvider style={getTheme(platform)}>
                 <Container>
-                    <CustomHeader title='Home' />
+                    <CustomHeader title='Home' subtitle={currentUser} />
 
                     <View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
                         <QueueInfo free={state.freeSpots.length} queue={state.queue} queuePosition={state.queuePosition} />
