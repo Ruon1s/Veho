@@ -29,7 +29,7 @@ const Home = ({ navigation }) => {
     const [currentUser, setCurrentUser] = useState('')
 
     useEffect(() => {
-        const user = firebase.auth().currentUser
+        const user = firebase.auth().currentUser        // To display user id @Home, change to name later
         console.log('Current User: ' + user)
         setCurrentUser(user.uid)
     }, []);
