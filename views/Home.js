@@ -140,7 +140,6 @@ const Home = ({ navigation }) => {
             console.log('current users cars vin number: ', carVin)
 
 
-
             const response = await fetch('https://api.connect-business.net/fleet/v1/fleets/DF89D145A29C43BE80FC2464B54405F9/vehicles.dynamic/C0NNECT0000000100', options);
             //const toJSON = await response.json();
             // HTML response (404/500), response.text
