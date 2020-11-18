@@ -30,7 +30,7 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         const unsubscribeQueueListener = firebase.firestore().collection('queue').orderBy('time', 'asc').onSnapshot(snapShot => {   //Check how many people are in the queue and update the state according to that. Also check if the user is found on the queue
 
-            setState((state) => ({                                                                                                  //Get the queue size (How many documents there are in the collection)                                                                       
+            setState((state) => ({                                                                                                  //Get the queue size (How many documents there are in the collection)
                 ...state,
                 queue: snapShot.size
             }));
@@ -77,7 +77,7 @@ const Home = ({ navigation }) => {
     }, []);
 
     useEffect(() => {                                                                                                       //Pretty awful looking if statement for checking if there are free spots available
-        if (!state.charging && state.freeSpots.length > 0 && (state.queue === 0 || state.queuePosition === 1)) {            //First check if the user is not charging and there are more spots available than 
+        if (!state.charging && state.freeSpots.length > 0 && (state.queue === 0 || state.queuePosition === 1)) {            //First check if the user is not charging and there are more spots available than
             Toast.show({                                                                                                    //Show a toast to the user
                 text: 'Free spot available right away!',
                 position: 'bottom',
@@ -126,6 +126,20 @@ const Home = ({ navigation }) => {
                 withCredentials: true,
                 headers,
             }
+            const user = firebase.auth().currentUser;
+            console.log(user)
+            const db = firebase.firestore();
+
+            const carsRef = db.collection('cars');
+            const snapshot = await carsRef.where('uid', '==', user.uid).get();
+            if(snapshot.empty){
+                console.log('No documents.');
+                return;
+            }
+            const carVin = snapshot.docs[0].data().vin
+            console.log('current users cars vin number: ', carVin)
+
+
 
             const response = await fetch('https://api.connect-business.net/fleet/v1/fleets/DF89D145A29C43BE80FC2464B54405F9/vehicles.dynamic/C0NNECT0000000100', options);
             //const toJSON = await response.json();
