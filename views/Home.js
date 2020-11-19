@@ -112,6 +112,22 @@ const Home = ({ navigation }) => {
         }
     }
 
+    const getCarVin = async () => {
+        const user = firebase.auth().currentUser;
+        console.log(user)
+        const db = firebase.firestore();
+
+        const carsRef = db.collection('cars');
+        const snapshot = await carsRef.where('uid', '==', user.uid).get();
+        if(snapshot.empty){
+            console.log('No documents.');
+            return;
+        }
+        const carVin = snapshot.docs[0].data().vin
+        console.log('current users cars vin number: ', carVin)
+        return carVin
+    }
+
     const fetchSoc = async () => {
         const token = await SecureStore.getItemAsync('token');
         try {
@@ -126,18 +142,7 @@ const Home = ({ navigation }) => {
                 withCredentials: true,
                 headers,
             }
-            const user = firebase.auth().currentUser;
-            console.log(user)
-            const db = firebase.firestore();
-
-            const carsRef = db.collection('cars');
-            const snapshot = await carsRef.where('uid', '==', user.uid).get();
-            if(snapshot.empty){
-                console.log('No documents.');
-                return;
-            }
-            const carVin = snapshot.docs[0].data().vin
-            console.log('current users cars vin number: ', carVin)
+            const carVin = getCarVin()
 
 
             const response = await fetch('https://api.connect-business.net/fleet/v1/fleets/DF89D145A29C43BE80FC2464B54405F9/vehicles.dynamic/C0NNECT0000000100', options);
