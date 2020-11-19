@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Container, Content, Text, Button, View, StyleProvider, Body, Title } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid';
+import React, { useEffect, useState } from 'react';
+import { Container, Text, Button, View, StyleProvider, Toast, Root, Spinner } from 'native-base';
+import { Col, Grid } from 'react-native-easy-grid';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import GlobalStyles from '../styles/GlobalStyles';
@@ -10,16 +10,38 @@ import CustomHeader from '../components/CustomHeader';
 import { AUTH, GRANT, UNAME, PASS } from "@env";
 import * as SecureStore from 'expo-secure-store';
 import { schedulePushNotification } from '../services/NotificationService';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import useQueueHooks from '../hooks/QueueHooks';
 
 const Home = ({ navigation }) => {
-    // State: for queue information
-    const [state, setState] = useState({
-        queue: 0,
-        free: 0,
-        queuePosition: 0
-    });
-
+    const [available, setAvailable] = useState();           //To check if there is a spot available right away
     const [batteryStatus, setBatteryStatus] = useState(54)
+
+    const { 
+        queue, 
+        parkingSpots, 
+        queueListener, 
+        parkingSpotListener, 
+        addUserToQueue,
+        removeUserFromQueue,
+        startCharging,
+        checkStatus,
+    } = useQueueHooks();
+
+    useEffect(() => {
+        const unsubscribeQueueListener = queueListener();
+        const unsubscribeParkingSpotListener = parkingSpotListener();
+
+        return () => {
+            unsubscribeQueueListener();
+            unsubscribeParkingSpotListener();
+        }
+    }, []);
+
+    useEffect(() => {
+        setAvailable(checkStatus());
+    }, [parkingSpots, queue]);
 
     const fetchSoc = async () => {
         const token = await SecureStore.getItemAsync('token');
@@ -74,77 +96,92 @@ const Home = ({ navigation }) => {
 
             const response = await fetch('https://api.connect-business.net/fleet/v1/oauth/token', options);
             const toJSON = await response.json();
-            console.log('access token: ' + toJSON.access_token);
+
             await SecureStore.setItemAsync('token', toJSON.access_token);
         } catch (error) {
             console.log(error);
         }
     }
 
-
-    // QueueInfo re-renders according to this state change
-    const handleClick = () => {
-        if (state.queuePosition == 1) {
-            setState({ queuePosition: 0 })
-        } else {
-            setState({ queuePosition: 1 })
-        }
+    const logout = async () => {                                                            //Functions that logs the user out (Need to be changed to Settings page later?)
+        await firebase.auth().signOut();
+        navigation.replace('Auth');
     }
 
-    /* Functions needed, GET:
-          - battery %
-          - # of free spots in parking space
-          - the length of queue
-    */
     return (
-        <StyleProvider style={getTheme(platform)}>
-            <Container>
-                <CustomHeader title='Home' />
+        <Root>
+            <StyleProvider style={getTheme(platform)}>
+                <Container>
+                    <CustomHeader title='Home' />
 
-                <View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
-                    <QueueInfo free={state.free} queue={state.queue} queuePosition={state.queuePosition} />
-                    <BatteryInfo batteryStatus={batteryStatus} />
+                    <View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
+                        <QueueInfo free={ parkingSpots.available.length } queue={ queue.size } queuePosition={ queue.position } />
+                        <BatteryInfo batteryStatus={batteryStatus} />
 
-                    <Button full transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
-                        <Text>Test notification</Text>
-                    </Button>
+                        <Button full transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
+                            <Text>Test notification</Text>
+                        </Button>
 
-                    <View>
-                        <Button full onPress={fetchToken}
-                            style={GlobalStyles.button}>
-                            <Text>(DEV) Get Token</Text>
-                        </Button>
-                        <Button full onPress={fetchSoc}
-                            style={GlobalStyles.button}>
-                            <Text>(DEV) Refresh SOC</Text>
-                        </Button>
-                        <Button full onPress={handleClick}
-                            style={GlobalStyles.button}>
-                            <Text>Queue</Text>
-                        </Button>
-                        <Grid>
-                            <Col>
-                                <Button
-                                    full
-                                    onPress={() => navigation.navigate('ChargingView')}
-                                    style={GlobalStyles.button}>
-                                    <Text>ChargingView</Text>
+                        <View>
+                            <Button full onPress={fetchToken}
+                                style={GlobalStyles.button}>
+                                <Text>(DEV) Get Token</Text>
+                            </Button>
+                            <Button full onPress={fetchSoc}
+                                style={GlobalStyles.button}>
+                                <Text>(DEV) Refresh SOC</Text>
+                            </Button>
+                            {queue.inQueue && available ?
+                            <>
+                                <Button full style={ GlobalStyles.button } onPress={ () => startCharging(navigation) } >
+                                    <Text>Start Charging</Text>
                                 </Button>
-                            </Col>
-                            <Col>
-                                <Button
-                                    full
-                                    danger transparent
-                                    onPress={() => navigation.replace('Auth')}
-                                    style={GlobalStyles.button}>
-                                    <Text>Logout</Text>
+                                <Button full style={ GlobalStyles.button } onPress={ removeUserFromQueue }  disabled={ queue.processing }>
+                                    { queue.processing ? <Spinner /> : <Text>Leave Queue</Text> }
                                 </Button>
-                            </Col>
-                        </Grid>
+                            </>
+                            :
+                            null}
+                            {!queue.inQueue && !available && !parkingSpots.inSpot ? 
+                            <Button full style={ GlobalStyles.button } onPress={ addUserToQueue } disabled={ queue.processing }>
+                                { queue.processing ? <Spinner /> : <Text>Queue</Text> } 
+                            </Button>
+                            :
+                            null}
+                            {queue.inQueue && !available ?
+                            <Button full style={ GlobalStyles.button } onPress={ removeUserFromQueue } disabled={ queue.processing }>
+                                { queue.processing ? <Spinner /> : <Text>Leave Queue</Text> }
+                            </Button>
+                            :
+                            null}
+                            {!queue.inQueue && available ?
+                            <Button full style={ GlobalStyles.button } onPress={ () => startCharging(navigation) }>
+                                <Text>Start Charging</Text>
+                            </Button>
+                            :
+                            null}
+                            {parkingSpots.inSpot ?
+                            <Button full style={ GlobalStyles.button } onPress={ () => navigation.navigate('ChargingView') }>
+                                <Text>To Charging View</Text>
+                            </Button>
+                            :
+                            null}
+                            <Grid>
+                                <Col>
+                                    <Button
+                                        full
+                                        danger transparent
+                                        onPress={ logout }
+                                        style={GlobalStyles.button}>
+                                        <Text>Logout</Text>
+                                    </Button>
+                                </Col>
+                            </Grid>
+                        </View>
                     </View>
-                </View>
-            </Container >
-        </StyleProvider >
+                </Container >
+            </StyleProvider >
+        </Root>
     );
 }
 
