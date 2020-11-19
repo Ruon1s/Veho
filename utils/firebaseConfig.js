@@ -10,7 +10,7 @@ import {
 } from "@env";
 
 export const firebaseConfig = {
-    apiKey: "AIzaSyDJ07L1yEDJokNcPzNoGxCXBSltgzvUtB4",
+    apiKey: FB_API_KEY,
     authDomain: FB_AUTH_DOMAIN,
     databaseURL: FB_DB_URL,
     projectId: FB_PROJECT_ID,
