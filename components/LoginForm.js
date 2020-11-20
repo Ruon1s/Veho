@@ -44,9 +44,10 @@ const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
             <Item floatingLabel>
                 <Label>Password</Label>
                 <Input
-                secureTextEntry={true}
-                value={inputs.password}
-                onChangeText={handlePasswordChange}
+                    autoCapitalize='none'
+                    secureTextEntry={true}
+                    value={inputs.password}
+                    onChangeText={handlePasswordChange}
                 />
             </Item>
 
