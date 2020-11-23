@@ -10,7 +10,7 @@ import GlobalStyles from "../styles/GlobalStyles";
 
 
 
-const Settings = () => {
+const Settings = ({navigation}) => {
     const {
         getCarVin,
         carVin,
@@ -24,11 +24,24 @@ const Settings = () => {
         getCarVin().then(r => setCarVin(r))
     }, []);
 
+    const toAddCar = () => {
+        navigation.navigate('AddCarDetails')
+    }
+
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>
                 <CustomHeader title='Settings' />
                 <Content padder>
+                    <Button
+                        full
+                        style={GlobalStyles.button}
+                        onPress={toAddCar}
+                        >
+                        <Text>Add new car</Text>
+                    </Button>
+
+
                     <Form>
                         <Item floatingLabel>
                             <Label>Edit your car vin</Label>

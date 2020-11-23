@@ -39,11 +39,12 @@ const RegisterForm = ({ navigation, toLogin }) => {
             });
 
             const db = firebase.firestore();
-
-            await db.collection('users').add({
+            const user = firebase.auth().currentUser;
+            await db.collection('users').doc(user.uid).set({
                 email: inputs.email,
                 firstname: inputs.firstName,
-                lastname: inputs.lastName
+                lastname: inputs.lastName,
+                role: 'standard'
             });
 
             if (check === true) {

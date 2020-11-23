@@ -2,42 +2,42 @@ import {useState} from 'react';
 import validate from 'validate.js'
 
 const RegisterCarConstraints = {
-    vin: {
+    licencePlate: {
         length: {
-            minimum: 17,
-            maximum: 17,
-            message: 'must be 17 digits',
-        },
+            maximum: 7
+        }
     },
-    confirmVin: {
-        equality: 'vin'
+    carName: {
+        length:{
+            minimum: 3
+        }
     },
 };
 
 const useRegisterCarForm = () => {
-    const [inputs, setInputs] = useState({vin: '', confirmVin: ''});
+    const [inputs, setInputs] = useState({licencePlate: '', carName: ''});
     const [errors, setErrors] = useState({});
 
     const handleVinChange = (text) => {
-        const error = validate({vin: text}, {vin: RegisterCarConstraints.vin})
+        const error = validate({licencePlate: text}, {licencePlate: RegisterCarConstraints.licencePlate})
         setInputs(inputs => ({
             ...inputs,
-            vin: text,
+            licencePlate: text,
         }))
         setErrors((errors) => ({
             ...errors,
-            vin: error,
+            licencePlate: error,
         }))
     }
     const handleConfirmVinChange = (text) => {
-        const error = validate({confirmVin: text, vin: text}, {vin: RegisterCarConstraints.vin})
+        const error = validate({carName: text, vin: text}, {carName: RegisterCarConstraints.carName})
         setInputs(inputs => ({
             ...inputs,
-            confirmVin: text,
+            carName: text,
         }))
         setErrors((errors) => ({
             ...errors,
-            confirmVin: error,
+            carName: error,
         }))
     }
     return {
