@@ -1,3 +1,8 @@
+import React from 'react'
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+
+
 const useFirebase = () => {
 
 const getUser = async () => {
