@@ -22,12 +22,44 @@ const Home = ({ navigation }) => {
     const [batteryStatus, setBatteryStatus] = useState(54)
     const [currentUser, setCurrentUser] = useState('')
     const [userType, setUserType] = useState('Normal')      // Values: Normal & Manager
+    const [carArray, setCarArray] = useState([])
 
     useEffect(() => {
         const user = firebase.auth().currentUser        // To display user id @Home, change to name later
         // console.log('Current User: ' + user)
-        setCurrentUser(user.uid)
+        getUser(user.uid)
+        getUserCars()
     }, []);
+
+    const getUser = async (uid) => {
+        const db = firebase.firestore()
+
+        const userRef = db.collection('users').doc(uid)
+        const doc = await userRef.get()
+
+        if (!doc.exists) {
+            console.log('no user found')
+        } else {
+            console.log(doc.data())
+            setCurrentUser(doc.data().firstname)
+        }
+    }
+
+    const getUserCars = async () => {
+        const user = firebase.auth().currentUser;
+        const db = firebase.firestore();
+
+        const carsRef = db.collection('users').doc(user.uid).collection('cars')
+        const snapshot = await carsRef.get();
+
+        let array = []
+        snapshot.forEach(doc => {
+            console.log(doc.id, '=>', doc.data())
+            array.push(doc.data())
+            console.log(carArray)
+        })
+        setCarArray(array)
+    }
 
     const onValueChange = () => {
         switch (userType) {
@@ -99,7 +131,7 @@ const Home = ({ navigation }) => {
                         userType={userType}
                         onValueChange={onValueChange} />
                     {userType === 'Normal' && <HomeQueueLayout logout={logout} currentUser={currentUser} />}
-                    {userType === 'Manager' && <HomeListLayout />}
+                    {userType === 'Manager' && <HomeListLayout carArray={carArray} />}
                 </Container >
             </StyleProvider >
         </Root>
