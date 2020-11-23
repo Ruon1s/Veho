@@ -10,10 +10,12 @@ const getUser = async () => {
         console.log('no user found')
     } else {
         console.log (doc.data());
+        return doc.data()
     }
 };
 
 const getUserCars = async () => {
+    const array = [];
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
 
@@ -23,8 +25,9 @@ const getUserCars = async () => {
     const snapshot = await carsRef.get();
     snapshot.forEach(doc => {
         console.log(doc.id, '=>', doc.data)
+        array.push(doc.data)
     })
-
+    return array
 };
 
 return {
