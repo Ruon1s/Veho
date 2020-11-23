@@ -12,13 +12,23 @@ const getCarVin = async () => {
     console.log(user);
     const db = firebase.firestore();
 
+    const userRef = db.collection('users').doc(user.uid);
+    const doc = await userRef.get();
+    if(!doc.exists){
+        console.log('no user found')
+    } else {
+        console.log (doc.data());
+    }
+
+
+
     const carsRef = db.collection('cars');
     const snapshot = await carsRef.where('uid', '==', user.uid).get();
     if(snapshot.empty){
         console.log('No documents.');
         return;
     }
-    const carVin = snapshot.docs[0].data().vin
+    const carVin = snapshot.docs[0].data().vin;
     console.log('current users cars vin number: ', carVin);
     return carVin
 };
