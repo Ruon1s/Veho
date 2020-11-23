@@ -7,18 +7,19 @@ import useRegisterCarForm from "../hooks/RegisterCarHook";
 
 const RegisterCarForm = ({ navigation, toLogin }) => {
     const {
-        handleVinChange,
-        handleConfirmVinChange,
+        handleCarNameChange,
+        handleLicencePlateChange,
         inputs,
         errors
     } = useRegisterCarForm();
 
     const registerVehicle = async () => {
-        console.log('vin', inputs.licencePlate)
+        console.log('Rekkari: ', inputs.licencePlate)
         //if(inputs.vin === inputs.confirmVin) {
         const user = firebase.auth().currentUser;
         console.log(user)
         const db = firebase.firestore();
+
         db.collection('users').doc(user.uid).collection('cars').add({
             licencePlate: inputs.licencePlate,
             name: inputs.carName,
@@ -35,7 +36,7 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
                 <Input
                     autoCapitalize='none'
                     value={inputs.licencePlate}
-                    onChangeText={handleVinChange}
+                    onChangeText={handleLicencePlateChange}
                 />
             </Item>
 
@@ -43,7 +44,7 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
                 <Label>Car name</Label>
                 <Input
                     value={inputs.carName}
-                    onChangeText={handleConfirmVinChange}
+                    onChangeText={handleCarNameChange}
                 />
             </Item>
             {errors.licencePlate || errors.carName || !inputs.licencePlate || !inputs.carName ?

@@ -18,7 +18,7 @@ const useRegisterCarForm = () => {
     const [inputs, setInputs] = useState({licencePlate: '', carName: ''});
     const [errors, setErrors] = useState({});
 
-    const handleVinChange = (text) => {
+    const handleLicencePlateChange = (text) => {
         const error = validate({licencePlate: text}, {licencePlate: RegisterCarConstraints.licencePlate})
         setInputs(inputs => ({
             ...inputs,
@@ -29,7 +29,7 @@ const useRegisterCarForm = () => {
             licencePlate: error,
         }))
     }
-    const handleConfirmVinChange = (text) => {
+    const handleCarNameChange = (text) => {
         const error = validate({carName: text, vin: text}, {carName: RegisterCarConstraints.carName})
         setInputs(inputs => ({
             ...inputs,
@@ -41,8 +41,8 @@ const useRegisterCarForm = () => {
         }))
     }
     return {
-        handleVinChange,
-        handleConfirmVinChange,
+        handleLicencePlateChange,
+        handleCarNameChange,
         inputs,
         setInputs,
         errors,
