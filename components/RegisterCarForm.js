@@ -7,22 +7,23 @@ import useRegisterCarForm from "../hooks/RegisterCarHook";
 
 const RegisterCarForm = ({ navigation, toLogin }) => {
     const {
-        handleVinChange,
-        handleConfirmVinChange,
+        handleCarNameChange,
+        handleLicencePlateChange,
         inputs,
         errors
     } = useRegisterCarForm();
 
     const registerVehicle = async () => {
-        console.log('vin', inputs.vin)
+        console.log('Rekkari: ', inputs.licencePlate)
         //if(inputs.vin === inputs.confirmVin) {
         const user = firebase.auth().currentUser;
         console.log(user)
         const db = firebase.firestore();
 
-        db.collection('cars').add({
-            uid: user.uid,
-            vin: inputs.vin
+        db.collection('users').doc(user.uid).collection('cars').add({
+            licencePlate: inputs.licencePlate,
+            name: inputs.carName,
+            vin: null
         })
 
         navigation.replace('App')
@@ -31,23 +32,22 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
     return (
         <Form>
             <Item floatingLabel>
-                <Label>Your car VIN</Label>
+                <Label>Licence plate number</Label>
                 <Input
                     autoCapitalize='none'
-                    value={inputs.vin}
-                    onChangeText={handleVinChange}
+                    value={inputs.licencePlate}
+                    onChangeText={handleLicencePlateChange}
                 />
             </Item>
 
             <Item floatingLabel>
-                <Label>Retype your car VIN</Label>
+                <Label>Car name</Label>
                 <Input
-                    autoCapitalize='none'
-                    value={inputs.confirmVin}
-                    onChangeText={handleConfirmVinChange}
+                    value={inputs.carName}
+                    onChangeText={handleCarNameChange}
                 />
             </Item>
-            {errors.vin || errors.confirmVin || !inputs.vin || !inputs.confirmVin ?
+            {errors.licencePlate || errors.carName || !inputs.licencePlate || !inputs.carName ?
                 <Button
                     full
                     disabled
