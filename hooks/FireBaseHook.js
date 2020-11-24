@@ -1,9 +1,11 @@
 import React from 'react'
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import  {useState} from 'react'
 
 
 const useFirebase = () => {
+    const [locations, setLocations] = useState([]);
 
 const getUser = async () => {
     const user = firebase.auth().currentUser;
@@ -35,9 +37,25 @@ const getUserCars = async () => {
     return array
 };
 
+const getLocations = async () => {
+    const array = [];
+    const db = firebase.firestore();
+    const locationsRef = db.collection('locations');
+    const snapShot = await locationsRef.get()
+    snapShot.forEach(doc => {
+        console.log(doc.id, '=>', doc.data);
+        array.push(doc.data().name)
+    })
+    console.log('function getLocations array', array)
+    setLocations(array)
+};
+
 return {
     getUser,
-    getUserCars
+    getUserCars,
+    getLocations,
+    locations,
+    setLocations
 }
 };
 

@@ -7,9 +7,11 @@ import CustomHeader from '../components/CustomHeader';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import firebase from 'firebase';
+import useFirebase from "../hooks/FireBaseHook";
 
 const Authentication = ({ navigation }) => {
     const [active, setActive] = useState('login');
+    const {getLocations, locations} = useFirebase()
 
     //If the user is found and authenticated, redirect to home
     useEffect(() => {
@@ -18,6 +20,7 @@ const Authentication = ({ navigation }) => {
                 navigation.replace('App');
             }
         })
+
     }, []);
 
     return (

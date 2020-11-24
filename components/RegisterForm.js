@@ -4,8 +4,9 @@ import { Button, Form, Input, Container, Text, Item, Label, Content, View } from
 import useRegisterForm from '../hooks/RegisterHook.js';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import DropDownMenu from "./DropdownMenu";
 
-const RegisterForm = ({ navigation, toLogin }) => {
+const RegisterForm = ({ navigation, toLogin, props}) => {
     const {
         handleEmailChange,
         handleFirstNameChange,
@@ -74,6 +75,7 @@ const RegisterForm = ({ navigation, toLogin }) => {
 
     return (
         <Form>
+            <DropDownMenu/>
             <Item floatingLabel>
                 <Label>First Name {errors.firstName && inputs.firstName.length >= 0 && <Text style={{ color: "#FB3664" }}>*Must be at least 3 characters</Text>}</Label>
                 <Input
@@ -116,6 +118,7 @@ const RegisterForm = ({ navigation, toLogin }) => {
                     onChangeText={handleConfirmPasswordChange}
                 />
             </Item>
+
             {   errors.firstName ||
                 errors.lastName ||
                 errors.email ||
