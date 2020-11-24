@@ -127,27 +127,27 @@ const HomeQueueLayout = (props) => {
 */}
             {queue.inQueue && available ?
                 <>
-                    <Button large rounded block style={GlobalStyles.button} onPress={() => startCharging(navigation)} >
+                    <Button rounded block style={GlobalStyles.button} onPress={() => startCharging(navigation)} >
                         <Text>Start Charging</Text>
                     </Button>
-                    <Button large rounded block onPress={removeUserFromQueue} disabled={queue.processing}>
+                    <Button rounded block onPress={removeUserFromQueue} disabled={queue.processing}>
                         {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
                     </Button>
                 </> : null}
             {!queue.inQueue && !available && !parkingSpots.inSpot ?
-                <Button large rounded block style={GlobalStyles.button} onPress={addUserToQueue} disabled={queue.processing}>
+                <Button rounded block style={GlobalStyles.button} onPress={addUserToQueue} disabled={queue.processing}>
                     {queue.processing ? <Spinner /> : <Text>Queue</Text>}
                 </Button> : null}
             {queue.inQueue && !available ?
-                <Button large rounded block style={GlobalStyles.button} onPress={removeUserFromQueue} disabled={queue.processing}>
+                <Button rounded block style={GlobalStyles.button} onPress={removeUserFromQueue} disabled={queue.processing}>
                     {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
                 </Button> : null}
             {!queue.inQueue && available ?
-                <Button large rounded block style={GlobalStyles.button} onPress={() => startCharging(navigation)}>
+                <Button rounded block style={GlobalStyles.button} onPress={() => startCharging(navigation)}>
                     <Text>Start Charging</Text>
                 </Button> : null}
             {parkingSpots.inSpot ?
-                <Button large rounded block style={GlobalStyles.button} onPress={() => navigation.navigate('ChargingView')}>
+                <Button rounded block style={GlobalStyles.button} onPress={() => navigation.navigate('ChargingView')}>
                     <Text>To Charging View</Text>
                 </Button> : null}
         </View>

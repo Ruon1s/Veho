@@ -12,9 +12,9 @@ const HomeListLayout = (props) => {
         {carArray.map((car, key) => (
             <Card key={key}>
                 <CardItem button onPress={() => alert('Pressed ' + car.name)}>
-                    <Body style={styles.body} >
-                        <View style={styles.carInfo}>
-                            <View style={{ flex: 40, flexDirection: 'column' }}>
+                    <Body>
+                        <View style={styles.parent}>
+                            <View style={styles.carInfo}>
                                 <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{car.name.toUpperCase()}</Text>
                                 <Text>{car.vin}</Text>
                             </View>
@@ -36,22 +36,23 @@ const HomeListLayout = (props) => {
 }
 
 const styles = StyleSheet.create({
-    body: {
-        padding: 4
-    },
-    carInfo: {
+    parent: {
         flex: 1,
         flexDirection: 'row'
     },
+    carInfo: {
+        flex: 28,
+        flexDirection: 'column'
+    },
     licenceNumber: {
-        flex: 50,
+        flex: 44,
         borderColor: '#dedede',
         borderStartWidth: 1,
         borderEndWidth: 1,
         alignContent: 'center'
     },
     batteryStatus: {
-        flex: 30,
+        flex: 28,
         flexDirection: 'row'
     }
 });
