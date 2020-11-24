@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import GlobalStyles from '../styles/GlobalStyles';
 import { Button, Form, Input, Container, Text, Item, Label, Content, View } from 'native-base';
 import useRegisterForm from '../hooks/RegisterHook.js';
@@ -6,7 +6,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import DropDownMenu from "./DropdownMenu";
 
-const RegisterForm = ({ navigation, toLogin, props}) => {
+const RegisterForm = ({ navigation, toLogin, props }) => {
     const {
         handleEmailChange,
         handleFirstNameChange,
@@ -16,6 +16,17 @@ const RegisterForm = ({ navigation, toLogin, props}) => {
         inputs,
         errors
     } = useRegisterForm();
+
+    const [selected, setSelected] = useState('');
+
+    const onSelect = (value) => {
+        console.log('Selected: ' + value)
+        setSelected(value)
+    }
+
+    useEffect(() => {
+        console.log('selectedState ' + selected)
+    }, [selected])
 
     const register = async () => {
         let check = true;
@@ -75,7 +86,7 @@ const RegisterForm = ({ navigation, toLogin, props}) => {
 
     return (
         <Form>
-            <DropDownMenu/>
+            <DropDownMenu selected={selected} onSelect={onSelect} />
             <Item floatingLabel>
                 <Label>First Name {errors.firstName && inputs.firstName.length >= 0 && <Text style={{ color: "#FB3664" }}>*Must be at least 3 characters</Text>}</Label>
                 <Input
