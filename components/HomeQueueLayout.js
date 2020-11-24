@@ -109,11 +109,9 @@ const HomeQueueLayout = (props) => {
         }
     }
 
-    return (<View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
+    return (<View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 0 }}>
         <QueueInfo free={parkingSpots.available.length} queue={queue.size} queuePosition={queue.position} />
         <BatteryInfo batteryStatus={batteryStatus} />
-
-
 
         <View>
             {/* 
@@ -129,39 +127,29 @@ const HomeQueueLayout = (props) => {
 */}
             {queue.inQueue && available ?
                 <>
-                    <Button block onPress={() => startCharging(navigation)} >
+                    <Button large rounded block style={GlobalStyles.button} onPress={() => startCharging(navigation)} >
                         <Text>Start Charging</Text>
                     </Button>
-                    <Button block onPress={removeUserFromQueue} disabled={queue.processing}>
+                    <Button large rounded block onPress={removeUserFromQueue} disabled={queue.processing}>
                         {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
                     </Button>
                 </> : null}
             {!queue.inQueue && !available && !parkingSpots.inSpot ?
-                <Button block onPress={addUserToQueue} disabled={queue.processing}>
+                <Button large rounded block style={GlobalStyles.button} onPress={addUserToQueue} disabled={queue.processing}>
                     {queue.processing ? <Spinner /> : <Text>Queue</Text>}
                 </Button> : null}
             {queue.inQueue && !available ?
-                <Button block onPress={removeUserFromQueue} disabled={queue.processing}>
+                <Button large rounded block style={GlobalStyles.button} onPress={removeUserFromQueue} disabled={queue.processing}>
                     {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
                 </Button> : null}
             {!queue.inQueue && available ?
-                <Button block onPress={() => startCharging(navigation)}>
+                <Button large rounded block style={GlobalStyles.button} onPress={() => startCharging(navigation)}>
                     <Text>Start Charging</Text>
                 </Button> : null}
             {parkingSpots.inSpot ?
-                <Button block onPress={() => navigation.navigate('ChargingView')}>
+                <Button large rounded block style={GlobalStyles.button} onPress={() => navigation.navigate('ChargingView')}>
                     <Text>To Charging View</Text>
                 </Button> : null}
-            <Grid>
-                <Col>
-                    <Button
-                        block
-                        danger transparent
-                        onPress={props.logout}>
-                        <Text>Logout</Text>
-                    </Button>
-                </Col>
-            </Grid>
         </View>
     </View>)
 }

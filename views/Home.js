@@ -3,13 +3,8 @@ import { Container, Text, Button, View, StyleProvider, Toast, Root, Spinner } fr
 import { Col, Grid } from 'react-native-easy-grid';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
-import GlobalStyles from '../styles/GlobalStyles';
-import BatteryInfo from '../components/BatteryInfo';
-import QueueInfo from '../components/QueueInfo';
 import CustomHeader from '../components/CustomHeader';
 import { AUTH, GRANT, UNAME, PASS } from "@env";
-import * as SecureStore from 'expo-secure-store';
-import { schedulePushNotification } from '../services/NotificationService';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import useQueueHooks from '../hooks/QueueHooks';
@@ -115,11 +110,6 @@ const Home = ({ navigation }) => {
         return carVin
     }
 
-    const logout = async () => {                                                            //Functions that logs the user out (Need to be changed to Settings page later?)
-        await firebase.auth().signOut();
-        navigation.replace('Auth');
-    }
-
     return (
         <Root>
             <StyleProvider style={getTheme(platform)}>
@@ -130,7 +120,7 @@ const Home = ({ navigation }) => {
                         picker={true}
                         userType={userType}
                         onValueChange={onValueChange} />
-                    {userType === 'Normal' && <HomeQueueLayout logout={logout} currentUser={currentUser} />}
+                    {userType === 'Normal' && <HomeQueueLayout currentUser={currentUser} />}
                     {userType === 'Manager' && <HomeListLayout carArray={carArray} />}
                 </Container >
             </StyleProvider >
