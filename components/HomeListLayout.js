@@ -7,19 +7,27 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 const HomeListLayout = (props) => {
     let carArray = props.carArray
 
+
     return (<Content padder>
         {carArray.map((car, key) => (
             <Card key={key}>
-                <CardItem>
-                    <Body style={{ padding: 4 }}>
-                        <Grid>
-                            <Col size={40}>
-                                <Row><Text style={{ fontWeight: 'bold', fontSize: 22 }}>{car.name}</Text></Row>
-                                <Row><Text>{car.vin}</Text></Row>
-                            </Col>
-                            <Col size={40}><Text style={{ fontSize: 24 }}>{car.licencePlate}</Text></Col>
-                            <Col size={20}><Icon name='bolt' size={36} color="#000" ><Text>54%</Text></Icon></Col>
-                        </Grid>
+                <CardItem button onPress={() => alert('Pressed ' + car.name)}>
+                    <Body style={{ padding: 4 }} >
+                        <View style={{ flex: 1, flexDirection: 'row', alignContent: 'center' }}>
+                            <View style={{ flex: 40, flexDirection: 'column' }}>
+                                <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{car.name.toUpperCase()}</Text>
+                                <Text>{car.vin}</Text>
+                            </View>
+
+                            <View style={{ flex: 50, borderColor: '#dedede', borderStartWidth: 1, borderEndWidth: 1, alignContent: 'center' }}>
+                                <Text style={{ fontSize: 32, alignSelf: 'center' }}>{car.licencePlate.toUpperCase()}</Text>
+                            </View>
+
+                            <View style={{ flex: 30, flexDirection: 'row' }}>
+                                <Icon name='bolt' size={42} color="#000" style={{ marginStart: 12 }} />
+                                <Text style={{ margin: 8, fontSize: 24 }}>42%</Text>
+                            </View>
+                        </View>
                     </Body>
                 </CardItem>
             </Card>

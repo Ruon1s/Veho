@@ -113,17 +113,20 @@ const HomeQueueLayout = (props) => {
         <QueueInfo free={parkingSpots.available.length} queue={queue.size} queuePosition={queue.position} />
         <BatteryInfo batteryStatus={batteryStatus} />
 
-        <Button block transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
-            <Text>Test notification</Text>
-        </Button>
+
 
         <View>
+            {/* 
+            <Button block transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
+                <Text>Test notification</Text>
+            </Button>
             <Button block onPress={fetchToken}>
                 <Text>(DEV) Get Token</Text>
             </Button>
             <Button block onPress={fetchSoc}>
                 <Text>(DEV) Refresh SOC</Text>
             </Button>
+*/}
             {queue.inQueue && available ?
                 <>
                     <Button block onPress={() => startCharging(navigation)} >

@@ -6,28 +6,28 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 
 const BatteryInfo = (props) => {
-    const batteryStatus = props.batteryStatus
-    const data = [
+    const batteryStatus = props.batteryStatus           // Number between 0-100
+    const data = [                                      // Data for victorypie to show the charge correctly
         { x: `${batteryStatus}%`, y: batteryStatus },
         { x: 'null', y: 100 - batteryStatus }
     ]
 
-    const Default = () => {
-        return (
-            <Grid style={styles.batteryGrid}>
-                <Row size={2}>
-                    <Icon name="bolt" size={56} color="#000"></Icon>
-                </Row>
-                <Row size={1}>
-                    <Text style={styles.batteryText}>{batteryStatus}%</Text>
-                </Row>
-            </Grid>)
+    const sizeVariable = props.sizeVariable
+
+    const CenterText = () => {                          // Component in the middle of the piechart, contains the bolt-icon and the number
+        return <Grid style={styles.batteryGrid}>
+            <Row size={2}>
+                <Icon name="bolt" size={56} color="#000"></Icon>
+            </Row>
+            <Row size={1}>
+                <Text style={styles.batteryText}>{batteryStatus}%</Text>
+            </Row>
+        </Grid>
     }
 
-    // GET-function from parent changes shown batteryStatus
     return (
         <View style={styles.batteryContent}>
-            <Default />
+            <CenterText />
             <VictoryPie
                 standalone={true}
                 width={170}
