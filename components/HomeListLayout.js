@@ -14,10 +14,8 @@ const HomeListLayout = (props) => {
                 <CardItem button onPress={() => alert('Pressed ' + car.name)}>
                     <Body>
                         <View style={styles.parent}>
-                            <View style={styles.carInfo}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{car.name.toUpperCase()}</Text>
-                                <Text>{car.vin}</Text>
-                            </View>
+
+                            <Text style={styles.carName}>{car.name.toUpperCase()}</Text>
 
                             <View style={styles.licenceNumber}>
                                 <Text style={{ fontSize: 32, alignSelf: 'center' }}>{car.licencePlate.toUpperCase()}</Text>
@@ -40,16 +38,17 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row'
     },
-    carInfo: {
-        flex: 28,
-        flexDirection: 'column'
+    carName: {
+        fontSize: 32,
+        marginEnd: 12
     },
     licenceNumber: {
         flex: 44,
         borderColor: '#dedede',
         borderStartWidth: 1,
         borderEndWidth: 1,
-        alignContent: 'center'
+        alignContent: 'center',
+        fontSize: 32
     },
     batteryStatus: {
         flex: 28,
