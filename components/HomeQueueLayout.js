@@ -7,10 +7,13 @@ import QueueInfo from './QueueInfo';
 import CustomHeader from './CustomHeader';
 import LocationInfo from './LocationInfo';
 import useQueueHooks from '../hooks/QueueHooks';
+import useFirebase from "../hooks/FireBaseHook";
 
 const HomeQueueLayout = (props) => {
     const [available, setAvailable] = useState();           //To check if there is a spot available right away
     const [batteryStatus, setBatteryStatus] = useState(54)
+
+    const {getUser} = useFirebase()
 
     const {
         queue,
@@ -26,7 +29,6 @@ const HomeQueueLayout = (props) => {
     useEffect(() => {
         const unsubscribeQueueListener = queueListener();
         const unsubscribeParkingSpotListener = parkingSpotListener();
-
         return () => {
             unsubscribeQueueListener();
             unsubscribeParkingSpotListener();
@@ -112,13 +114,13 @@ const HomeQueueLayout = (props) => {
 
     return (<View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 24 }}>
         <QueueInfo free={parkingSpots.available.length} queue={queue.size} queuePosition={queue.position} style={{ flex: 2 }} />
-        <LocationInfo location='Tervakoski' style={{ flex: 1 }} />
+        <LocationInfo location={props.user} style={{ flex: 1 }} />
         <View style={{ display: 'flex', justifyContent: 'center', flex: 8 }}>
             <BatteryInfo batteryStatus={batteryStatus} sizeVariable='large' />
         </View>
 
         <View style={{ flex: 1 }}>
-            {/* 
+            {/*
             <Button  large block transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
                 <Text>Test notification</Text>
             </Button>

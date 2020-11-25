@@ -22,6 +22,7 @@ Notifications.setNotificationHandler({
 });
 
 const App = () => {
+
   const [fontReady, setFontReady] = useState(false);
 
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -40,7 +41,6 @@ const App = () => {
   };
 
   useEffect(() => {
-
     LogBox.ignoreLogs(['Setting a timer for a long period of time']); // <-- Hide unnecessary warnings with android and firestore
 
     loadFonts();
