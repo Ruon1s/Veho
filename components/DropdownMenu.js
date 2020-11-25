@@ -21,7 +21,7 @@ const DropDownMenu = (props) => {
 
     const itemsList = () => {
         return (locations.map((item, index) => {
-            return ((<Picker.Item label={item} key={index} value={item} />))
+            return ((<Picker.Item label={item.name} key={index} value={item} />))
         }));
     };
 

@@ -6,10 +6,13 @@ import BatteryInfo from './BatteryInfo';
 import QueueInfo from './QueueInfo';
 import CustomHeader from './CustomHeader';
 import useQueueHooks from '../hooks/QueueHooks';
+import useFirebase from "../hooks/FireBaseHook";
 
 const HomeQueueLayout = (props) => {
     const [available, setAvailable] = useState();           //To check if there is a spot available right away
     const [batteryStatus, setBatteryStatus] = useState(54)
+
+    const {getUser} = useFirebase()
 
     const {
         queue,
@@ -25,7 +28,6 @@ const HomeQueueLayout = (props) => {
     useEffect(() => {
         const unsubscribeQueueListener = queueListener();
         const unsubscribeParkingSpotListener = parkingSpotListener();
-
         return () => {
             unsubscribeQueueListener();
             unsubscribeParkingSpotListener();

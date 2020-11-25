@@ -13,7 +13,7 @@ const CustomHeader = (props) => {
         </Left>
         <Body>
             <Title>{props.title}</Title>
-            {props.subtitle !== null && <Subtitle>{props.subtitle}</Subtitle>}
+            {props.subtitle.firstname !== null && <Subtitle>{props.subtitle.firstname}</Subtitle>}
         </Body>
         <Right >
             {props.picker !== null && <Button block onPress={props.onValueChange}>

@@ -6,6 +6,7 @@ import { useState } from 'react'
 
 const useFirebase = () => {
     const [locations, setLocations] = useState([]);
+    const [currentUser, setCurrentUser] = useState({});
 
     const getUser = async () => {
         const user = firebase.auth().currentUser;
@@ -16,9 +17,9 @@ const useFirebase = () => {
         if (!doc.exists) {
             console.log('no user found')
         } else {
-            console.log(doc.data());
-            return doc.data()
+           setCurrentUser(doc.data())
         }
+
     };
 
     const getUserCars = async () => {
@@ -41,13 +42,21 @@ const useFirebase = () => {
         const array = [];
         const db = firebase.firestore();
         const locationsRef = db.collection('locations');
-        const snapShot = await locationsRef.get()
+        const snapShot = await locationsRef.get();
+
         snapShot.forEach(doc => {
-            console.log(doc.id, '=>', doc.data());
-            array.push(doc.data().name)
-        })
-        console.log('function getLocations array', array)
-        setLocations(array)
+            const locationData = doc.data();
+            if (locations.find(doc => doc.id === location.id) !== undefined) {
+                return
+            }
+            setLocations(previousState => ([
+                ...previousState, {
+                    ...locationData,
+                    id: doc.id
+                }
+            ]));
+            console.log('locations', locations)
+        });
     };
 
     return {
@@ -55,7 +64,9 @@ const useFirebase = () => {
         getUserCars,
         getLocations,
         locations,
-        setLocations
+        setLocations,
+        currentUser,
+        setCurrentUser
     }
 };
 

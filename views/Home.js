@@ -15,35 +15,25 @@ import 'firebase/firestore';
 import useQueueHooks from '../hooks/QueueHooks';
 import HomeQueueLayout from '../components/HomeQueueLayout';
 import HomeListLayout from '../components/HomeListLayout';
+import useFirebase from "../hooks/FireBaseHook";
 import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 const Home = ({ navigation }) => {
     const [available, setAvailable] = useState();           //To check if there is a spot available right away
-    const [batteryStatus, setBatteryStatus] = useState(54)
-    const [currentUser, setCurrentUser] = useState('')
-    const [userType, setUserType] = useState('Normal')      // Values: Normal & Manager
-    const [carArray, setCarArray] = useState([])
+    const [batteryStatus, setBatteryStatus] = useState(54);
+    const [userType, setUserType] = useState('Normal');      // Values: Normal & Manager
+    const [carArray, setCarArray] = useState([]);
+
+    const {currentUser, getUser, setCurrentUser} = useFirebase();
+
+
 
     useEffect(() => {
-        const user = firebase.auth().currentUser        // To display user id @Home, change to name later
-        // console.log('Current User: ' + user)
-        getUser(user.uid)
+        getUser();
+        console.log('current user is', currentUser)
         getUserCars()
     }, []);
 
-    const getUser = async (uid) => {
-        const db = firebase.firestore()
-
-        const userRef = db.collection('users').doc(uid)
-        const doc = await userRef.get()
-
-        if (!doc.exists) {
-            console.log('no user found')
-        } else {
-            console.log(doc.data())
-            setCurrentUser(doc.data().firstname)
-        }
-    }
 
     const getUserCars = async () => {
         const user = firebase.auth().currentUser;
@@ -130,7 +120,7 @@ const Home = ({ navigation }) => {
                         picker={true}
                         userType={userType}
                         onValueChange={onValueChange} />
-                    {userType === 'Normal' && <HomeQueueLayout logout={logout} currentUser={currentUser} />}
+                    {userType === 'Normal' && <HomeQueueLayout logout={logout} />}
                     {userType === 'Manager' && <HomeListLayout carArray={carArray} />}
                 </Container >
             </StyleProvider >

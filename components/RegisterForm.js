@@ -56,6 +56,7 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
                 email: inputs.email,
                 firstname: inputs.firstName,
                 lastname: inputs.lastName,
+                location: selected,
                 role: 'standard'
             });
 
