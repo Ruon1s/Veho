@@ -3,13 +3,8 @@ import { Container, Text, Button, View, StyleProvider, Toast, Root, Spinner } fr
 import { Col, Grid } from 'react-native-easy-grid';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
-import GlobalStyles from '../styles/GlobalStyles';
-import BatteryInfo from '../components/BatteryInfo';
-import QueueInfo from '../components/QueueInfo';
 import CustomHeader from '../components/CustomHeader';
 import { AUTH, GRANT, UNAME, PASS } from "@env";
-import * as SecureStore from 'expo-secure-store';
-import { schedulePushNotification } from '../services/NotificationService';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import useQueueHooks from '../hooks/QueueHooks';
@@ -103,11 +98,6 @@ const Home = ({ navigation }) => {
         const carVin = snapshot.docs[0].data().vin
         console.log('current users cars vin number: ', carVin)
         return carVin
-    }
-
-    const logout = async () => {                                                            //Functions that logs the user out (Need to be changed to Settings page later?)
-        await firebase.auth().signOut();
-        navigation.replace('Auth');
     }
 
     return (

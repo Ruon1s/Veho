@@ -5,6 +5,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 import BatteryInfo from './BatteryInfo';
 import QueueInfo from './QueueInfo';
 import CustomHeader from './CustomHeader';
+import LocationInfo from './LocationInfo';
 import useQueueHooks from '../hooks/QueueHooks';
 import useFirebase from "../hooks/FireBaseHook";
 
@@ -111,56 +112,50 @@ const HomeQueueLayout = (props) => {
         }
     }
 
-    return (<View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 60 }}>
-        <QueueInfo free={parkingSpots.available.length} queue={queue.size} queuePosition={queue.position} />
-        <BatteryInfo batteryStatus={batteryStatus} />
+    return (<View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 24 }}>
+        <QueueInfo free={parkingSpots.available.length} queue={queue.size} queuePosition={queue.position} style={{ flex: 2 }} />
+        <LocationInfo location='Tervakoski' style={{ flex: 1 }} />
+        <View style={{ display: 'flex', justifyContent: 'center', flex: 8 }}>
+            <BatteryInfo batteryStatus={batteryStatus} sizeVariable='large' />
+        </View>
 
-        <Button block transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
-            <Text>Test notification</Text>
-        </Button>
-
-        <View>
-            <Button block onPress={fetchToken}>
+        <View style={{ flex: 1 }}>
+            {/* 
+            <Button  large block transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
+                <Text>Test notification</Text>
+            </Button>
+            <Button  large block onPress={fetchToken}>
                 <Text>(DEV) Get Token</Text>
             </Button>
-            <Button block onPress={fetchSoc}>
+            <Button  large block onPress={fetchSoc}>
                 <Text>(DEV) Refresh SOC</Text>
             </Button>
+*/}
             {queue.inQueue && available ?
                 <>
-                    <Button block onPress={() => startCharging(navigation)} >
+                    <Button large block style={GlobalStyles.button} onPress={() => startCharging(navigation)} >
                         <Text>Start Charging</Text>
                     </Button>
-                    <Button block onPress={removeUserFromQueue} disabled={queue.processing}>
+                    <Button large block onPress={removeUserFromQueue} disabled={queue.processing}>
                         {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
                     </Button>
                 </> : null}
             {!queue.inQueue && !available && !parkingSpots.inSpot ?
-                <Button block onPress={addUserToQueue} disabled={queue.processing}>
+                <Button large block style={GlobalStyles.button} onPress={addUserToQueue} disabled={queue.processing}>
                     {queue.processing ? <Spinner /> : <Text>Queue</Text>}
                 </Button> : null}
             {queue.inQueue && !available ?
-                <Button block onPress={removeUserFromQueue} disabled={queue.processing}>
+                <Button large block style={GlobalStyles.button} onPress={removeUserFromQueue} disabled={queue.processing}>
                     {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
                 </Button> : null}
             {!queue.inQueue && available ?
-                <Button block onPress={() => startCharging(navigation)}>
+                <Button large block style={GlobalStyles.button} onPress={() => startCharging(navigation)}>
                     <Text>Start Charging</Text>
                 </Button> : null}
             {parkingSpots.inSpot ?
-                <Button block onPress={() => navigation.navigate('ChargingView')}>
+                <Button large block style={GlobalStyles.button} onPress={() => navigation.navigate('ChargingView')}>
                     <Text>To Charging View</Text>
                 </Button> : null}
-            <Grid>
-                <Col>
-                    <Button
-                        block
-                        danger transparent
-                        onPress={props.logout}>
-                        <Text>Logout</Text>
-                    </Button>
-                </Col>
-            </Grid>
         </View>
     </View>)
 }
