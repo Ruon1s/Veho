@@ -18,14 +18,12 @@ const Home = ({ navigation }) => {
     const [batteryStatus, setBatteryStatus] = useState(54);
     const [userType, setUserType] = useState('Normal');      // Values: Normal & Manager
     const [carArray, setCarArray] = useState([]);
-
-    const {currentUser, getUser, setCurrentUser} = useFirebase();
+    const {currentUser, getUser, setCurrentUser, loading} = useFirebase();
 
 
 
     useEffect(() => {
-        getUser();
-        console.log('current user is', currentUser)
+        getUser()
         getUserCars()
     }, []);
 
@@ -102,18 +100,21 @@ const Home = ({ navigation }) => {
 
     return (
         <Root>
+            {loading ? <Spinner/> :
             <StyleProvider style={getTheme(platform)}>
                 <Container>
+
                     <CustomHeader
                         title='Home'
-                        subtitle={currentUser}
+                        subtitle={currentUser ? currentUser : null}
                         picker={true}
                         userType={userType}
                         onValueChange={onValueChange} />
-                    {userType === 'Normal' && <HomeQueueLayout user={currentUser} logout={logout} />}
+                    {userType === 'Normal' && <HomeQueueLayout user={currentUser} />}
                     {userType === 'Manager' && <HomeListLayout carArray={carArray} />}
                 </Container >
             </StyleProvider >
+            }
         </Root>
     );
 }

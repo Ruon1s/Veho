@@ -7,11 +7,13 @@ import { useState } from 'react'
 const useFirebase = () => {
     const [locations, setLocations] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
+    const [loading, setLoading] = useState(true);
 
     const getUser = async () => {
+        setLoading(true)
         const user = firebase.auth().currentUser;
         const db = firebase.firestore();
-
+        if(user){
         const userRef = db.collection('users').doc(user.uid);
         const doc = await userRef.get();
         if (!doc.exists) {
@@ -19,7 +21,8 @@ const useFirebase = () => {
         } else {
            setCurrentUser(doc.data())
         }
-
+        setLoading(false)
+        }
     };
 
     const getUserCars = async () => {
@@ -66,7 +69,9 @@ const useFirebase = () => {
         locations,
         setLocations,
         currentUser,
-        setCurrentUser
+        setCurrentUser,
+        loading,
+
     }
 };
 
