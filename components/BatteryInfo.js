@@ -14,10 +14,43 @@ const BatteryInfo = (props) => {
 
     const sizeVariable = props.sizeVariable
 
+    let textSize = {
+        iconSize: 56,
+        batteryContentHeight: 180,
+        batteryContentMargin: 8,
+        batteryGridSize: 170,
+        batteryGridPadding: 34,
+        batteryGridPaddingTop: 40,
+        batteryTextFontSize: 24
+    }
+    let pieSize = {
+        radius: 170,
+        innerRadius: 80,
+        padding: 10
+    }
+
+    // 'large' is 1.5 times bigger than the default layout
+    if (sizeVariable === 'large') {
+        textSize = {
+            iconSize: 84,
+            batteryContentHeight: 270,
+            batteryContentMargin: 12,
+            batteryGridSize: 255,
+            batteryGridPadding: 51,
+            batteryGridPaddingTop: 60,
+            batteryTextFontSize: 36
+        }
+        pieSize = {
+            radius: 255,
+            innerRadius: 120,
+            padding: 15
+        }
+    }
+
     const CenterText = () => {                          // Component in the middle of the piechart, contains the bolt-icon and the number
         return <Grid style={styles.batteryGrid}>
             <Row size={2}>
-                <Icon name="bolt" size={56} color="#000"></Icon>
+                <Icon name="bolt" size={textSize.iconSize} color="#000"></Icon>
             </Row>
             <Row size={1}>
                 <Text style={styles.batteryText}>{batteryStatus}%</Text>
@@ -25,16 +58,39 @@ const BatteryInfo = (props) => {
         </Grid>
     }
 
+    const styles = StyleSheet.create({
+        batteryContent: {
+            height: textSize.batteryContentHeight,
+            alignItems: 'center',
+            margin: textSize.batteryContentMargin
+        },
+        batteryGrid: {
+            position: 'absolute',
+            width: textSize.batteryGridSize,
+            height: textSize.batteryGridSize,
+            backgroundColor: '#FFFFFF',
+            borderRadius: textSize.batteryGridSize,
+            alignItems: 'center',
+            padding: textSize.batteryGridPadding,
+            paddingTop: textSize.batteryGridPaddingTop
+        },
+        batteryText: {
+            width: '100%',
+            textAlign: 'center',
+            fontSize: textSize.batteryTextFontSize
+        }
+    });
+
     return (
         <View style={styles.batteryContent}>
             <CenterText />
             <VictoryPie
                 standalone={true}
-                width={170}
-                height={170}
+                width={pieSize.radius}
+                height={pieSize.radius}
                 colorScale={['#000', '#EAEAEA']}
-                innerRadius={80}
-                padding={10}
+                innerRadius={pieSize.innerRadius}
+                padding={pieSize.padding}
                 data={data}
                 labelComponent={<VictoryLabel
                     style={{ fill: '#FFF' }}
@@ -44,28 +100,6 @@ const BatteryInfo = (props) => {
     );
 };
 
-// StyleSheet is needed to get custom content working. Global style will be used for colors and fonts
-const styles = StyleSheet.create({
-    batteryContent: {
-        height: 180,
-        alignItems: 'center',
-        margin: 8
-    },
-    batteryGrid: {
-        position: 'absolute',
-        width: 170,
-        height: 170,
-        backgroundColor: '#FFFFFF',
-        borderRadius: 170,
-        alignItems: 'center',
-        padding: 34,
-        paddingTop: 40
-    },
-    batteryText: {
-        width: '100%',
-        textAlign: 'center',
-        fontSize: 24
-    }
-});
+
 
 export default BatteryInfo;

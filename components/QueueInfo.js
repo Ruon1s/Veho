@@ -21,13 +21,12 @@ const QueueInfo = (props) => {
 const styles = StyleSheet.create({
     textParent: {
         position: 'relative',
-        borderBottomColor: '#dedede',
+        borderBottomColor: '#EAEAEA',
         borderBottomWidth: 1,
         paddingBottom: 12
     },
     infoText: {
         fontSize: 24,
-
     }
 })
 
