@@ -4,12 +4,11 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Container, Content, Text, Button, View, StyleProvider, Card, CardItem, Body, List, ListItem } from 'native-base';
 
 const LocationInfo = (props) => {
-
-    g
-
-    return (<View style={styles.locationView}>
-        <Icon color='#EAEAEA' name='map-marker' size={32}></Icon><Text style={styles.text}>{props.location && props.location.location.name}</Text>
-    </View>)
+    return (
+        <View style={styles.locationView}>
+            <Icon color='#EAEAEA' name='map-marker' size={32}></Icon><Text style={styles.text}>{props.location && props.location.name}</Text>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({

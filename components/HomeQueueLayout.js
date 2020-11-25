@@ -13,8 +13,6 @@ const HomeQueueLayout = (props) => {
     const [available, setAvailable] = useState();           //To check if there is a spot available right away
     const [batteryStatus, setBatteryStatus] = useState(54)
 
-    const {getUser} = useFirebase()
-
     const {
         queue,
         parkingSpots,
