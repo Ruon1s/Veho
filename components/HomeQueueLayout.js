@@ -114,13 +114,13 @@ const HomeQueueLayout = (props) => {
 
     return (<View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 24 }}>
         <QueueInfo free={parkingSpots.available.length} queue={queue.size} queuePosition={queue.position} style={{ flex: 2 }} />
-        <LocationInfo location='Tervakoski' style={{ flex: 1 }} />
+        <LocationInfo location={props.user} style={{ flex: 1 }} />
         <View style={{ display: 'flex', justifyContent: 'center', flex: 8 }}>
             <BatteryInfo batteryStatus={batteryStatus} sizeVariable='large' />
         </View>
 
         <View style={{ flex: 1 }}>
-            {/* 
+            {/*
             <Button  large block transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
                 <Text>Test notification</Text>
             </Button>
