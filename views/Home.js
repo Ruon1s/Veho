@@ -120,7 +120,7 @@ const Home = ({ navigation }) => {
                         picker={true}
                         userType={userType}
                         onValueChange={onValueChange} />
-                    {userType === 'Normal' && <HomeQueueLayout logout={logout} />}
+                    {userType === 'Normal' && <HomeQueueLayout user={currentUser} logout={logout} />}
                     {userType === 'Manager' && <HomeListLayout carArray={carArray} />}
                 </Container >
             </StyleProvider >
