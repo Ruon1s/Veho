@@ -6,7 +6,7 @@ import { Container, Content, Text, Button, View, StyleProvider, Card, CardItem, 
 const LocationInfo = (props) => {
     return (
         <View style={styles.locationView}>
-            <Icon color='#EAEAEA' name='map-marker' size={32}></Icon><Text style={styles.text}>{props.location && props.location.name}</Text>
+            <Icon color='#EAEAEA' name='map-marker' size={32}></Icon><Text style={styles.text}>{props.user.location && props.user.location.name}</Text>
         </View>
     )
 }
