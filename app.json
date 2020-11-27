@@ -20,7 +20,8 @@
       "useNextNotificationsApi": true,
       "permissions": [
         "VIBRATE"
-      ]
+      ],
+      "package": "com.niklar.Veho"
     },
     "ios": {
       "supportsTablet": true

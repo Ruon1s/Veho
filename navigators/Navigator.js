@@ -8,6 +8,7 @@ import Home from '../views/Home';
 import Settings from '../views/Settings';
 import ChargingView from '../views/ChargingView';
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import AdminPanel from '../views/AdminPanel';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -55,6 +56,7 @@ const Navigator = () => {
                 <Stack.Screen name='App' component={TabNavigator} />
                 <Stack.Screen name='AddCarDetails' component={AddCarDetails} />
                 <Stack.Screen name='ChargingView' component={ChargingView} />
+                <Stack.Screen name='AdminPanel' component={ AdminPanel } />
             </Stack.Navigator>
         </NavigationContainer>
     );

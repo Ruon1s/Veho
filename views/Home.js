@@ -80,7 +80,7 @@ const Home = ({ navigation }) => {
                 withCredentials: true,
                 headers,
             }
-            const user = firebase.auth().currentUser;
+            /* const user = firebase.auth().currentUser;
             console.log(user)
             const db = firebase.firestore();
 
@@ -91,11 +91,13 @@ const Home = ({ navigation }) => {
                 return;
             }
             const carVin = snapshot.docs[0].data().vin
-            console.log('current users cars vin number: ', carVin)
+            console.log('current users cars vin number: ', carVin) */
 
 
 
-            const response = await fetch('https://api.connect-business.net/fleet/v1/fleets/DF89D145A29C43BE80FC2464B54405F9/vehicles.dynamic/C0NNECT0000000100', options);
+            //https://api.connect-business.net/fleet/v1/fleets/DF89D145A29C43BE80FC2464B54405F9/vehicles.snapshots?_filter=licensePlate=eq=
+            //https://api.connect-business.net/fleet/v1/fleets/DF89D145A29C43BE80FC2464B54405F9/vehicles.dynamic/C0NNECT0000000100
+            const response = await fetch('https://api.connect-business.net/fleet/v1/fleets/DF89D145A29C43BE80FC2464B54405F9/vehicles.snapshots?_filter=licensePlate=in=[S MB 0004,S MB 0003,S MB 0007]', options);
             //const toJSON = await response.json();
             // HTML response (404/500), response.text
             const toJSON = await response.json();

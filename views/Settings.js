@@ -7,10 +7,14 @@ import NotificationTest from '../components/NotificationTest';
 import useSettingsForm from '../hooks/SettingsHook.js'
 import { useState, useEffect } from 'react'
 import GlobalStyles from "../styles/GlobalStyles";
+import firebase from 'firebase';
+import 'firebase/firestore';
 
 
 
-const Settings = () => {
+const Settings = ({ navigation }) => {
+    const [admin, setAdmin] = useState(false);
+
     const {
         getCarVin,
         carVin,
@@ -22,7 +26,20 @@ const Settings = () => {
 
     useEffect(() => {
         getCarVin().then(r => setCarVin(r))
+        checkAdminStatus();
     }, []);
+
+    const checkAdminStatus = async () => {
+        try {
+            const currentUserId = firebase.auth().currentUser.uid;
+            const response = await firebase.firestore().collection('users').doc(currentUserId).get();
+            if (response.data().role === 'admin') {
+                setAdmin(true);
+            }
+        } catch (error) {
+            console.log(`Error while retrieving admin status: ${ error.message }`)
+        }
+    }
 
     return (
         <StyleProvider style={getTheme(platform)}>
@@ -63,6 +80,11 @@ const Settings = () => {
                         }
 
                     </Form>
+                    {admin ?
+                    <Button full style={ GlobalStyles.button } onPress={ () => navigation.navigate('AdminPanel') }>
+                        <Text>Admin Panel</Text>
+                    </Button>
+                    : null}
                 </Content>
             </Container>
         </StyleProvider>
