@@ -59,9 +59,10 @@ const Settings = ({ navigation }) => {
                         onPress={toAddCar}>
                         <Text>Add new car</Text>
                     </Button>
+                    {admin  && 
                     <Button full style={ GlobalStyles.button } onPress={ () => navigation.navigate('AdminPanel') }>
                         <Text>Admin Panel</Text>
-                    </Button>
+                    </Button>}
                     <Button
                         block
                         danger transparent
