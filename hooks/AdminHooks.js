@@ -1,6 +1,7 @@
 import { useState } from "react";
 import firebase from 'firebase';
 import 'firebase/firestore';
+import { Modal } from "react-native";
 
 const useAdminHooks = () => {
     const [managers, setManagers] = useState([]);           //Keep track of the manager users that are found from the firebase
@@ -262,7 +263,6 @@ const useAdminHooks = () => {
                 await firebase.firestore().collection('locations').doc(responseFromDb.id).collection('parkingspots').add({
                     availability: true,
                     userId: '',
-                    spotnumber: i,
                 });
             }
 
@@ -270,7 +270,6 @@ const useAdminHooks = () => {
                 await firebase.firestore().collection('locations').doc(responseFromDb.id).collection('dedicatedParkingspots').add({
                     available: true,
                     userId: '',
-                    spotnumber: i,
                 });
             }
 
@@ -305,9 +304,69 @@ const useAdminHooks = () => {
      */
     const editLocation = async () => {
         try {
+            setProcessing(previousState => ({
+                ...previousState,
+                editing: true,
+            }));
 
+            const changedPublicSpots = newLocation.publicSpots - modalVisible.object.publicSpots;
+            const changedDedicatedSpots = newLocation.dedicatedSpots - modalVisible.object.dedicatedSpots;
+            
+            const locationsCopy = [...locations];
+            const editedLocationIndex = locationsCopy.findIndex(location => location.id === modalVisible.object.id);
+
+            if (changedPublicSpots !== 0) {
+                if (changedPublicSpots > 0) {
+                    for (let i = 0; i < changedPublicSpots; i++) {
+                        await firebase.firestore().collection('locations').doc(modalVisible.object.id).collection('parkingspots').add({
+                            availability: true,
+                            userId: '',
+                        });
+                    }
+                } else if (changedPublicSpots < 0) {
+                    const limitSpots = Math.abs(changedPublicSpots);
+                    const spotsToBeDeleted = await firebase.firestore().collection('locations').doc(modalVisible.object.id).collection('parkingspots').limit(limitSpots).get();
+                    spotsToBeDeleted.forEach( async (spot) => {
+                        await firebase.firestore().collection('locations').doc(modalVisible.object.id).collection('parkingspots').doc(spot.id).delete();
+                    });
+                }
+                locationsCopy[editedLocationIndex].publicSpots = newLocation.publicSpots;
+            }
+
+            if (changedDedicatedSpots !== 0) {
+                if (changedDedicatedSpots > 0) {
+                    for (let i = 0; i < changedDedicatedSpots; i++) {
+                        await firebase.firestore().collection('locations').doc(modalVisible.object.id).collection('dedicatedParkingspots').add({
+                            availability: true,
+                            userId: '',
+                        });
+                    }
+                } else if (changedDedicatedSpots < 0) {
+                    const limitSpots = Math.abs(changedDedicatedSpots);
+                    const spotsToBeDeleted = await firebase.firestore().collection('locations').doc(modalVisible.object.id).collection('dedicatedParkingspots').limit(limitSpots).get();
+                    spotsToBeDeleted.forEach( async (spot) => {
+                        await firebase.firestore().collection('locations').doc(modalVisible.object.id).collection('dedicatedParkingspots').doc(spot.id).delete();
+                    });
+                }
+                locationsCopy[editedLocationIndex].dedicatedSpots = newLocation.dedicatedSpots;
+            }
+
+            if (modalVisible.object.name !== newLocation.name && newLocation.name !== '') {
+                await firebase.firestore().collection('locations').doc(modalVisible.object.id).set({
+                    name: newLocation.name,
+                }, { merge: true });
+                locationsCopy[editedLocationIndex].name = newLocation.name;
+            }
+
+            setLocations(locationsCopy);
+            setProcessing(previousState => ({
+                ...previousState,
+                editing: false,
+            }));
+
+            closeModal();
         } catch (error) {
-            handleError(locationDocumentId, error.message);
+            handleError(modalVisible.object.id, error.message);
         }
     }
 

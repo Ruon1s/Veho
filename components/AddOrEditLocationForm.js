@@ -25,7 +25,7 @@ const AddOrEditLocationForm = (props) => {
             {adding || editing || removing ?
             <Spinner />
             :
-            error.type === 'addNewLocation' ?
+            error.type === 'addNewLocation' || error.type === location.id ?
             <Text> {error.message} </Text>
             :
             <>
