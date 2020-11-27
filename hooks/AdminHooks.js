@@ -14,7 +14,7 @@ const useAdminHooks = () => {
         adding: false,                                      //When we are adding location/setting users rights
         removing: '',                                       //When we are removing location/user rights
         searching: false,                                   //When we are searching a user from the database
-        editing,
+        editing: false,
     });
     const [error, setError] = useState({                    //For notifying user if an error occurs (type = function name, message = catch methods error message)
         type: '',
