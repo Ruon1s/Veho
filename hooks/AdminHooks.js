@@ -23,8 +23,8 @@ const useAdminHooks = () => {
     });
     const [newLocation, setNewLocation] = useState({        //For adding new location to the firebase
         name: '',                                           //Name of the location
-        publicSpots: 0,                                     //Number of spots where users can queue
-        dedicatedSpots: 0,                                  //Number of spots that manager manages in the location
+        publicSpots: '',                                     //Number of spots where users can queue
+        dedicatedSpots: '',                                  //Number of spots that manager manages in the location
     });
     const [modalVisible, setModalVisible] = useState({      //Hide/Show AddLocation/AddManager form
         visible: false,
@@ -309,9 +309,17 @@ const useAdminHooks = () => {
                 editing: true,
             }));
 
-            const changedPublicSpots = newLocation.publicSpots - modalVisible.object.publicSpots;
-            const changedDedicatedSpots = newLocation.dedicatedSpots - modalVisible.object.dedicatedSpots;
-            
+            let changedPublicSpots;
+            let changedDedicatedSpots;
+
+            if (newLocation.publicSpots !== '') {
+                changedPublicSpots = newLocation.publicSpots - modalVisible.object.publicSpots;
+            }
+
+            if (newLocation.dedicatedSpots !== '') {
+                changedDedicatedSpots = newLocation.dedicatedSpots - modalVisible.object.dedicatedSpots;
+            }
+
             const locationsCopy = [...locations];
             const editedLocationIndex = locationsCopy.findIndex(location => location.id === modalVisible.object.id);
 
