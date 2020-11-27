@@ -7,13 +7,15 @@ import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import useQueueHooks from '../hooks/QueueHooks';
 
-const ChargingView = ({ navigation }) => {
+const ChargingView = ({ navigation, route }) => {
     const [estimated, setEstimated] = useState(0)
     const { stopCharging, queue } = useQueueHooks();
 
     const handleBackButton = () => {
         navigation.goBack(null)
     }
+
+    const location = route.params.location;
 
     return (
         <StyleProvider style={getTheme(platform)}>
@@ -22,7 +24,7 @@ const ChargingView = ({ navigation }) => {
                 <View padder>
                     <BatteryInfo batteryStatus={54} />
                     <Text>Estimated time: {estimated}</Text>
-                    <Button full style={GlobalStyles.button} onPress={ () => stopCharging(navigation) } disabled={ queue.processing }>
+                    <Button full style={GlobalStyles.button} onPress={ () => stopCharging(navigation, location) } disabled={ queue.processing }>
                         { queue.processing ? <Spinner /> : <Text>Stop Charging</Text> }
                     </Button>
                 </View>

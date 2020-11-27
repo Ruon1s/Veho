@@ -20,8 +20,6 @@ const Home = ({ navigation }) => {
     const [carArray, setCarArray] = useState([]);
     const { currentUser, getUser, setCurrentUser, loading } = useFirebase();
 
-
-
     useEffect(() => {
         getUser()
         getUserCars()
@@ -57,31 +55,6 @@ const Home = ({ navigation }) => {
         }
     }
 
-    const {
-        queue,
-        parkingSpots,
-        queueListener,
-        parkingSpotListener,
-        addUserToQueue,
-        removeUserFromQueue,
-        startCharging,
-        checkStatus,
-    } = useQueueHooks();
-
-    useEffect(() => {
-        const unsubscribeQueueListener = queueListener();
-        const unsubscribeParkingSpotListener = parkingSpotListener();
-
-        return () => {
-            unsubscribeQueueListener();
-            unsubscribeParkingSpotListener();
-        }
-    }, []);
-
-    useEffect(() => {
-        setAvailable(checkStatus());
-    }, [parkingSpots, queue]);
-
     const getCarVin = async () => {
         const user = firebase.auth().currentUser;
         console.log(user)
@@ -109,7 +82,7 @@ const Home = ({ navigation }) => {
                             picker={true}
                             userType={userType}
                             onValueChange={onValueChange} />
-                        {userType === 'Normal' && <HomeQueueLayout user={currentUser} />}
+                        {userType === 'Normal' && <HomeQueueLayout user={currentUser} navigation={navigation} />}
                         {userType === 'Manager' && <HomeListLayout carArray={carArray} />}
                     </Container >
                 </StyleProvider >

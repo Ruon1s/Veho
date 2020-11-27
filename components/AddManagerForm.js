@@ -33,7 +33,7 @@ const AddManagerForm = (props) => {
             <Spinner />
             :
             error.type ==='searchUser' ?
-            <Text>{error.message}</Text>
+            <Text style={styles.errorMessage}>{error.message}</Text>
             :
             <>
                 <Form>
@@ -54,6 +54,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 20,
     },
+    errorMessage: {
+        alignSelf: "center",
+        fontSize: 15,
+        color: "#FB3664",
+    }
 });
 
 export default AddManagerForm;

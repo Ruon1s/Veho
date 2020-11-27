@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import 'firebase/firestore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
 
@@ -22,8 +22,8 @@ const useQueueHooks = () => {
      * 
      * This function listens updates on the queue collection in Firebase.
      */
-    const queueListener = () => {
-        return firebase.firestore().collection('locations').doc('vehoHq').collection('queue').orderBy('time', 'asc').onSnapshot(snapShot => {     //Return this so we can unsubscribe the listener when componen unmounts
+    const queueListener = (locationId) => {
+        return firebase.firestore().collection('locations').doc(locationId).collection('queue').orderBy('time', 'asc').onSnapshot(snapShot => {     //Return this so we can unsubscribe the listener when componen unmounts
             setQueue(queue => ({                                                                            //Update the queue size depending how many documents is in the collection
                 ...queue,
                 size: snapShot.size
@@ -53,8 +53,8 @@ const useQueueHooks = () => {
      * 
      * This function listens updates on the parkingspots collection in Firebase.
      */
-    const parkingSpotListener = () => {
-        return firebase.firestore().collection('locations').doc('4ZCI4abzkdEhywEmiZ6r').collection('parkingspots').onSnapshot(snapShot => {    //Return so we can unsubscribe when the component unmounts
+    const parkingSpotListener = (locationId) => {
+        return firebase.firestore().collection('locations').doc(locationId).collection('parkingspots').onSnapshot(snapShot => {    //Return so we can unsubscribe when the component unmounts
 
             setParkingSpots(parkingSpots => ({                                                                          //Clear the state so there will be no duplicates
                 ...parkingSpots,        
@@ -88,17 +88,17 @@ const useQueueHooks = () => {
      * 
      * This function handles the user adding to the queue collection.
      */
-    const addUserToQueue = async () => {
+    const addUserToQueue = async (locationId) => {
         try {
             setQueue(queue => ({                                                                    //Set processing to true to handle UI changes
                 ...queue,
                 processing: true,
             }));
 
-            const userId = firebase.auth().currentUser.uid;                                         //Get the user id
+            const userId = firebase.auth().currentUser;                                         //Get the user id
             const pushNotificationToken = (await Notifications.getExpoPushTokenAsync()).data        //Get the expo push notification token (to send notification when is the users turn)
 
-            const response = await firebase.firestore().collection('locations').doc('4ZCI4abzkdEhywEmiZ6r').collection('queue').add({                   //Add a new document to Queue collection
+            const response = await firebase.firestore().collection('locations').doc(locationId).collection('queue').add({                   //Add a new document to Queue collection
                 time: firebase.firestore.FieldValue.serverTimestamp(),
                 user_id: userId,
                 pushNotificationToken
@@ -121,7 +121,7 @@ const useQueueHooks = () => {
      * 
      * This function handles the removal of user from queue collection.
      */
-    const removeUserFromQueue = async () => {
+    const removeUserFromQueue = async (locationId) => {
         try {
             setQueue(queue => ({                                                                    //Set processing to true to handle UI changes
                 ...queue,
@@ -129,7 +129,7 @@ const useQueueHooks = () => {
             }));
 
             const queueId = await SecureStore.getItemAsync('queueId');                              //Get the queue collections document ID from the secure store
-            await firebase.firestore().collection('locations').doc('4ZCI4abzkdEhywEmiZ6r').collection('queue').doc(queueId).delete();                   //Remove the document from the collection
+            await firebase.firestore().collection('locations').doc(locationId).collection('queue').doc(queueId).delete();                   //Remove the document from the collection
 
             setQueue(queue => ({                                                                    //Handle state changes back to original state.
                 ...queue,
@@ -149,7 +149,7 @@ const useQueueHooks = () => {
      * 
      * @param {*} navigation 
      */
-    const startCharging = async (navigation) => {
+    const startCharging = async (navigation, locationId) => {
         try {
             setQueue(queue => ({                                                                    //Set processing to true to handle UI changes
                 ...queue,
@@ -160,7 +160,7 @@ const useQueueHooks = () => {
             const userId = firebase.auth().currentUser.uid;                                         //Get the current users ID
 
             await SecureStore.setItemAsync('chargingStationId', chargingStationId);                 //Store the document ID to the Secure Store
-            await firebase.firestore().collection('locations').doc('4ZCI4abzkdEhywEmiZ6r').collection('parkingspots').doc(chargingStationId).set({      //Update the document in firestore
+            await firebase.firestore().collection('locations').doc(locationId).collection('parkingspots').doc(chargingStationId).set({      //Update the document in firestore
                 availability: false,
                 userId,
             }, { merge: true });
@@ -179,7 +179,7 @@ const useQueueHooks = () => {
                 inSpot: true,
             }));
 
-            navigation.navigate('ChargingView');                                                    //Navigate user to the charging view where are the details of the charging
+            navigation.navigate('ChargingView', { location: locationId });                                                    //Navigate user to the charging view where are the details of the charging
         } catch (error) {
             console.log(`Error on StartCharging function in FirebaseHooks.js: ${ error.message }`);
         }
@@ -192,7 +192,7 @@ const useQueueHooks = () => {
      * 
      * @param {*} navigation 
      */
-    const stopCharging = async (navigation) => {
+    const stopCharging = async (navigation, locationId) => {
         try {
             setQueue(queue => ({                                                                    //Set processing to true to handle UI changes
                 ...queue,
@@ -200,13 +200,13 @@ const useQueueHooks = () => {
             }));
 
             const chargingStationId = await SecureStore.getItemAsync('chargingStationId');          //Get the document id from the secure store
-            await firebase.firestore().collection('locations').doc('vehoHq').collection('parkingspots').doc(chargingStationId).set({      //Update the document in the firestore
+            await firebase.firestore().collection('locations').doc(locationId).collection('parkingspots').doc(chargingStationId).set({      //Update the document in the firestore
                 availability: true,
                 userId: '',
             }, { merge: true });
             await SecureStore.deleteItemAsync('chargingStationId');                                 //Delete the id from the secure store
 
-            const queue = await firebase.firestore().collection('locations').doc('vehoHq').collection('queue').orderBy('time', 'asc').limit(1).get(); //Get the first user from the queue
+            const queue = await firebase.firestore().collection('locations').doc(locationId).collection('queue').orderBy('time', 'asc').limit(1).get(); //Get the first user from the queue
 
             if (!queue.empty) {                                                                     //Check that there really is a user in the queue 
                 const token = queue.docs[0].data().pushNotificationToken;                           //Get the users push notification token

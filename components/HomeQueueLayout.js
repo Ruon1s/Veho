@@ -25,13 +25,16 @@ const HomeQueueLayout = (props) => {
     } = useQueueHooks();
 
     useEffect(() => {
-        const unsubscribeQueueListener = queueListener();
-        const unsubscribeParkingSpotListener = parkingSpotListener();
-        return () => {
-            unsubscribeQueueListener();
-            unsubscribeParkingSpotListener();
+        if (props.user.location) {
+            const unsubscribeQueueListener = queueListener(props.user.location.id);
+            const unsubscribeParkingSpotListener = parkingSpotListener(props.user.location.id);
+            
+            return () => {
+                unsubscribeQueueListener();
+                unsubscribeParkingSpotListener();
+            }
         }
-    }, []);
+    }, [props.user]);
 
     useEffect(() => {
         setAvailable(checkStatus());
@@ -131,27 +134,27 @@ const HomeQueueLayout = (props) => {
 */}
             {queue.inQueue && available ?
                 <>
-                    <Button large block style={GlobalStyles.button} onPress={() => startCharging(navigation)} >
+                    <Button large block style={GlobalStyles.button} onPress={() => startCharging(props.navigation, props.user.location.id)} >
                         <Text>Start Charging</Text>
                     </Button>
-                    <Button large block onPress={removeUserFromQueue} disabled={queue.processing}>
+                    <Button large block onPress={ () => removeUserFromQueue(props.user.location.id) } disabled={queue.processing}>
                         {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
                     </Button>
                 </> : null}
             {!queue.inQueue && !available && !parkingSpots.inSpot ?
-                <Button large block style={GlobalStyles.button} onPress={addUserToQueue} disabled={queue.processing}>
+                <Button large block style={GlobalStyles.button} onPress={ () => addUserToQueue(props.user.location.id) } disabled={queue.processing}>
                     {queue.processing ? <Spinner /> : <Text>Queue</Text>}
                 </Button> : null}
             {queue.inQueue && !available ?
-                <Button large block style={GlobalStyles.button} onPress={removeUserFromQueue} disabled={queue.processing}>
+                <Button large block style={GlobalStyles.button} onPress={() => removeUserFromQueue(props.user.location.id)} disabled={queue.processing}>
                     {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
                 </Button> : null}
             {!queue.inQueue && available ?
-                <Button large block style={GlobalStyles.button} onPress={() => startCharging(navigation)}>
+                <Button large block style={GlobalStyles.button} onPress={() => startCharging(props.navigation, props.user.location.id)}>
                     <Text>Start Charging</Text>
                 </Button> : null}
             {parkingSpots.inSpot ?
-                <Button large block style={GlobalStyles.button} onPress={() => navigation.navigate('ChargingView')}>
+                <Button large block style={GlobalStyles.button} onPress={() => props.navigation.navigate('ChargingView', { location: props.user.location.id })}>
                     <Text>To Charging View</Text>
                 </Button> : null}
         </View>

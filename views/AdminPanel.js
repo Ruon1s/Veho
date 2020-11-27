@@ -82,7 +82,7 @@ const AdminPanel = ({ navigation }) => {
                         error={error}
                         listData={showLocations}
                         addButtonText="Add a location"
-                        addFunction={() => openModal('addLocation')}
+                        addFunction={() => openModal('addLocation', false, {})}
                         handleSearchTextChange={handleLocationQueryChange}
                         searchInputPlaceHolder="Search by location name..."
                         editLocation={openModal}

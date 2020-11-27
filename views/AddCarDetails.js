@@ -17,7 +17,7 @@ const AddCarDetails = ({ navigation }) => {
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>
-                <CustomHeader handleBackButton={() => navigation.goBack(null)} title='Add car details' subtitle={currentUser} />
+                <CustomHeader handleBackButton={() => navigation.goBack(null)} title='Add car details' />
                 <Content padder>
                     <RegisterCarForm navigation={navigation} />
                 </Content>

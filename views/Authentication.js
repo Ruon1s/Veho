@@ -15,12 +15,9 @@ const Authentication = ({ navigation }) => {
 
     //If the user is found and authenticated, redirect to home
     useEffect(() => {
-        firebase.auth().onAuthStateChanged(user => {
-            if (user !== null) {
-                navigation.replace('App');
-            }
-        })
-
+        const user = firebase.auth().currentUser;
+        console.log(user);
+        if (user) navigation.replace('App');
     }, []);
 
     return (
