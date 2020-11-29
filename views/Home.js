@@ -17,7 +17,7 @@ const Home = ({ navigation }) => {
     const [available, setAvailable] = useState();           //To check if there is a spot available right away
     const [batteryStatus, setBatteryStatus] = useState(54);
     const [carArray, setCarArray] = useState([]);
-    const { currentUser, getUser, setCurrentUser, loading, getUserType, userType } = useFirebase();
+    const { currentUser, getUser, loading, userType } = useFirebase();
 
     useEffect(() => {
         getUser()
@@ -78,10 +78,9 @@ const Home = ({ navigation }) => {
                         <CustomHeader
                             title='Home'
                             subtitle={currentUser}
-                           /* onValueChange={onValueChange}
-                            *//>
-                            */
-                        {userType === 'standard' || userType === 'admin' && <HomeQueueLayout user={currentUser} navigation={navigation} />}
+
+                            />
+                        {userType && userType === "standard" && <HomeQueueLayout user={currentUser} navigation={navigation} />}
                         {userType === 'manager' && <HomeListLayout carArray={carArray} />}
                     </Container >
                 </StyleProvider >

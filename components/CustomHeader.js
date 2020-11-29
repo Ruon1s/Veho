@@ -5,7 +5,7 @@ import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 // For cleaner code, need in many views anyway
 const CustomHeader = (props) => {
-    console.log('props.subtitle: ', props.subtitle)
+    console.log('props.subtitle: ', props.subtitle);
     return (<Header>
         <Left>
             {props.handleBackButton && <Button transparent onPress={props.handleBackButton}>
@@ -15,7 +15,7 @@ const CustomHeader = (props) => {
         <Body>
             <Title>{props.title}</Title>
 
-            {props.subtitle && <Subtitle>{props.subtitle.firstname}</Subtitle>}
+            { /*props.subtitle && <Subtitle>{props.subtitle.firstname}</Subtitle> */}
 
         </Body>
 
