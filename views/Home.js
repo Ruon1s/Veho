@@ -16,9 +16,8 @@ import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 const Home = ({ navigation }) => {
     const [available, setAvailable] = useState();           //To check if there is a spot available right away
     const [batteryStatus, setBatteryStatus] = useState(54);
-    const [userType, setUserType] = useState('Normal');      // Values: Normal & Manager
     const [carArray, setCarArray] = useState([]);
-    const { currentUser, getUser, setCurrentUser, loading } = useFirebase();
+    const { currentUser, getUser, setCurrentUser, loading, getUserType, userType } = useFirebase();
 
     useEffect(() => {
         getUser()
@@ -41,7 +40,7 @@ const Home = ({ navigation }) => {
         })
         setCarArray(array)
     }
-
+/*
     const onValueChange = () => {
         switch (userType) {
             case 'Normal': {
@@ -54,7 +53,7 @@ const Home = ({ navigation }) => {
             }
         }
     }
-
+*/
     const getCarVin = async () => {
         const user = firebase.auth().currentUser;
         console.log(user)
@@ -79,11 +78,11 @@ const Home = ({ navigation }) => {
                         <CustomHeader
                             title='Home'
                             subtitle={currentUser}
-                            picker={true}
-                            userType={userType}
-                            onValueChange={onValueChange} />
-                        {userType === 'Normal' && <HomeQueueLayout user={currentUser} navigation={navigation} />}
-                        {userType === 'Manager' && <HomeListLayout carArray={carArray} />}
+                           /* onValueChange={onValueChange}
+                            *//>
+                            */
+                        {userType === 'standard' || userType === 'admin' && <HomeQueueLayout user={currentUser} navigation={navigation} />}
+                        {userType === 'manager' && <HomeListLayout carArray={carArray} />}
                     </Container >
                 </StyleProvider >
             }

@@ -8,6 +8,7 @@ const useFirebase = () => {
     const [locations, setLocations] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
     const [loading, setLoading] = useState(true);
+    const [userType, setUserType] = useState('standard');
 
     const getUser = async () => {
         setLoading(true)
@@ -19,9 +20,18 @@ const useFirebase = () => {
         if (!doc.exists) {
             console.log('no user found')
         } else {
+           await getUserType();
            setCurrentUser(doc.data())
+
         }
+
         setLoading(false)
+        }
+    };
+
+    const getUserType = async () => {
+        if(currentUser !== undefined) {
+            setUserType(currentUser.role)
         }
     };
 
@@ -66,6 +76,8 @@ const useFirebase = () => {
         getUser,
         getUserCars,
         getLocations,
+        getUserType,
+        userType,
         locations,
         setLocations,
         currentUser,

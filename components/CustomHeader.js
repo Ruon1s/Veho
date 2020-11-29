@@ -18,11 +18,7 @@ const CustomHeader = (props) => {
             {props.subtitle && <Subtitle>{props.subtitle.firstname}</Subtitle>}
 
         </Body>
-        <Right >
-            {props.picker !== null && <Button block onPress={props.onValueChange}>
-                <Text>{props.userType}</Text>
-            </Button>}
-        </Right>
+
     </Header>)
 };
 
