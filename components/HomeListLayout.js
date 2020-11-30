@@ -2,9 +2,11 @@ import React from 'react';
 import { StyleSheet, Alert } from 'react-native';
 import { Content, Text, View, Card, CardItem } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import useFirebase from "../hooks/FireBaseHook";
 
 const HomeListLayout = (props) => {
     let carArray = props.carArray
+    const {prioritizeCar}= useFirebase();
 
     const createTwoButtonAlert = (car) => {
         Alert.alert(
@@ -18,7 +20,7 @@ const HomeListLayout = (props) => {
                 },
                 {
                     text: "OK", onPress: () => {            // Set car on top of the list and mark the priority somehow -- firebase modifications needed
-                        console.log("OK Pressed")
+                        prioritizeCar(car)
                     }
                 }
             ],

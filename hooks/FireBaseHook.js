@@ -47,7 +47,16 @@ const useFirebase = () => {
                 }
             ]));
     });
-    }
+    };
+
+    const prioritizeCar = async (car) => {
+        const user = firebase.auth().currentUser;
+        const db = firebase.firestore();
+         await db.collection('users').doc(user.uid).collection('cars').doc(car.id).update({
+        priority: true
+        })
+    };
+
 
     const getLocations = async () => {
         const db = firebase.firestore();
@@ -73,6 +82,7 @@ const useFirebase = () => {
         getUser,
         getUserCars,
         getLocations,
+        prioritizeCar,
         carArray: cars,
         locations,
         setLocations,
