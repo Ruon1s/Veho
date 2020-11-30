@@ -14,17 +14,17 @@ const useFirebase = () => {
         setLoading(true)
         const user = firebase.auth().currentUser;
         const db = firebase.firestore();
-        if(user){
-        const userRef = db.collection('users').doc(user.uid);
-        const doc = await userRef.get();
-        if (!doc.exists) {
-            console.log('no user found')
-        } else {
+        if (user) {
+            const userRef = db.collection('users').doc(user.uid);
+            const doc = await userRef.get();
+            if (!doc.exists) {
+                console.log('no user found')
+            } else {
 
-           setCurrentUser(doc.data());
+                setCurrentUser(doc.data());
 
-        }
-        setLoading(false)
+            }
+            setLoading(false)
         }
     };
 
@@ -35,26 +35,34 @@ const useFirebase = () => {
         const carsRef = db.collection('users').doc(user.uid).collection('cars')
         const snapshot = await carsRef.get();
 
+        setCars([]);
         snapshot.forEach(doc => {
             const carData = doc.data();
-            if(cars.find(doc => doc.id === cars.id) !== undefined){
-                return
-            }
+
             setCars(previousState => ([
                 ...previousState, {
-                ...carData,
+                    ...carData,
                     id: doc.id
                 }
             ]));
-    });
+        });
     };
 
     const prioritizeCar = async (car) => {
         const user = firebase.auth().currentUser;
         const db = firebase.firestore();
-         await db.collection('users').doc(user.uid).collection('cars').doc(car.id).update({
-        priority: true
-        })
+
+        if (car.priority === true) {
+            await db.collection('users').doc(user.uid).collection('cars').doc(car.id).update({
+                priority: false
+            });
+        } else {
+            await db.collection('users').doc(user.uid).collection('cars').doc(car.id).update({
+                priority: true
+            });
+        }
+
+        getUserCars();
     };
 
 

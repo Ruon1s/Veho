@@ -26,7 +26,6 @@ const CarDropdown = (props) => {
     return (
         <Picker
             note
-            style={{ width: 160 }}
             mode="dropdown"
             selectedValue={selected}
             onValueChange={(value) => { props.onSelect(value) }}>

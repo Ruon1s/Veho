@@ -126,9 +126,16 @@ const HomeQueueLayout = (props) => {
 
     return (<View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 24 }}>
         <QueueInfo free={parkingSpots.available.length} queue={queue.size} queuePosition={queue.position} style={{ flex: 2 }} />
-        <LocationInfo user={props.user} style={{ flex: 1 }} />
-        {!queue.inQueue && !parkingSpots.inSpot ?
-        <CarDropdown selected={selected} onSelect={onSelect}/> : null }
+
+        <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <View style={{ flex: 1 }}>
+                <LocationInfo user={props.user} />
+            </View>
+            <View style={{ flex: 0.4 }}>
+                {!queue.inQueue && !parkingSpots.inSpot ?
+                    <CarDropdown selected={selected} onSelect={onSelect} /> : null}
+            </View>
+        </View>
 
         <View style={{ display: 'flex', justifyContent: 'center', flex: 8 }}>
             <BatteryInfo batteryStatus={batteryStatus} sizeVariable='large' />
@@ -151,12 +158,12 @@ const HomeQueueLayout = (props) => {
                     <Button large block style={GlobalStyles.button} onPress={() => startCharging(props.navigation, props.user.location.id)} >
                         <Text>Start Charging</Text>
                     </Button>
-                    <Button large block transparent style={GlobalStyles.button} onPress={ () => removeUserFromQueue(props.user.location.id) } disabled={queue.processing}>
+                    <Button large block transparent style={GlobalStyles.button} onPress={() => removeUserFromQueue(props.user.location.id)} disabled={queue.processing}>
                         {queue.processing ? <Spinner /> : <Text>Skip</Text>}
                     </Button>
                 </View> : null}
             {!queue.inQueue && !available && !parkingSpots.inSpot ?
-                <Button large block style={GlobalStyles.button} onPress={ () => addUserToQueue(props.user.location.id) } disabled={queue.processing}>
+                <Button large block style={GlobalStyles.button} onPress={() => addUserToQueue(props.user.location.id)} disabled={queue.processing}>
                     {queue.processing ? <Spinner /> : <Text>Queue</Text>}
                 </Button> : null}
             {queue.inQueue && !available ?
