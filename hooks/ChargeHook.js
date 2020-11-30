@@ -4,10 +4,10 @@ import * as SecureStore from "expo-secure-store";
 import { fetchToken } from "./TokenHook";
 import * as firebase from "firebase";
 
-const useChargeHook = async () => {
-  const [batteryStatus, setBatteryStatus] = useState(49);
+const useChargeHook = () => {
+  const [soc, setSoc] = useState(49);
 
-  const getSoc = async () => {
+  const fetchSoc = async () => {
     console.log('123');
     const token = await SecureStore.getItemAsync("token");
     try {
@@ -22,7 +22,7 @@ const useChargeHook = async () => {
         withCredentials: true,
         headers,
       };
-      /*
+      
       const user = firebase.auth().currentUser;
       console.log(user);
       const db = firebase.firestore();
@@ -35,7 +35,7 @@ const useChargeHook = async () => {
       }
       const carVin = snapshot.docs[0].data().vin;
       console.log("current users cars vin number: ", carVin);
-      */
+      
 
       const res = await fetch(
         "https://api.connect-business.net/fleet/v1/fleets/1A3D13CCC6694F03ADBC1BC6CFADCB4B/vehicles.dynamic/W1K2132111A869249",
@@ -45,22 +45,23 @@ const useChargeHook = async () => {
       if (res.status == 200) {
         console.log("FetchSoc: Status OK, " + res.status);
         const toJSON = await res.json();
-        setBatteryStatus(toJSON.items.soc);
+        setSoc(toJSON.items.soc);
+        return toJSON.items.soc;
       } else if (res.status == 401) {
         console.log("FetchSoc: Status Unauthorized, " + res.status);
         fetchToken();
-        getSoc();
+        fetchSoc();
       } else {
         console.log("FetchSoc: Status BAD, " + res.status);
       }
     } catch (error) {
       console.log(error);
     }
-  };
+  }
   return {
-    batteryStatus,
-    getSoc
-  };
+    soc,
+    fetchSoc
+  }
 };
 
 export { useChargeHook };
