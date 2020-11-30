@@ -15,43 +15,16 @@ import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 const Home = ({ navigation }) => {
     const [batteryStatus, setBatteryStatus] = useState(54);
-    const [carArray, setCarArray] = useState([]);
-    const { currentUser, getUser, loading,} = useFirebase();
+
+    const { currentUser, getUser, loading, getUserCars, carArray} = useFirebase();
 
     useEffect(() => {
         getUser()
         getUserCars()
     }, []);
 
-    const getUserCars = async () => {
-        const user = firebase.auth().currentUser;
-        const db = firebase.firestore();
 
-        const carsRef = db.collection('users').doc(user.uid).collection('cars')
-        const snapshot = await carsRef.get();
 
-        let array = []
-        snapshot.forEach(doc => {
-            console.log(doc.id, '=>', doc.data())
-            array.push(doc.data())
-            console.log(carArray)
-        })
-        setCarArray(array)
-    }
-/*
-    const onValueChange = () => {
-        switch (userType) {
-            case 'Normal': {
-                setUserType('Manager')
-                break;
-            }
-            case 'Manager': {
-                setUserType('Normal')
-                break;
-            }
-        }
-    }
-*/
     const getCarVin = async () => {
         const user = firebase.auth().currentUser;
         console.log(user)
