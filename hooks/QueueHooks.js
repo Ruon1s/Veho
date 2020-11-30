@@ -19,7 +19,7 @@ const useQueueHooks = () => {
 
     /**
      * Listen queue collection updates.
-     * 
+     *
      * This function listens updates on the queue collection in Firebase.
      */
     const queueListener = (locationId) => {
@@ -29,7 +29,7 @@ const useQueueHooks = () => {
                 size: snapShot.size
             }));
 
-            let placement = 0;                                                                              //To keep track the users placement on the queue. Is there better way? 
+            let placement = 0;                                                                              //To keep track the users placement on the queue. Is there better way?
 
             snapShot.forEach(document => {
                 const userId = firebase.auth().currentUser.uid;                                             //Get the user id
@@ -50,20 +50,20 @@ const useQueueHooks = () => {
 
     /**
      * Listen parkingspot collection updates.
-     * 
+     *
      * This function listens updates on the parkingspots collection in Firebase.
      */
     const parkingSpotListener = (locationId) => {
         return firebase.firestore().collection('locations').doc(locationId).collection('parkingspots').onSnapshot(snapShot => {    //Return so we can unsubscribe when the component unmounts
 
             setParkingSpots(parkingSpots => ({                                                                          //Clear the state so there will be no duplicates
-                ...parkingSpots,        
+                ...parkingSpots,
                 available: [],
             }));
 
             const userId = firebase.auth().currentUser.uid;                                                         //Get the current users id
 
-            snapShot.forEach(document => {                      
+            snapShot.forEach(document => {
                 const data = document.data();                                                                           //Get the data of the document
 
                 if (data.availability === true) {                                                                       //If the spot is available, add the document ID to an array
@@ -85,7 +85,7 @@ const useQueueHooks = () => {
 
     /**
      * Add users to queue collection.
-     * 
+     *
      * This function handles the user adding to the queue collection.
      */
     const addUserToQueue = async (locationId) => {
@@ -118,7 +118,7 @@ const useQueueHooks = () => {
 
     /**
      * Remove user from the queue collection.
-     * 
+     *
      * This function handles the removal of user from queue collection.
      */
     const removeUserFromQueue = async (locationId) => {
@@ -150,10 +150,10 @@ const useQueueHooks = () => {
 
     /**
      * Handle the start of the charging.
-     * 
+     *
      * This function handles the starting of the charging.
-     * 
-     * @param {*} navigation 
+     *
+     * @param {*} navigation
      */
     const startCharging = async (navigation, locationId) => {
         try {
@@ -172,7 +172,7 @@ const useQueueHooks = () => {
             }, { merge: true });
 
             if (queue.inQueue) {                                                                    //If the user was in queue, remove it, else just set the processing false
-                removeUserFromQueue();
+                await removeUserFromQueue(locationId);
             } else {
                 setQueue(queue => ({
                     ...queue,
@@ -193,10 +193,10 @@ const useQueueHooks = () => {
 
     /**
      * Stop the charging.
-     * 
+     *
      * This functions handles necessary things when the user finish the charging.
-     * 
-     * @param {*} navigation 
+     *
+     * @param {*} navigation
      */
     const stopCharging = async (navigation, locationId) => {
         try {
@@ -228,16 +228,16 @@ const useQueueHooks = () => {
         try {
             const queue = await firebase.firestore().collection('locations').doc(locationId).collection('queue').orderBy('time', 'asc').limit(1).get(); //Get the first user from the queue
 
-            if (!queue.empty) {                                                                     //Check that there really is a user in the queue 
+            if (!queue.empty) {                                                                     //Check that there really is a user in the queue
                 const token = queue.docs[0].data().pushNotificationToken;                           //Get the users push notification token
-    
+
                 const message = {                                                                   //Create the message body
                     to: token,
                     sound: 'default',
                     title: 'Free charging station available!',
                     body: 'There is a free charging station available.'
                 }
-                
+
                 const options = {                                                                   //Create the correct options (POST, headers, etc...)
                     method: 'POST',
                     headers: {
@@ -248,7 +248,7 @@ const useQueueHooks = () => {
                     },
                     body: JSON.stringify(message),
                 }
-    
+
                 await fetch('https://exp.host/--/api/v2/push/send', options);                       //Post to Expo Notification Service so the notification is delivered
             }
         } catch (error) {
@@ -258,7 +258,7 @@ const useQueueHooks = () => {
 
     /**
      * Check the status of the states.
-     * 
+     *
      * This function will return true or false depending of the states, it is used to see if there is free parking spot right away.
      */
     const checkStatus = () => {

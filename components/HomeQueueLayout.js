@@ -8,9 +8,11 @@ import CustomHeader from './CustomHeader';
 import LocationInfo from './LocationInfo';
 import useQueueHooks from '../hooks/QueueHooks';
 import useFirebase from "../hooks/FireBaseHook";
+import CarDropdown from "./carDropdown";
 
 const HomeQueueLayout = (props) => {
     const [available, setAvailable] = useState();           //To check if there is a spot available right away
+    const [selected, setSelected] = useState('');
     const [batteryStatus, setBatteryStatus] = useState(54)
 
     const {
@@ -36,9 +38,18 @@ const HomeQueueLayout = (props) => {
         }
     }, [props.user]);
 
+
     useEffect(() => {
         setAvailable(checkStatus());
     }, [parkingSpots, queue]);
+
+    useEffect(() => {
+        console.log('selectedState ' + selected.licencePlate)
+    }, [selected])
+
+    const onSelect = (value) => {
+        setSelected(value)
+    }
 
     const fetchSoc = async () => {
         const token = await SecureStore.getItemAsync('token');
@@ -116,6 +127,8 @@ const HomeQueueLayout = (props) => {
     return (<View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 24 }}>
         <QueueInfo free={parkingSpots.available.length} queue={queue.size} queuePosition={queue.position} style={{ flex: 2 }} />
         <LocationInfo user={props.user} style={{ flex: 1 }} />
+        {!queue.inQueue && !parkingSpots.inSpot ?
+        <CarDropdown selected={selected} onSelect={onSelect}/> : null }
 
         <View style={{ display: 'flex', justifyContent: 'center', flex: 8 }}>
             <BatteryInfo batteryStatus={batteryStatus} sizeVariable='large' />

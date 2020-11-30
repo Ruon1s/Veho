@@ -8,7 +8,7 @@ const useFirebase = () => {
     const [locations, setLocations] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
     const [loading, setLoading] = useState(true);
-    const [userType, setUserType] = useState('');
+    const [cars, setCars] = useState([]);
 
     const getUser = async () => {
         setLoading(true)
@@ -29,23 +29,27 @@ const useFirebase = () => {
     };
 
     const getUserCars = async () => {
-        const array = [];
         const user = firebase.auth().currentUser;
         const db = firebase.firestore();
 
-
-
-        const carsRef = db.collection('users').doc(user.uid).collection('cars');
+        const carsRef = db.collection('users').doc(user.uid).collection('cars')
         const snapshot = await carsRef.get();
+
         snapshot.forEach(doc => {
-            console.log(doc.id, '=>', doc.data)
-            array.push(doc.data)
-        })
-        return array
-    };
+            const carData = doc.data();
+            if(cars.find(doc => doc.id === cars.id) !== undefined){
+                return
+            }
+            setCars(previousState => ([
+                ...previousState, {
+                ...carData,
+                    id: doc.id
+                }
+            ]));
+    });
+    }
 
     const getLocations = async () => {
-        const array = [];
         const db = firebase.firestore();
         const locationsRef = db.collection('locations');
         const snapShot = await locationsRef.get();
@@ -69,7 +73,7 @@ const useFirebase = () => {
         getUser,
         getUserCars,
         getLocations,
-        userType,
+        carArray: cars,
         locations,
         setLocations,
         currentUser,
