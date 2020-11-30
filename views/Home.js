@@ -12,15 +12,12 @@ import HomeQueueLayout from '../components/HomeQueueLayout';
 import HomeListLayout from '../components/HomeListLayout';
 import useFirebase from "../hooks/FireBaseHook";
 import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
-import { fetchToken } from "../hooks/TokenHook";
-import { useChargeHook } from "../hooks/ChargeHook";
 
 const Home = ({ navigation }) => {
-    const [batteryStatus, setBatteryStatus] = useState(61);
     const [userType, setUserType] = useState('Normal');      // Values: Normal & Manager
     const [carArray, setCarArray] = useState([]);
     const { currentUser, getUser, setCurrentUser, loading } = useFirebase();
-    
+
     useEffect(() => {
         getUser()
         getUserCars()

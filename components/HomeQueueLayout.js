@@ -17,11 +17,10 @@ import CustomHeader from "./CustomHeader";
 import LocationInfo from "./LocationInfo";
 import useQueueHooks from "../hooks/QueueHooks";
 import useFirebase from "../hooks/FireBaseHook";
-import { useChargeHook } from "../hooks/ChargeHook";
+import useChargeHook from "../hooks/ChargeHook";
 
 const HomeQueueLayout = (props) => {
   const [available, setAvailable] = useState(); //To check if there is a spot available right away
-  const [batteryStatus, setBatteryStatus] = useState(53);
 
   const {
       soc,
@@ -58,7 +57,7 @@ const HomeQueueLayout = (props) => {
   }, [parkingSpots, queue]);
 
   useEffect(() => {
-    setBatteryStatus(fetchSoc());
+    fetchSoc();
   }, [soc]);
 
   return (
@@ -74,7 +73,7 @@ const HomeQueueLayout = (props) => {
       />
       <LocationInfo user={props.user} style={{ flex: 1 }} />
       <View style={{ display: "flex", justifyContent: "center", flex: 8 }}>
-        <BatteryInfo batteryStatus={batteryStatus} sizeVariable="large" />
+        <BatteryInfo batteryStatus={soc} sizeVariable="large" />
       </View>
 
       <View style={{ flex: 1 }}>
