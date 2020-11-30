@@ -15,6 +15,8 @@ const AdminPanelSection = (props) => {
         searchInputPlaceHolder,
         removeFunction,
         editLocation,
+        switchToLocation,
+        currentUser,
     } = props;
 
     return(
@@ -41,6 +43,8 @@ const AdminPanelSection = (props) => {
                     removing={ processing.removing }
                     remove={ removeFunction }
                     edit={editLocation}
+                    switchToLocation={switchToLocation}
+                    currentUser={currentUser}
                 />
             </View>}
         </View>

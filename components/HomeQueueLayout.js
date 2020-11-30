@@ -134,14 +134,14 @@ const HomeQueueLayout = (props) => {
             </Button>
 */}
             {queue.inQueue && available ?
-                <>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                     <Button large block style={GlobalStyles.button} onPress={() => startCharging(props.navigation, props.user.location.id)} >
                         <Text>Start Charging</Text>
                     </Button>
-                    <Button large block onPress={ () => removeUserFromQueue(props.user.location.id) } disabled={queue.processing}>
-                        {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
+                    <Button large block transparent style={GlobalStyles.button} onPress={ () => removeUserFromQueue(props.user.location.id) } disabled={queue.processing}>
+                        {queue.processing ? <Spinner /> : <Text>Skip</Text>}
                     </Button>
-                </> : null}
+                </View> : null}
             {!queue.inQueue && !available && !parkingSpots.inSpot ?
                 <Button large block style={GlobalStyles.button} onPress={ () => addUserToQueue(props.user.location.id) } disabled={queue.processing}>
                     {queue.processing ? <Spinner /> : <Text>Queue</Text>}

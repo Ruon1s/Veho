@@ -14,7 +14,6 @@ import useFirebase from "../hooks/FireBaseHook";
 import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 const Home = ({ navigation }) => {
-    const [available, setAvailable] = useState();           //To check if there is a spot available right away
     const [batteryStatus, setBatteryStatus] = useState(54);
     const [carArray, setCarArray] = useState([]);
     const { currentUser, getUser, loading, userType } = useFirebase();
@@ -25,7 +24,6 @@ const Home = ({ navigation }) => {
         console.log('currentUser in useEffect: ', currentUser)
         console.log('userType in useEffect: ', userType)
     }, []);
-
 
     const getUserCars = async () => {
         const user = firebase.auth().currentUser;

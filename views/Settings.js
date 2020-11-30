@@ -9,9 +9,10 @@ import { useState, useEffect } from 'react'
 import GlobalStyles from "../styles/GlobalStyles";
 import firebase from 'firebase';
 import 'firebase/firestore';
+import useFirebase from '../hooks/FireBaseHook';
 
 const Settings = ({ navigation }) => {
-    const [admin, setAdmin] = useState(false);
+    const { currentUser, getUser } = useFirebase();
 
     const toAddCar = () => {
         navigation.navigate('AddCarDetails')
@@ -33,20 +34,8 @@ const Settings = ({ navigation }) => {
 
     useEffect(() => {
         getCarVin().then(r => setCarVin(r))
-        checkAdminStatus();
+        getUser();
     }, []);
-
-    const checkAdminStatus = async () => {
-        try {
-            const currentUserId = firebase.auth().currentUser.uid;
-            const response = await firebase.firestore().collection('users').doc(currentUserId).get();
-            if (response.data().role === 'admin') {
-                setAdmin(true);
-            }
-        } catch (error) {
-            console.log(`Error while retrieving admin status: ${ error.message }`)
-        }
-    }
 
     return (
         <StyleProvider style={getTheme(platform)}>
@@ -59,8 +48,8 @@ const Settings = ({ navigation }) => {
                         onPress={toAddCar}>
                         <Text>Add new car</Text>
                     </Button>
-                    {admin  && 
-                    <Button full style={ GlobalStyles.button } onPress={ () => navigation.navigate('AdminPanel') }>
+                    {currentUser.role === 'admin'  && 
+                    <Button full style={ GlobalStyles.button } onPress={ () => navigation.navigate('AdminPanel', { user: currentUser }) }>
                         <Text>Admin Panel</Text>
                     </Button>}
                     <Button

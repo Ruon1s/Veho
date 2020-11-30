@@ -1,8 +1,9 @@
-import { Card, CardItem, Text, Button, Right, Left, Spinner, View } from 'native-base';
+import { Card, CardItem, Text, Button, Right, Left, Spinner, View, Icon } from 'native-base';
 import React from 'react';
 import GlobalStyles from '../styles/GlobalStyles';
+import GlobalButton from './GlobalButton';
 
-const AdminPanelListItem = ({ item, remove, removing, error, edit }) => {
+const AdminPanelListItem = ({ item, remove, removing, error, edit, currentUser, switchToLocation }) => {
     return (
         <Card>
             <CardItem>
@@ -27,9 +28,17 @@ const AdminPanelListItem = ({ item, remove, removing, error, edit }) => {
                         <Text>Remove</Text>
                     </Button>
                     :
-                    <Button transparent style={ GlobalStyles.button} onPress={ () => edit('addLocation', true, item) } >
-                        <Text>Edit</Text>
-                    </Button>}
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                        {item.id === currentUser.location.id ?
+                        <Icon name="checkmark" /> 
+                        :
+                        <Button transparent style={GlobalStyles.button} onPress={() => switchToLocation(item)}>
+                            <Icon name="sync" />
+                        </Button>}
+                        <Button transparent style={ GlobalStyles.button} onPress={ () => edit('addLocation', true, item) } >
+                            <Text>Edit</Text>
+                        </Button>
+                    </View>}
                 </Right>
             </CardItem>
         </Card>

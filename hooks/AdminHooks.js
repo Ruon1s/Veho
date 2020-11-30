@@ -1,7 +1,6 @@
 import { useState } from "react";
 import firebase from 'firebase';
 import 'firebase/firestore';
-import { Modal } from "react-native";
 
 const useAdminHooks = () => {
     const [managers, setManagers] = useState([]);           //Keep track of the manager users that are found from the firebase
@@ -32,7 +31,7 @@ const useAdminHooks = () => {
         editing: false,                                     //Change UI layouts depending if the admin is editing
         object: {},                                         //Pass the object if we are dealing with editing
     });
-
+    
     /**
      * Fetch the manager users.
      * 
@@ -309,8 +308,8 @@ const useAdminHooks = () => {
                 editing: true,
             }));
 
-            let changedPublicSpots;
-            let changedDedicatedSpots;
+            let changedPublicSpots = 0;
+            let changedDedicatedSpots = 0;
 
             if (newLocation.publicSpots !== '') {
                 changedPublicSpots = newLocation.publicSpots - modalVisible.object.publicSpots;
@@ -392,7 +391,28 @@ const useAdminHooks = () => {
                 removing: locationDocumentId,
             }));
 
+            const publicSpots = await firebase.firestore().collection('locations').doc(locationDocumentId).collection('parkingspots').get();
+            const dedicatedSpots = await firebase.firestore().collection('locations').doc(locationDocumentId).collection('dedicatedSpots').get();
+
+            publicSpots.forEach(async (spot) => {
+                await firebase.firestore().collection('locations').doc(locationDocumentId).collection('parkingspots').doc(spot.id).delete();
+            });
+
+            dedicatedSpots.forEach(async (spot) => {
+                await firebase.firestore().collection('locations').doc(locationDocumentId).collection('dedicatedSpots').doc(spot.id).delete();
+            });
+
             await firebase.firestore().collection('locations').doc(locationDocumentId).delete();
+            const usersInLocation = await firebase.firestore().collection('users').where("location.id", "==", locationDocumentId).get();
+            usersInLocation.forEach(async (user) => {
+                await firebase.firestore().collection('users').doc(user.id).set({
+                    location: {
+                        name: '',
+                        id: ''
+                    },
+                }, { merge: true });
+            });
+
 
             const locationsAfterDeletion = locations.filter(location => location.id !== locationDocumentId);
             setLocations(locationsAfterDeletion);
@@ -405,6 +425,18 @@ const useAdminHooks = () => {
             closeModal();
         } catch (error) {
             handleError(locationDocumentId, error.message);
+        }
+    }
+
+    const switchToLocation = async (location) => {
+        try {
+            const uid = firebase.auth().currentUser.uid;
+
+            await firebase.firestore().collection('users').doc(uid).set({
+                location: location
+            }, { merge: true });
+        } catch (error) {
+            handleError('switchLocation', error.message);
         }
     }
 
@@ -433,6 +465,10 @@ const useAdminHooks = () => {
      */
     const closeModal = () => {
         setModalVisible({ type: '', visible: false });
+    }
+
+    const clearUser = () => {
+        setUser();
     }
 
     /**
@@ -549,11 +585,13 @@ const useAdminHooks = () => {
         fetchManagers,
         fetchLocations,
         searchUser,
+        clearUser,
         addManager,
         removeManager,
         addNewLocation,
         editLocation,
         removeLocation,
+        switchToLocation,
         openModal,
         closeModal,
         handleManagerQueryChange,

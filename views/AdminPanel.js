@@ -9,9 +9,10 @@ import GlobalButton from '../components/GlobalButton';
 import AdminPanelModal from '../components/AdminPanelModal';
 import { StyleSheet } from 'react-native';
 
-const AdminPanel = ({ navigation }) => { 
+const AdminPanel = ({ navigation, route }) => { 
     const [managersVisible, setManagersVisible] = useState(false);      //Hide/Show managers list
     const [locationsVisible, setLocationsVisible] = useState(false);    //Hide/Show locations list
+    const currentUser = route.params.user;
 
     const { 
         managers,
@@ -25,11 +26,13 @@ const AdminPanel = ({ navigation }) => {
         fetchManagers,
         fetchLocations,
         searchUser,
+        clearUser,
         addManager,
         removeManager,
         addNewLocation,
         editLocation,
         removeLocation,
+        switchToLocation,
         openModal,
         closeModal,
         handleManagerQueryChange,
@@ -86,10 +89,12 @@ const AdminPanel = ({ navigation }) => {
                         handleSearchTextChange={handleLocationQueryChange}
                         searchInputPlaceHolder="Search by location name..."
                         editLocation={openModal}
+                        switchToLocation={switchToLocation}
+                        currentUser={currentUser}
                     />
                     :
                     null}
-
+                    
                     <AdminPanelModal 
                         modalVisible={modalVisible}
                         closeModal={closeModal}
@@ -97,6 +102,7 @@ const AdminPanel = ({ navigation }) => {
                         addLocation={addNewLocation}
                         editLocation={editLocation}
                         removeLocation={removeLocation}
+                        clearUser={clearUser}
                         foundUser={user}
                         processing={processing}
                         error={error}
