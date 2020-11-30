@@ -69,7 +69,7 @@ const useQueueHooks = () => {
                 if (data.availability === true) {                                                                       //If the spot is available, add the document ID to an array
                     setParkingSpots(parkingSpots => ({
                         ...parkingSpots,
-                        available: parkingSpots.available.concat(document.id),
+                        available: [...parkingSpots.available, document.id],
                     }));
                 }
 
@@ -95,7 +95,7 @@ const useQueueHooks = () => {
                 processing: true,
             }));
 
-            const userId = firebase.auth().currentUser;                                         //Get the user id
+            const userId = firebase.auth().currentUser.uid;                                         //Get the user id
             const pushNotificationToken = (await Notifications.getExpoPushTokenAsync()).data        //Get the expo push notification token (to send notification when is the users turn)
 
             const response = await firebase.firestore().collection('locations').doc(locationId).collection('queue').add({                   //Add a new document to Queue collection
@@ -130,6 +130,12 @@ const useQueueHooks = () => {
 
             const queueId = await SecureStore.getItemAsync('queueId');                              //Get the queue collections document ID from the secure store
             await firebase.firestore().collection('locations').doc(locationId).collection('queue').doc(queueId).delete();                   //Remove the document from the collection
+
+            if (queue.position === 1 && queue.size > 1){
+                notifyNextUser(locationId);
+            }
+
+            await SecureStore.deleteItemAsync('queueId');
 
             setQueue(queue => ({                                                                    //Handle state changes back to original state.
                 ...queue,
@@ -206,6 +212,20 @@ const useQueueHooks = () => {
             }, { merge: true });
             await SecureStore.deleteItemAsync('chargingStationId');                                 //Delete the id from the secure store
 
+            notifyNextUser(locationId);
+
+            navigation.replace('App');                                                              //Take user back to main screen
+        } catch (error) {
+            setQueue(queue => ({
+                ...queue,
+                processing: false,
+            }))
+            console.log(`Error on StopCharging function in FirebaseHooks.js: ${ error.message }`)
+        }
+    }
+
+    const notifyNextUser = async (locationId) => {
+        try {
             const queue = await firebase.firestore().collection('locations').doc(locationId).collection('queue').orderBy('time', 'asc').limit(1).get(); //Get the first user from the queue
 
             if (!queue.empty) {                                                                     //Check that there really is a user in the queue 
@@ -231,14 +251,8 @@ const useQueueHooks = () => {
     
                 await fetch('https://exp.host/--/api/v2/push/send', options);                       //Post to Expo Notification Service so the notification is delivered
             }
-
-            navigation.replace('App');                                                              //Take user back to main screen
         } catch (error) {
-            setQueue(queue => ({
-                ...queue,
-                processing: false,
-            }))
-            console.log(`Error on StopCharging function in FirebaseHooks.js: ${ error.message }`)
+            console.log(`Error while notifying the next user: ${error.message}`)
         }
     }
 
@@ -248,15 +262,11 @@ const useQueueHooks = () => {
      * This function will return true or false depending of the states, it is used to see if there is free parking spot right away.
      */
     const checkStatus = () => {
-        try {
-            if (!parkingSpots.inSpot && parkingSpots.available.length > 0 && (queue.size === 0 || queue.position === 1)) {  //If the user is NOT charging, there IS FREE parkingspots and there is NO queue or the user is FIRST in queue, return true
-                return true;
-            }
-
-            return false;                                                                           //Else return false
-        } catch (error) {
-            console.log(`Error on CheckStatus function in FirebaseHooks.js: ${ error.message }`);
+        if (!parkingSpots.inSpot && parkingSpots.available.length > 0 && (queue.size === 0 || queue.position === 1)) {  //If the user is NOT charging, there IS FREE parkingspots and there is NO queue or the user is FIRST in queue, return true
+            return true;
         }
+
+        return false;                                                                           //Else return false
     }
 
     return {

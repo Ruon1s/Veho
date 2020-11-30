@@ -1,4 +1,4 @@
-import { Form, Input, Item, View, Button, Text, Spinner, Content } from 'native-base';
+import { Form, Input, Item, View, Text, Spinner } from 'native-base';
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import GlobalButton from './GlobalButton';
@@ -24,7 +24,7 @@ const AddOrEditLocationForm = (props) => {
     })
 
     return (
-        <Content padder>
+        <View>
             <Text style={styles.titleText}>{Object.keys(location).length !== 0 ? 'Edit Location' : 'Add a new Location'}</Text>
             {adding || editing || removing ?
             <Spinner />
@@ -63,7 +63,7 @@ const AddOrEditLocationForm = (props) => {
                 :
                 <GlobalButton text="Add a New Location" onPress={addLocation} />}
             </>}
-        </Content>
+        </View>
     );
 }
 

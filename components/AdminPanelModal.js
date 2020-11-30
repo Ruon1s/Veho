@@ -11,6 +11,7 @@ const AdminPanelModal = (props) => {
         closeModal,
         addManager,
         addLocation,
+        clearUser,
         foundUser,
         handleEmailChange,
         search,
@@ -35,6 +36,7 @@ const AdminPanelModal = (props) => {
                     search={search}
                     add={addManager}
                     searching={processing.searching}
+                    clear={clearUser}
                     adding={processing.adding}
                     handleEmailInput={handleEmailChange}
                     foundUser={foundUser}
@@ -54,7 +56,7 @@ const AdminPanelModal = (props) => {
                     handlePublicSpots={handleNewLocationPublicSpotCountChange}
                     handleDedicatedSpots={handleNewLocationDedicatedSpotCountChange}
                 />}
-                <View style={styles.closeButton}>      
+                <View style={styles.closeButton}> 
                     <GlobalButton text="Close" transparent={true} onPress={closeModal}  />
                 </View>
             </View>

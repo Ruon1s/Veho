@@ -12,7 +12,8 @@ const AddManagerForm = (props) => {
         error,
         searching,
         adding,
-        handleEmailInput
+        handleEmailInput,
+        clear
     } = props;
 
     return(
@@ -27,6 +28,7 @@ const AddManagerForm = (props) => {
                 <Text>Email: {foundUser.email}</Text>
                 <Text>Full name: {foundUser.firstname} {foundUser.lastname} </Text>
                 <GlobalButton text="Add as a manager" onPress={ () => add(foundUser.id) } />
+                <GlobalButton text="Clear" transparent={true} onPress={clear} />
             </>
             :
             searching ?
