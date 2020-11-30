@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Alert } from 'react-native';
 import { Content, Text, View, Card, CardItem } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import useFirebase from "../hooks/FireBaseHook";
 
 const HomeListLayout = (props) => {
-    const carArray = props.carArray
+    let carArray = props.carArray
 
-    const createTwoButtonAlert = (car) => {
+    const createTwoButtonAlert = (car) => {                 // Manager clicks cardObject, they are asked to put car in queue or not
+        let message = `Mark ${car.name} to queue?`
+
+        if (car.priority === true) {                        // If car is already priority
+            message = `Remove ${car.name} from queue?`
+        }
+
         Alert.alert(
             'Prioritize',
-            `Mark ${car.name} to queue?`,
+            message,
             [
                 {
-                    text: "Cancel",
+                    text: "Cancel",                         // Nothing happens
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },

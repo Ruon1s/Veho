@@ -31,8 +31,9 @@ const useFirebase = () => {
     const getUserCars = async () => {
         const user = firebase.auth().currentUser;
         const db = firebase.firestore();
+        const carsRef = db.collection('users').doc(user.uid).collection('cars').orderBy('priority', 'desc') // GET cars, prioritized first
+        // const carsRef = db.collection('users').doc(user.uid).collection('cars') // GET cars normally
 
-        const carsRef = db.collection('users').doc(user.uid).collection('cars')
         const snapshot = await carsRef.get();
 
         setCars([]);
