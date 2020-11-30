@@ -6,10 +6,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 const HomeListLayout = (props) => {
     let carArray = props.carArray
 
-    const createTwoButtonAlert = (title, msg) => {
+    const createTwoButtonAlert = (car) => {
         Alert.alert(
-            title,
-            msg,
+            'Prioritize',
+            `Mark ${car.name} to queue?`,
             [
                 {
                     text: "Cancel",
@@ -29,7 +29,7 @@ const HomeListLayout = (props) => {
     return (<Content padder>
         {carArray.map((car, key) => (
             <Card key={key}>
-                <CardItem button onPress={() => createTwoButtonAlert('Prioritize', `Mark ${car.name} to queue?`)}>
+                <CardItem button onPress={() => createTwoButtonAlert(car)}>
                     <View style={styles.left}>
                         <Text numberOfLines={1} style={styles.carName}>
                             {car.priority && <Text style={styles.priorityIndicator}>* </Text> /* render if car is set as priority in carArray, boolean value */}
