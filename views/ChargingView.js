@@ -22,7 +22,7 @@ const ChargingView = ({ navigation, route }) => {
             <Container>
                 <CustomHeader title='Charging info' handleBackButton={handleBackButton} />
                 <View padder>
-                    <BatteryInfo batteryStatus={54} />
+                    <BatteryInfo batteryStatus={60} />
                     <Text>Estimated time: {estimated}</Text>
                     <Button full style={GlobalStyles.button} onPress={ () => stopCharging(navigation, location) } disabled={ queue.processing }>
                         { queue.processing ? <Spinner /> : <Text>Stop Charging</Text> }
