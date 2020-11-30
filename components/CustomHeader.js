@@ -15,10 +15,10 @@ const CustomHeader = (props) => {
         <Body>
             <Title>{props.title}</Title>
 
-            { /*props.subtitle && <Subtitle>{props.subtitle.firstname}</Subtitle> */}
+            { props.subtitle && <Subtitle>{props.subtitle.firstname}</Subtitle> }
 
         </Body>
-
+        <Right/>
     </Header>)
 };
 

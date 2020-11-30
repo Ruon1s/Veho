@@ -28,7 +28,7 @@ const HomeQueueLayout = (props) => {
         if (props.user.location) {
             const unsubscribeQueueListener = queueListener(props.user.location.id);
             const unsubscribeParkingSpotListener = parkingSpotListener(props.user.location.id);
-            
+
             return () => {
                 unsubscribeQueueListener();
                 unsubscribeParkingSpotListener();
@@ -116,6 +116,7 @@ const HomeQueueLayout = (props) => {
     return (<View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 24 }}>
         <QueueInfo free={parkingSpots.available.length} queue={queue.size} queuePosition={queue.position} style={{ flex: 2 }} />
         <LocationInfo user={props.user} style={{ flex: 1 }} />
+
         <View style={{ display: 'flex', justifyContent: 'center', flex: 8 }}>
             <BatteryInfo batteryStatus={batteryStatus} sizeVariable='large' />
         </View>

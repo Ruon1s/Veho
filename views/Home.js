@@ -22,6 +22,8 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         getUser()
         getUserCars()
+        console.log('currentUser in useEffect: ', currentUser)
+        console.log('userType in useEffect: ', userType)
     }, []);
 
 
@@ -80,8 +82,8 @@ const Home = ({ navigation }) => {
                             subtitle={currentUser}
 
                             />
-                        {userType && userType === "standard" && <HomeQueueLayout user={currentUser} navigation={navigation} />}
-                        {userType === 'manager' && <HomeListLayout carArray={carArray} />}
+                        {userType && userType === "standard" || userType === "admin" && <HomeQueueLayout user={currentUser} navigation={navigation} />}
+                        {userType && userType === 'manager' && <HomeListLayout carArray={carArray} />}
                     </Container >
                 </StyleProvider >
             }
