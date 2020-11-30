@@ -22,7 +22,6 @@ const useFirebase = () => {
         } else {
 
            setCurrentUser(doc.data());
-           setUserType(doc.data().role)
 
         }
         setLoading(false)

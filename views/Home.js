@@ -16,13 +16,11 @@ import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 const Home = ({ navigation }) => {
     const [batteryStatus, setBatteryStatus] = useState(54);
     const [carArray, setCarArray] = useState([]);
-    const { currentUser, getUser, loading, userType } = useFirebase();
+    const { currentUser, getUser, loading,} = useFirebase();
 
     useEffect(() => {
         getUser()
         getUserCars()
-        console.log('currentUser in useEffect: ', currentUser)
-        console.log('userType in useEffect: ', userType)
     }, []);
 
     const getUserCars = async () => {
@@ -78,10 +76,9 @@ const Home = ({ navigation }) => {
                         <CustomHeader
                             title='Home'
                             subtitle={currentUser}
-
                             />
-                        {userType && userType === "standard" || userType === "admin" && <HomeQueueLayout user={currentUser} navigation={navigation} />}
-                        {userType && userType === 'manager' && <HomeListLayout carArray={carArray} />}
+                        {currentUser.role === "standard" || currentUser.rol === "admin" ? <HomeQueueLayout user={currentUser} navigation={navigation} /> : <HomeListLayout carArray={carArray} />}
+                        {/* {userType && userType === 'manager' && <HomeListLayout carArray={carArray} />} */}
                     </Container >
                 </StyleProvider >
             }
