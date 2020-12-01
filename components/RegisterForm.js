@@ -5,6 +5,7 @@ import useRegisterForm from '../hooks/RegisterHook.js';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import DropDownMenu from "./DropdownMenu";
+import useApiHooks from "../hooks/ApiHooks";
 
 const RegisterForm = ({ navigation, toLogin, props }) => {
     const {
@@ -16,6 +17,7 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
         inputs,
         errors
     } = useRegisterForm();
+
 
     const [selected, setSelected] = useState('');
 

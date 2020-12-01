@@ -59,6 +59,7 @@ const useFirebase = () => {
         setLoading(false)
     };
 
+
     const prioritizeCar = async (car) => {
         const user = firebase.auth().currentUser;
         const db = firebase.firestore();

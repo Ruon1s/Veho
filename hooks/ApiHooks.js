@@ -5,7 +5,7 @@ import * as firebase from "firebase";
 
 const useApiHooks = () => {
   const [soc, setSoc] = useState(10);
-  const [vin, setVin] = useState();
+  const [vin, setVin] = useState('');
 
   const fetchSoc = async () => {
     console.log('Executing fetchSoc');
@@ -85,6 +85,7 @@ const useApiHooks = () => {
         const toJSON = await res.json();
         setVin(toJSON.items[0].vin);
         console.log("items[0].vin: " + toJSON.items[0].vin)
+        return true
       } else if (res.status == 401) {
         console.log("fetchVin: Status Unauthorized, " + res.status);
         fetchToken();
@@ -106,30 +107,30 @@ const useApiHooks = () => {
         username: UNAME,
         password: PASS,
       };
-  
+
       const headers = {
         "Cache-Control": "no-cache",
         Authorization: AUTH,
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
       };
-  
+
       const formBody = Object.keys(data)
         .map(
           (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
         )
         .join("&");
-  
+
       const options = {
         method: "POST",
         headers,
         body: formBody,
       };
-  
+
       const res = await fetch(
         "https://api.connect-business.net/fleet/v1/oauth/token",
         options
       );
-  
+
       if (res.status == 200) {
         console.log("FetchToken: Status OK, " + res.status);
         const toJSON = await res.json();

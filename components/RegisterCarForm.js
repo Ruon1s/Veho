@@ -4,6 +4,8 @@ import { Button, Form, Input, Container, Text, Item, Label, Content } from 'nati
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import useRegisterCarForm from "../hooks/RegisterCarHook";
+import useApiHooks from "../hooks/ApiHooks";
+import {Alert} from "react-native-web";
 
 const RegisterCarForm = ({ navigation, toLogin }) => {
     const {
@@ -13,22 +15,30 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
         errors
     } = useRegisterCarForm();
 
+    const {fetchVin, vin} = useApiHooks();
+
     const registerVehicle = async () => {
         console.log('Rekkari: ', inputs.licencePlate)
         //if(inputs.vin === inputs.confirmVin) {
         const user = firebase.auth().currentUser;
         console.log(user)
         const db = firebase.firestore();
+    //    if (await fetchVin()) {
 
-        db.collection('users').doc(user.uid).collection('cars').add({
-            licencePlate: inputs.licencePlate,
-            name: inputs.carName,
-            vin: null,
-            priority: false
-        })
 
-        navigation.replace('App')
-    };
+            db.collection('users').doc(user.uid).collection('cars').add({
+                licencePlate: inputs.licencePlate,
+                name: inputs.carName,
+                vin: null,
+                priority: false
+            })
+
+            navigation.replace('App')
+    //    }
+    //    else{
+    //        Alert('Car not found in the system');
+       // }
+    }
 
     return (
         <Form>
