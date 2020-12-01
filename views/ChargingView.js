@@ -6,7 +6,7 @@ import CustomHeader from '../components/CustomHeader';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import useQueueHooks from '../hooks/QueueHooks';
-import useChargeHook from "../hooks/ChargeHook";
+import useApiHooks from "../hooks/ApiHooks";
 
 const ChargingView = ({ navigation, route }) => {
     const [estimated, setEstimated] = useState(0)
@@ -19,7 +19,7 @@ const ChargingView = ({ navigation, route }) => {
     const {
         soc,
         fetchSoc
-      } = useChargeHook();
+      } = useApiHooks();
 
       useEffect(() => {
         fetchSoc();

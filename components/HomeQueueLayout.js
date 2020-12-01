@@ -17,15 +17,15 @@ import CustomHeader from "./CustomHeader";
 import LocationInfo from "./LocationInfo";
 import useQueueHooks from "../hooks/QueueHooks";
 import useFirebase from "../hooks/FireBaseHook";
-import useChargeHook from "../hooks/ChargeHook";
+import useApiHooks from "../hooks/ApiHooks";
 
 const HomeQueueLayout = (props) => {
   const [available, setAvailable] = useState(); //To check if there is a spot available right away
 
   const {
     soc,
-    fetchSoc
-  } = useChargeHook();
+    fetchSoc,
+  } = useApiHooks();
 
   const {
     queue,
