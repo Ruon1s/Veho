@@ -18,9 +18,11 @@ import LocationInfo from "./LocationInfo";
 import useQueueHooks from "../hooks/QueueHooks";
 import useFirebase from "../hooks/FireBaseHook";
 import useApiHooks from "../hooks/ApiHooks";
+import CarDropdown from "./carDropdown";
 
 const HomeQueueLayout = (props) => {
   const [available, setAvailable] = useState(); //To check if there is a spot available right away
+  const [selected, setSelected] = useState('');
 
   const {
     soc,
@@ -56,6 +58,15 @@ const HomeQueueLayout = (props) => {
     setAvailable(checkStatus());
   }, [parkingSpots, queue]);
 
+
+  useEffect(() => {
+    console.log('selectedState ' + selected.licencePlate)
+  }, [selected])
+
+  const onSelect = (value) => {
+    setSelected(value)
+  }
+
   useEffect(() => {
     fetchSoc();
   }, [soc]);
@@ -71,7 +82,15 @@ const HomeQueueLayout = (props) => {
         queuePosition={queue.position}
         style={{ flex: 2 }}
       />
-      <LocationInfo user={props.user} style={{ flex: 1 }} />
+      <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <View style={{ flex: 1 }}>
+          <LocationInfo user={props.user} />
+        </View>
+        <View style={{ flex: 0.4 }}>
+          {!queue.inQueue && !parkingSpots.inSpot ?
+              <CarDropdown selected={selected} onSelect={onSelect} /> : null}
+        </View>
+      </View>
       <View style={{ display: "flex", justifyContent: "center", flex: 8 }}>
         <BatteryInfo batteryStatus={soc} sizeVariable="large" />
       </View>
