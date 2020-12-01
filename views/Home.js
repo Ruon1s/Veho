@@ -14,6 +14,7 @@ import useFirebase from "../hooks/FireBaseHook";
 import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 const Home = ({ navigation }) => {
+    const [userType, setUserType] = useState('Normal');      // Values: Normal & Manager
     const { currentUser, getUser, loading, getUserCars, carArray, prioritizeCar } = useFirebase();
 
     useEffect(() => {
