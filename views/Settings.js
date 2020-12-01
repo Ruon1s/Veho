@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Text, Content, StyleProvider, Label, Input, Item, Button, Form } from 'native-base';
+import {Container, Text, Content, StyleProvider, Label, Input, Item, Button, Form, Spinner} from 'native-base';
 import CustomHeader from '../components/CustomHeader';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
@@ -10,9 +10,10 @@ import GlobalStyles from "../styles/GlobalStyles";
 import firebase from 'firebase';
 import 'firebase/firestore';
 import useFirebase from '../hooks/FireBaseHook';
+import CarList from "../components/CarList";
 
 const Settings = ({ navigation }) => {
-    const { currentUser, getUser } = useFirebase();
+    const { currentUser, getUser, getUserCars, carArray, loading, deleteCar} = useFirebase();
 
     const toAddCar = () => {
         navigation.navigate('AddCarDetails')
@@ -22,6 +23,7 @@ const Settings = ({ navigation }) => {
         await firebase.auth().signOut();
         navigation.replace('Auth');
     }
+
 
     const {
         getCarVin,
@@ -35,33 +37,41 @@ const Settings = ({ navigation }) => {
     useEffect(() => {
         getCarVin().then(r => setCarVin(r))
         getUser();
+        getUserCars()
     }, []);
 
     return (
-        <StyleProvider style={getTheme(platform)}>
-            <Container>
-                <CustomHeader title='Settings' />
-                <Content padder>
-                    <Button
-                        block
-                        style={GlobalStyles.button}
-                        onPress={toAddCar}>
-                        <Text>Add new car</Text>
-                    </Button>
-                    {currentUser.role === 'admin'  && 
-                    <Button full style={ GlobalStyles.button } onPress={ () => navigation.navigate('AdminPanel', { user: currentUser }) }>
-                        <Text>Admin Panel</Text>
-                    </Button>}
-                    <Button
-                        block
-                        danger transparent
-                        style={GlobalStyles.button}
-                        onPress={logout}>
-                        <Text>Logout</Text>
-                    </Button>
-                </Content>
-            </Container>
-        </StyleProvider>
+
+                <StyleProvider style={getTheme(platform)}>
+                    <Container>
+
+                        <CustomHeader title='Settings'/>
+                        <Content padder>
+                            <Button
+                                block
+                                style={GlobalStyles.button}
+                                onPress={toAddCar}>
+                                <Text>Add new car</Text>
+                            </Button>
+                            {currentUser.role === 'admin' &&
+                            <Button full style={GlobalStyles.button}
+                                    onPress={() => navigation.navigate('AdminPanel', {user: currentUser})}>
+                                <Text>Admin Panel</Text>
+                            </Button>}
+                            {loading ? <Spinner/> :
+                                <CarList carArray={carArray} deleteCar={deleteCar} />
+                            }
+                            <Button
+                                block
+                                danger transparent
+                                style={GlobalStyles.button}
+                                onPress={logout}>
+                                <Text>Logout</Text>
+                            </Button>
+                        </Content>
+                    </Container>
+                </StyleProvider>
+
     );
 }
 

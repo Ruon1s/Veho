@@ -28,7 +28,16 @@ const useFirebase = () => {
         }
     };
 
+    const deleteCar = async (car) => {
+        const user = firebase.auth().currentUser;
+        const db = firebase.firestore()
+        await db.collection('users').doc(user.uid).collection('cars').doc(car.id).delete();
+        console.log(car.name, ': deleted');
+        getUserCars()
+    }
+
     const getUserCars = async () => {
+        setLoading(true)
         const user = firebase.auth().currentUser;
         const db = firebase.firestore();
         const carsRef = db.collection('users').doc(user.uid).collection('cars').orderBy('priority', 'desc') // GET cars, prioritized first
@@ -47,6 +56,7 @@ const useFirebase = () => {
                 }
             ]));
         });
+        setLoading(false)
     };
 
     const prioritizeCar = async (car) => {
@@ -63,7 +73,7 @@ const useFirebase = () => {
             });
         }
 
-        getUserCars();
+       getUserCars();
     };
 
 
@@ -88,6 +98,7 @@ const useFirebase = () => {
     };
 
     return {
+        deleteCar,
         getUser,
         getUserCars,
         getLocations,

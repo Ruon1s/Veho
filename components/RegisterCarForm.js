@@ -23,7 +23,8 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
         db.collection('users').doc(user.uid).collection('cars').add({
             licencePlate: inputs.licencePlate,
             name: inputs.carName,
-            vin: null
+            vin: null,
+            priority: false
         })
 
         navigation.replace('App')
