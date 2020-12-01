@@ -4,7 +4,6 @@ import CustomHeader from '../components/CustomHeader';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import NotificationTest from '../components/NotificationTest';
-import useSettingsForm from '../hooks/SettingsHook.js'
 import { useState, useEffect } from 'react'
 import GlobalStyles from "../styles/GlobalStyles";
 import firebase from 'firebase';
@@ -24,18 +23,7 @@ const Settings = ({ navigation }) => {
         navigation.replace('Auth');
     }
 
-
-    const {
-        getCarVin,
-        carVin,
-        setCarVin,
-        changeEditable,
-        editable,
-        editCarVin
-    } = useSettingsForm();
-
     useEffect(() => {
-        getCarVin().then(r => setCarVin(r))
         getUser();
         getUserCars()
     }, []);

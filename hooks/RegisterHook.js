@@ -31,10 +31,21 @@ const registerConstraints = {
         equality: 'password',
     },
 };
+/**
+ * for using register form and handling the validation
+ * @returns {{setInputs: *, handlePasswordChange: *, inputs: *, handleLastNameChange: *, handleEmailChange: *, handleConfirmPasswordChange: *, setErrors: *, errors: *, handleFirstNameChange: *}}
+ */
 const useRegisterForm = () => {
     const [inputs, setInputs] = useState({firstName: '', lastName: '', email: '', password: '', confirmPassword: ''});
     const [errors, setErrors] = useState ({});
 
+    /**
+     * Sets inputs from first name field to inputs state
+     * validates to see if it matches the constraints
+     * if there are errors they're put in the errors state
+     * called when text in the field changes
+     * @see registerConstraints.firstName
+     */
   const handleFirstNameChange = (text) => {
       console.log(errors)
       const error = validate({firstName: text}, {firstName: registerConstraints.firstName});
@@ -48,6 +59,13 @@ const useRegisterForm = () => {
       }))
 
   };
+    /**
+     * Sets inputs from last name field to inputs state
+     * validates to see if it matches the constraints
+     * if there are errors they're put in the errors state
+     * called when text in the field changes
+     * @see registerConstraints.lastName
+     */
   const handleLastNameChange = (text) => {
       const error = validate({lastName: text}, {lastName: registerConstraints.lastName})
       setInputs((inputs) => ({
@@ -59,6 +77,14 @@ const useRegisterForm = () => {
           lastName: error,
       }))
   };
+
+    /**
+     * Sets inputs from email field to inputs state
+     * validates to see if it matches the constraints
+     * if there are errors they're put in the errors state
+     * called when text in the field changes
+     * @see registerConstraints.email
+     */
   const handleEmailChange = (text) => {
       const error = validate({email: text}, {email: registerConstraints.email})
       setInputs((inputs) => ({
@@ -70,6 +96,14 @@ const useRegisterForm = () => {
           email: error,
       }))
   };
+
+    /**
+     * Sets inputs from password field to inputs state
+     * validates to see if it matches the constraints
+     * if there are errors they're put in the errors state
+     * called when text in the field changes
+     * @see registerConstraints.password
+     */
   const handlePasswordChange = (text) => {
       const error = validate({password: text}, {password: registerConstraints.password})
       setInputs((inputs) => ({
@@ -82,6 +116,14 @@ const useRegisterForm = () => {
       }))
       console.log(text)
   };
+
+    /**
+     * Sets inputs from confirm password field to inputs state
+     * validates to see if it matches the constraints
+     * if there are errors they're put in the errors state
+     * called when text in the field changes
+     * @see registerConstraints.confirmPassword
+     */
   const handleConfirmPasswordChange = (text) => {
       const error = validate({password: inputs.password, confirmPassword: text}, {confirmPassword: registerConstraints.confirmPassword})
       setInputs((inputs) => ({
