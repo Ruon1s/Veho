@@ -7,6 +7,7 @@ const useApiHooks = () => {
   const [soc, setSoc] = useState(10);
   const [vin, setVin] = useState('');
 
+  //TODO put vin as a parameter after we have all necessary information in the fleet
   const fetchSoc = async () => {
     console.log('Executing fetchSoc');
     const token = await SecureStore.getItemAsync("token");
@@ -22,21 +23,8 @@ const useApiHooks = () => {
         withCredentials: true,
         headers,
       };
-      /*  ADD THIS 'carVin' AFTER USERS HAVE VIN'S IN BACKEND
-      const user = firebase.auth().currentUser;
-      console.log(user);
-      const db = firebase.firestore();
 
-      const carsRef = db.collection("cars");
-      const snapshot = await carsRef.where("uid", "==", user.uid).get();
-      if (snapshot.empty) {
-        console.log("No documents.");
-        return;
-      }
-      const carVin = snapshot.docs[0].data().vin;
-      console.log("current users cars vin number: ", carVin);
-      */
-
+      //TODO use vin in the fetch
       const res = await fetch(
         "https://api.connect-business.net/fleet/v1/fleets/1A3D13CCC6694F03ADBC1BC6CFADCB4B/vehicles.dynamic/W1K2132111A869249",
         options
@@ -46,6 +34,7 @@ const useApiHooks = () => {
         console.log("fetchSoc: Status OK, " + res.status);
         const toJSON = await res.json();
         setSoc(toJSON.items.soc);
+        return toJSON.items.soc;
       } else if (res.status == 401) {
         console.log("fetchSoc: Status Unauthorized, " + res.status);
         fetchToken();

@@ -17,13 +17,16 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
 
     const {fetchVin, vin} = useApiHooks();
 
+
+
     const registerVehicle = async () => {
-        console.log('Rekkari: ', inputs.licencePlate)
-        //if(inputs.vin === inputs.confirmVin) {
+        console.log('Rekkari: ', inputs.licencePlate);
         const user = firebase.auth().currentUser;
         console.log(user)
         const db = firebase.firestore();
-    //    if (await fetchVin()) {
+        //TODO remove comments after we have everything in the fleet for testing
+
+    //    if (await fetchVin()) {  /* tried returning true from the function so that it can be tested with if sentence */
 
 
             db.collection('users').doc(user.uid).collection('cars').add({
@@ -36,7 +39,7 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
             navigation.replace('App')
     //    }
     //    else{
-    //        Alert('Car not found in the system');
+    //        Alert('Car not found in the system');  /* Might aswell be console log */
        // }
     }
 

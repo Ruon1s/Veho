@@ -2,6 +2,7 @@ import React from 'react'
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { useState } from 'react'
+import useApiHooks from "./ApiHooks";
 
 
 const useFirebase = () => {
@@ -10,8 +11,10 @@ const useFirebase = () => {
     const [loading, setLoading] = useState(true);
     const [cars, setCars] = useState([]);
 
+    const {fetchSoc} = useApiHooks();
+
     const getUser = async () => {
-        setLoading(true)
+        setLoading(true);
         const user = firebase.auth().currentUser;
         const db = firebase.firestore();
         if (user) {
@@ -48,11 +51,14 @@ const useFirebase = () => {
         setCars([]);
         snapshot.forEach(doc => {
             const carData = doc.data();
+        //TODO remove comments after we get registeration numbers to the fleet
 
+        //   const soc = fetchSoc(carData.vin)
             setCars(previousState => ([
                 ...previousState, {
                     ...carData,
-                    id: doc.id
+                    id: doc.id,
+                 //   soc: soc
                 }
             ]));
         });

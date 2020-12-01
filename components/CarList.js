@@ -7,9 +7,6 @@ const CarList = (props) => {
     console.log('ree', props.carArray);
     let carArray = props.carArray;
 
-    const {deleteCar,
-    } = useFirebase();
-
     return (
         <Content padder>
     {carArray.map((car, key) => (
