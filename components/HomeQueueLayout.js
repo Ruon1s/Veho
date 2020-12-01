@@ -1,148 +1,83 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Text, Button, View, StyleProvider, Toast, Root, Spinner } from 'native-base';
-import { Col, Grid } from 'react-native-easy-grid';
-import GlobalStyles from '../styles/GlobalStyles';
-import BatteryInfo from './BatteryInfo';
-import QueueInfo from './QueueInfo';
-import CustomHeader from './CustomHeader';
-import LocationInfo from './LocationInfo';
-import useQueueHooks from '../hooks/QueueHooks';
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Text,
+  Button,
+  View,
+  StyleProvider,
+  Toast,
+  Root,
+  Spinner,
+} from "native-base";
+import { Col, Grid } from "react-native-easy-grid";
+import GlobalStyles from "../styles/GlobalStyles";
+import BatteryInfo from "./BatteryInfo";
+import QueueInfo from "./QueueInfo";
+import CustomHeader from "./CustomHeader";
+import LocationInfo from "./LocationInfo";
+import useQueueHooks from "../hooks/QueueHooks";
 import useFirebase from "../hooks/FireBaseHook";
-import CarDropdown from "./carDropdown";
+import useChargeHook from "../hooks/ChargeHook";
 
 const HomeQueueLayout = (props) => {
-    const [available, setAvailable] = useState();           //To check if there is a spot available right away
-    const [selected, setSelected] = useState('');
-    const [batteryStatus, setBatteryStatus] = useState(54)
+  const [available, setAvailable] = useState(); //To check if there is a spot available right away
 
-    const {
-        queue,
-        parkingSpots,
-        queueListener,
-        parkingSpotListener,
-        addUserToQueue,
-        removeUserFromQueue,
-        startCharging,
-        checkStatus,
-    } = useQueueHooks();
+  const {
+    soc,
+    fetchSoc
+  } = useChargeHook();
 
-    useEffect(() => {
-        if (props.user.location) {
-            const unsubscribeQueueListener = queueListener(props.user.location.id);
-            const unsubscribeParkingSpotListener = parkingSpotListener(props.user.location.id);
+  const {
+    queue,
+    parkingSpots,
+    queueListener,
+    parkingSpotListener,
+    addUserToQueue,
+    removeUserFromQueue,
+    startCharging,
+    checkStatus,
+  } = useQueueHooks();
 
-            return () => {
-                unsubscribeQueueListener();
-                unsubscribeParkingSpotListener();
-            }
-        }
-    }, [props.user]);
+  useEffect(() => {
+    if (props.user.location) {
+      const unsubscribeQueueListener = queueListener(props.user.location.id);
+      const unsubscribeParkingSpotListener = parkingSpotListener(
+        props.user.location.id
+      );
 
-
-    useEffect(() => {
-        setAvailable(checkStatus());
-    }, [parkingSpots, queue]);
-
-    useEffect(() => {
-        console.log('selectedState ' + selected.licencePlate)
-    }, [selected])
-
-    const onSelect = (value) => {
-        setSelected(value)
+      return () => {
+        unsubscribeQueueListener();
+        unsubscribeParkingSpotListener();
+      };
     }
+  }, [props.user]);
 
-    const fetchSoc = async () => {
-        const token = await SecureStore.getItemAsync('token');
-        try {
-            const headers = {
-                'Cache-Control': 'no-cache',
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-            }
+  useEffect(() => {
+    setAvailable(checkStatus());
+  }, [parkingSpots, queue]);
 
-            const options = {
-                method: 'GET',
-                withCredentials: true,
-                headers,
-            }
-            const user = firebase.auth().currentUser;
-            console.log(user)
-            const db = firebase.firestore();
+  useEffect(() => {
+    fetchSoc();
+  }, [soc]);
 
-            const carsRef = db.collection('cars');
-            const snapshot = await carsRef.where('uid', '==', user.uid).get();
-            if (snapshot.empty) {
-                console.log('No documents.');
-                return;
-            }
-            const carVin = snapshot.docs[0].data().vin
-            console.log('current users cars vin number: ', carVin)
+  return (
+    <View
+      padder
+      style={{ flex: 1, justifyContent: "space-between", marginBottom: 24 }}
+    >
+      <QueueInfo
+        free={parkingSpots.available.length}
+        queue={queue.size}
+        queuePosition={queue.position}
+        style={{ flex: 2 }}
+      />
+      <LocationInfo user={props.user} style={{ flex: 1 }} />
+      <View style={{ display: "flex", justifyContent: "center", flex: 8 }}>
+        <BatteryInfo batteryStatus={soc} sizeVariable="large" />
+      </View>
 
-
-
-            const response = await fetch('https://api.connect-business.net/fleet/v1/fleets/DF89D145A29C43BE80FC2464B54405F9/vehicles.dynamic/C0NNECT0000000100', options);
-            //const toJSON = await response.json();
-            // HTML response (404/500), response.text
-            const toJSON = await response.json();
-
-            console.log(toJSON);
-
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const fetchToken = async () => {
-        try {
-            const data = {
-                'grant_type': GRANT,
-                'username': UNAME,
-                'password': PASS
-            }
-
-            const headers = {
-                'Cache-Control': 'no-cache',
-                'Authorization': AUTH,
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-            }
-
-            const formBody = Object.keys(data).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])).join('&');
-
-            const options = {
-                method: 'POST',
-                headers,
-                body: formBody,
-            }
-
-            const response = await fetch('https://api.connect-business.net/fleet/v1/oauth/token', options);
-            const toJSON = await response.json();
-
-            await SecureStore.setItemAsync('token', toJSON.access_token);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    return (<View padder style={{ flex: 1, justifyContent: 'space-between', marginBottom: 24 }}>
-        <QueueInfo free={parkingSpots.available.length} queue={queue.size} queuePosition={queue.position} style={{ flex: 2 }} />
-
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
-            <View style={{ flex: 1 }}>
-                <LocationInfo user={props.user} />
-            </View>
-            <View style={{ flex: 0.4 }}>
-                {!queue.inQueue && !parkingSpots.inSpot ?
-                    <CarDropdown selected={selected} onSelect={onSelect} /> : null}
-            </View>
-        </View>
-
-        <View style={{ display: 'flex', justifyContent: 'center', flex: 8 }}>
-            <BatteryInfo batteryStatus={batteryStatus} sizeVariable='large' />
-        </View>
-
-        <View style={{ flex: 1 }}>
-            {/*
+      <View style={{ flex: 1 }}>
+        {/*
             <Button  large block transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
                 <Text>Test notification</Text>
             </Button>
@@ -153,33 +88,83 @@ const HomeQueueLayout = (props) => {
                 <Text>(DEV) Refresh SOC</Text>
             </Button>
 */}
-            {queue.inQueue && available ?
-                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <Button large block style={GlobalStyles.button} onPress={() => startCharging(props.navigation, props.user.location.id)} >
-                        <Text>Start Charging</Text>
-                    </Button>
-                    <Button large block transparent style={GlobalStyles.button} onPress={() => removeUserFromQueue(props.user.location.id)} disabled={queue.processing}>
-                        {queue.processing ? <Spinner /> : <Text>Skip</Text>}
-                    </Button>
-                </View> : null}
-            {!queue.inQueue && !available && !parkingSpots.inSpot ?
-                <Button large block style={GlobalStyles.button} onPress={() => addUserToQueue(props.user.location.id)} disabled={queue.processing}>
-                    {queue.processing ? <Spinner /> : <Text>Queue</Text>}
-                </Button> : null}
-            {queue.inQueue && !available ?
-                <Button large block style={GlobalStyles.button} onPress={() => removeUserFromQueue(props.user.location.id)} disabled={queue.processing}>
-                    {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
-                </Button> : null}
-            {!queue.inQueue && available ?
-                <Button large block style={GlobalStyles.button} onPress={() => startCharging(props.navigation, props.user.location.id)}>
-                    <Text>Start Charging</Text>
-                </Button> : null}
-            {parkingSpots.inSpot ?
-                <Button large block style={GlobalStyles.button} onPress={() => props.navigation.navigate('ChargingView', { location: props.user.location.id })}>
-                    <Text>To Charging View</Text>
-                </Button> : null}
-        </View>
-    </View>)
-}
+        {queue.inQueue && available ? (
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+          >
+            <Button
+              large
+              block
+              style={GlobalStyles.button}
+              onPress={() =>
+                startCharging(props.navigation, props.user.location.id)
+              }
+            >
+              <Text>Start Charging</Text>
+            </Button>
+            <Button
+              large
+              block
+              transparent
+              style={GlobalStyles.button}
+              onPress={() => removeUserFromQueue(props.user.location.id)}
+              disabled={queue.processing}
+            >
+              {queue.processing ? <Spinner /> : <Text>Skip</Text>}
+            </Button>
+          </View>
+        ) : null}
+        {!queue.inQueue && !available && !parkingSpots.inSpot ? (
+          <Button
+            large
+            block
+            style={GlobalStyles.button}
+            onPress={() => addUserToQueue(props.user.location.id)}
+            disabled={queue.processing}
+          >
+            {queue.processing ? <Spinner /> : <Text>Queue</Text>}
+          </Button>
+        ) : null}
+        {queue.inQueue && !available ? (
+          <Button
+            large
+            block
+            style={GlobalStyles.button}
+            onPress={() => removeUserFromQueue(props.user.location.id)}
+            disabled={queue.processing}
+          >
+            {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
+          </Button>
+        ) : null}
+        {!queue.inQueue && available ? (
+          <Button
+            large
+            block
+            style={GlobalStyles.button}
+            onPress={() =>
+              startCharging(props.navigation, props.user.location.id)
+            }
+          >
+            <Text>Start Charging</Text>
+          </Button>
+        ) : null}
+        {parkingSpots.inSpot ? (
+          <Button
+            large
+            block
+            style={GlobalStyles.button}
+            onPress={() =>
+              props.navigation.navigate("ChargingView", {
+                location: props.user.location.id,
+              })
+            }
+          >
+            <Text>To Charging View</Text>
+          </Button>
+        ) : null}
+      </View>
+    </View>
+  );
+};
 
-export default HomeQueueLayout
+export default HomeQueueLayout;

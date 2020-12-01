@@ -6,6 +6,7 @@ import CustomHeader from '../components/CustomHeader';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import useQueueHooks from '../hooks/QueueHooks';
+import useChargeHook from "../hooks/ChargeHook";
 
 const ChargingView = ({ navigation, route }) => {
     const [estimated, setEstimated] = useState(0)
@@ -15,6 +16,15 @@ const ChargingView = ({ navigation, route }) => {
         navigation.goBack(null)
     }
 
+    const {
+        soc,
+        fetchSoc
+      } = useChargeHook();
+
+      useEffect(() => {
+        fetchSoc();
+      }, [soc]);
+
     const location = route.params.location;
 
     return (
@@ -22,7 +32,7 @@ const ChargingView = ({ navigation, route }) => {
             <Container>
                 <CustomHeader title='Charging info' handleBackButton={handleBackButton} />
                 <View padder>
-                    <BatteryInfo batteryStatus={54} />
+                    <BatteryInfo batteryStatus={soc} />
                     <Text>Estimated time: {estimated}</Text>
                     <Button full style={GlobalStyles.button} onPress={ () => stopCharging(navigation, location) } disabled={ queue.processing }>
                         { queue.processing ? <Spinner /> : <Text>Stop Charging</Text> }
