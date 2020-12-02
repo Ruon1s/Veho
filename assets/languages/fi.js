@@ -90,6 +90,7 @@ const fi = {
     title: 'Priorisoi',
 
     // QueueInfo-component
+    currentlyChraging: "Autosi latautuu",
     numberOfCars: 'Autojen määrä jonossa:',
     noCarsInQueue: 'Jono on tyhjä',
     freeSpots: 'Vapaita paikkoja:',

@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
 
@@ -15,12 +15,17 @@ const useQueueHooks = () => {
     const [parkingSpots, setParkingSpots] = useState({
         available: [],          //Available parking spots (will be filled with their document id)
         inSpot: false,          //If the user is charging
+        pendingSpot: false,     //If the user is first in queue and has a spot available
     });
+
+    const [errors, setErrors] = useState();
 
     /**
      * Listen queue collection updates.
      *
      * This function listens updates on the queue collection in Firebase.
+     * 
+     * @param {string} locationId
      */
     const queueListener = (locationId) => {
         return firebase.firestore().collection('locations').doc(locationId).collection('queue').orderBy('time', 'asc').onSnapshot(snapShot => {     //Return this so we can unsubscribe the listener when componen unmounts
@@ -37,7 +42,7 @@ const useQueueHooks = () => {
 
                 placement++;                                                                                //Add +1 to placement
 
-                if (data.user_id === userId) {                                                              //If the documents userid matches to current users id set the position etc.
+                if (data.userId === userId) {                                                              //If the documents userid matches to current users id set the position etc.
                     setQueue(queue => ({
                         ...queue,
                         position: placement,
@@ -52,6 +57,8 @@ const useQueueHooks = () => {
      * Listen parkingspot collection updates.
      *
      * This function listens updates on the parkingspots collection in Firebase.
+     * 
+     * @param {string} locationId
      */
     const parkingSpotListener = (locationId) => {
         return firebase.firestore().collection('locations').doc(locationId).collection('parkingspots').onSnapshot(snapShot => {    //Return so we can unsubscribe when the component unmounts
@@ -72,7 +79,7 @@ const useQueueHooks = () => {
                         available: [...parkingSpots.available, document.id],
                     }));
                 }
-
+                
                 if (data.userId === userId) {                                                                           //If the userID matches the userid in spot it means that the user is charging in that spot
                     setParkingSpots(parkingSpots => ({
                         ...parkingSpots,
@@ -87,6 +94,8 @@ const useQueueHooks = () => {
      * Add users to queue collection.
      *
      * This function handles the user adding to the queue collection.
+     * 
+     * @param {string} locationId
      */
     const addUserToQueue = async (locationId) => {
         try {
@@ -100,7 +109,7 @@ const useQueueHooks = () => {
 
             const response = await firebase.firestore().collection('locations').doc(locationId).collection('queue').add({                   //Add a new document to Queue collection
                 time: firebase.firestore.FieldValue.serverTimestamp(),
-                user_id: userId,
+                userId,
                 pushNotificationToken
             });
 
@@ -112,7 +121,7 @@ const useQueueHooks = () => {
                 processing: false,
             }));
         } catch (error) {
-            console.log(`Error on addToQueue function in FirebaseHooks.js: ${ error.message }`);
+            handleErrors('addUserToQueue', error.message);
         }
     }
 
@@ -120,6 +129,8 @@ const useQueueHooks = () => {
      * Remove user from the queue collection.
      *
      * This function handles the removal of user from queue collection.
+     * 
+     * @param {string} locationId
      */
     const removeUserFromQueue = async (locationId) => {
         try {
@@ -128,11 +139,13 @@ const useQueueHooks = () => {
                 processing: true,
             }));
 
+            console.log(`LocationId:${locationId}`);
             const queueId = await SecureStore.getItemAsync('queueId');                              //Get the queue collections document ID from the secure store
             await firebase.firestore().collection('locations').doc(locationId).collection('queue').doc(queueId).delete();                   //Remove the document from the collection
 
             if (queue.position === 1 && queue.size > 1){
-                notifyNextUser(locationId);
+                await notifyNextUser(locationId);
+                await Notifications.cancelAllScheduledNotificationsAsync();
             }
 
             await SecureStore.deleteItemAsync('queueId');
@@ -144,7 +157,7 @@ const useQueueHooks = () => {
                 position: 0,
             }));
         } catch (error) {
-            console.log(`Error on RemoveUserFromQueue function in FirebaseHooks.js: ${ error.message }`);
+            handleErrors('removeUserFromQueue', error.message);
         }
     }
 
@@ -153,16 +166,19 @@ const useQueueHooks = () => {
      *
      * This function handles the starting of the charging.
      *
-     * @param {*} navigation
+     * @param {string} locationId
      */
-    const startCharging = async (navigation, locationId) => {
+    const startCharging = async (locationId) => {
         try {
             setQueue(queue => ({                                                                    //Set processing to true to handle UI changes
                 ...queue,
                 processing: true,
             }));
 
-            const chargingStationId = parkingSpots.available[0];                                    //Get the document ID of the charging station
+            await Notifications.cancelScheduledNotificationAsync('reminder');                       //If the user takes the spot, cancel the reminder notification
+
+            const randomSpot = Math.floor(Math.random() * (parkingSpots.available.length - 1));     //Choose a random spot from the list to prevent that if the users press "Start charging" at the same time they edit the same spot
+            const chargingStationId = parkingSpots.available[randomSpot];                           //Get the document ID of the charging station
             const userId = firebase.auth().currentUser.uid;                                         //Get the current users ID
 
             await SecureStore.setItemAsync('chargingStationId', chargingStationId);                 //Store the document ID to the Secure Store
@@ -184,10 +200,8 @@ const useQueueHooks = () => {
                 ...parkingSpots,
                 inSpot: true,
             }));
-
-            navigation.navigate('ChargingView', { location: locationId });                                                    //Navigate user to the charging view where are the details of the charging
         } catch (error) {
-            console.log(`Error on StartCharging function in FirebaseHooks.js: ${ error.message }`);
+            handleErrors('startCharging', error.message);
         }
     }
 
@@ -196,9 +210,9 @@ const useQueueHooks = () => {
      *
      * This functions handles necessary things when the user finish the charging.
      *
-     * @param {*} navigation
+     * @param {string} locationId
      */
-    const stopCharging = async (navigation, locationId) => {
+    const stopCharging = async (locationId) => {
         try {
             setQueue(queue => ({                                                                    //Set processing to true to handle UI changes
                 ...queue,
@@ -206,54 +220,135 @@ const useQueueHooks = () => {
             }));
 
             const chargingStationId = await SecureStore.getItemAsync('chargingStationId');          //Get the document id from the secure store
+
             await firebase.firestore().collection('locations').doc(locationId).collection('parkingspots').doc(chargingStationId).set({      //Update the document in the firestore
-                availability: true,
-                userId: '',
-            }, { merge: true });
+                    availability: true,
+                    userId: '',
+                }, { merge: true });
             await SecureStore.deleteItemAsync('chargingStationId');                                 //Delete the id from the secure store
 
-            notifyNextUser(locationId);
+            if (queue.size > 0) {
+                await notifyNextUser(locationId);
+            }
 
-            navigation.replace('App');                                                              //Take user back to main screen
-        } catch (error) {
             setQueue(queue => ({
                 ...queue,
                 processing: false,
-            }))
-            console.log(`Error on StopCharging function in FirebaseHooks.js: ${ error.message }`)
+            }));
+
+            setParkingSpots(parkingSpots => ({
+                ...parkingSpots,
+                inSpot: false,
+            }));
+        } catch (error) {
+            console.log('Error: ', error.message);
+            handleErrors('stopCharging', error.message);
         }
     }
 
+    /**
+     * 
+     * Send a notification.
+     * 
+     * Sends a notification to the user next in queue.
+     * 
+     * @param {string} locationId 
+     */
     const notifyNextUser = async (locationId) => {
         try {
-            const queue = await firebase.firestore().collection('locations').doc(locationId).collection('queue').orderBy('time', 'asc').limit(1).get(); //Get the first user from the queue
 
-            if (!queue.empty) {                                                                     //Check that there really is a user in the queue
-                const token = queue.docs[0].data().pushNotificationToken;                           //Get the users push notification token
+            const queue = await firebase.firestore().collection('locations').doc(locationId).collection('queue').orderBy('time', 'asc').limit(1).get()
 
-                const message = {                                                                   //Create the message body
-                    to: token,
-                    sound: 'default',
-                    title: 'Free charging station available!',
-                    body: 'There is a free charging station available.'
+            if (queue.empty) return;
+
+            const notifToken = queue.docs[0].data().pushNotificationToken;
+
+            const message = {                                                                   //Create the message body
+                to: notifToken,
+                sound: 'default',
+                title: 'Free charging station available!',
+                body: 'There is a free charging station available.',
+                data: {
+                    type: 'freeSpot',
+                    location: locationId
                 }
-
-                const options = {                                                                   //Create the correct options (POST, headers, etc...)
-                    method: 'POST',
-                    headers: {
-                        'host': 'exp.host',
-                        'accpet': 'application/json',
-                        'accept-encoding': 'gzip, deflate',
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify(message),
-                }
-
-                await fetch('https://exp.host/--/api/v2/push/send', options);                       //Post to Expo Notification Service so the notification is delivered
             }
+
+            const options = {                                                                   //Create the correct options (POST, headers, etc...)
+                method: 'POST',
+                headers: {
+                    'host': 'exp.host',
+                    'accpet': 'application/json',
+                    'accept-encoding': 'gzip, deflate',
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(message),
+            }
+
+            await fetch('https://exp.host/--/api/v2/push/send', options);                       //Post to Expo Notification Service so the notification is delivered
         } catch (error) {
             console.log(`Error while notifying the next user: ${error.message}`)
         }
+    }
+
+    /**
+     * Send a reminder.
+     * 
+     * If the user does not react to free spot notification this reminder is sent to the user (NOT IN USE YET).
+     * 
+     * @param {string} locationId
+     */
+    const sendFirstReminder = async (locationId) => {
+        try {
+            console.log('Scheduling first reminder');
+            await Notifications.scheduleNotificationAsync({
+                content: {
+                    title: 'Spot still available',
+                    subtitle: 'Please accept or deny the spot.',
+                    body: 'Please accept or deny the spot, otherwise you will be removed from the queue.',
+                    priority: Notifications.AndroidNotificationPriority.HIGH,
+                    data: {
+                        type: 'reminder',
+                        location: locationId
+                    }
+                },
+                trigger: {
+                    seconds: 10,
+                },
+            });
+        } catch (error) {
+            console.log(`Error while scheduling a notifications: ${error.message}`);
+        }
+    }
+
+    /**
+     * Send a final notification.
+     * 
+     * If the user does not react within 5mins for the free spot, the user will be removed from the queue and inform user the removal (NOT IN USE YET).
+     * 
+     * @param {string} locationId 
+     */
+    const finalNotification = (locationId) => {
+        setTimeout(async () => {
+            try {
+                await removeUserFromQueue(locationId);
+                await Notifications.scheduleNotificationAsync({
+                    content: {
+                        title: 'Removed from the queue.',
+                        body: 'You have been removed from the queue.',
+                        priority: Notifications.AndroidNotificationPriority.HIGH,
+                        data: {
+                            type: 'removed'
+                        }
+                    },
+                    trigger: {
+                        seconds: 0,
+                    }
+                });
+            } catch (error) {
+                console.log('Error: ', error.message);
+            }
+        }, 10000);
     }
 
     /**
@@ -269,16 +364,75 @@ const useQueueHooks = () => {
         return false;                                                                           //Else return false
     }
 
+    const handleErrors = (type, message) => {
+        switch (type) {
+            case 'addUserToQueue':
+                setQueue(queue => ({
+                    ...queue,
+                    processing: false,
+                    inQueue: false,
+                }));
+
+                setErrors(message);
+
+                setTimeout(() => {
+                    setErrors();
+                }, 2000);
+                return;
+            case 'removeUserFromQueue':
+                setQueue(queue => ({
+                    ...queue,
+                    processing: false,
+                }));
+
+                setErrors(message);
+
+                setTimeout(() => {
+                    setErrors();
+                }, 2000);
+                return;
+            case 'startCharging':
+                setQueue(queue => ({
+                    ...queue,
+                    processing: false,
+                }));
+
+                setErrors(message);
+
+                setTimeout(() => {
+                    setErrors();
+                }, 2000);
+                return;
+            case 'stopCharging':
+                setQueue(queue => ({
+                    ...queue,
+                    processing: false
+                }));
+
+                setErrors(message);
+
+                setTimeout(() => {
+                    setErrors();
+                }, 2000);
+                return;
+            default:
+                return;
+        }
+    }
+
     return {
         queue,
         parkingSpots,
+        errors,
         queueListener,
         parkingSpotListener,
         addUserToQueue,
         removeUserFromQueue,
         startCharging,
         stopCharging,
-        checkStatus
+        checkStatus,
+        sendFirstReminder,
+        finalNotification,
     }
 };
 

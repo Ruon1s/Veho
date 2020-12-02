@@ -1,10 +1,11 @@
-import { Card, CardItem, Text, Button, Right, Left, Spinner, View, Icon } from 'native-base';
-import React from 'react';
+import { Card, CardItem, Text, Button, Right, Left, Spinner, View, Icon, Body } from 'native-base';
+import React, { useEffect } from 'react';
 import GlobalStyles from '../styles/GlobalStyles';
 import GlobalButton from './GlobalButton';
 import i18n from 'i18n-js';
+import ErrorText from './ErrorText';
 
-const AdminPanelListItem = ({ item, remove, removing, error, edit, currentUser, switchToLocation }) => {
+const AdminPanelListItem = ({ item, remove, removing, error, edit, currentUser, switchToLocation, switching }) => {
     return (
         <Card>
             <CardItem>
@@ -23,22 +24,24 @@ const AdminPanelListItem = ({ item, remove, removing, error, edit, currentUser, 
                             <Spinner />
                             :
                             error.type === item.id ?
-                                <Text> {error.message} </Text>
+                                <ErrorText text={error.message} />
                                 :
-                                <Button transparent style={GlobalStyles.button} onPress={() => remove(item.id)}>
-                                    <Text>{i18n.t('remove')}</Text>
-                                </Button>
+                                <GlobalButton text={i18n.t('remove')} onPress={() => remove(item.id)} transparent={true} />
                         :
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             {item.id === currentUser.location.id ?
                                 <Icon name="checkmark" />
                                 :
-                                <Button transparent style={GlobalStyles.button} onPress={() => switchToLocation(item)}>
-                                    <Icon name="sync" />
-                                </Button>}
-                            <Button transparent style={GlobalStyles.button} onPress={() => edit('addLocation', true, item)} >
-                                <Text>{i18n.t('edit')}</Text>
-                            </Button>
+                                error.type === 'switchToLocation' ?
+                                    <ErrorText text={error.message} />
+                                    :
+                                    switching === item.id ?
+                                        <Spinner />
+                                        :
+                                        <Button transparent style={GlobalStyles.button} onPress={() => switchToLocation(item)}>
+                                            <Icon name="sync" />
+                                        </Button>}
+                            <GlobalButton text={i18n.t('edit')} onPress={() => edit('addLocation', true, item)} transparent={true} />
                         </View>}
                 </Right>
             </CardItem>

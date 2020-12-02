@@ -3,6 +3,7 @@ import { Form, Item, Input, Text, Spinner } from 'native-base';
 import { StyleSheet } from 'react-native';
 import GlobalButton from './GlobalButton';
 import i18n from 'i18n-js';
+import ErrorText from './ErrorText';
 
 const AddManagerForm = (props) => {
 
@@ -66,11 +67,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 20,
     },
-    errorMessage: {
-        alignSelf: "center",
-        fontSize: 15,
-        color: "#FB3664",
-    }
 });
 
 export default AddManagerForm;

@@ -6,10 +6,10 @@ import Authentication from '../views/Authentication';
 import AddCarDetails from '../views/AddCarDetails';
 import Home from '../views/Home';
 import Settings from '../views/Settings';
-import ChargingView from '../views/ChargingView';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import AdminPanel from '../views/AdminPanel';
 import i18n from 'i18n-js';
+import InitialLoading from '../views/InitialLoading';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -53,10 +53,10 @@ const Navigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Start" component={InitialLoading} />
                 <Stack.Screen name='Auth' component={Authentication} />
                 <Stack.Screen name='App' component={TabNavigator} />
                 <Stack.Screen name='AddCarDetails' component={AddCarDetails} />
-                <Stack.Screen name='ChargingView' component={ChargingView} />
                 <Stack.Screen name='AdminPanel' component={AdminPanel} />
             </Stack.Navigator>
         </NavigationContainer>

@@ -1,6 +1,7 @@
 import { Form, Input, Item, View, Text, Spinner } from 'native-base';
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+import ErrorText from './ErrorText';
 import GlobalButton from './GlobalButton';
 import i18n from 'i18n-js';
 

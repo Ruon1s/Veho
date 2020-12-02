@@ -49,7 +49,7 @@ const HomeListLayout = (props) => {
                     </View>
                     <View style={styles.batteryStatus}>
                         <Icon name='bolt' size={32} color="#EAEAEA" />
-                        <Text numberOfLines={1} style={styles.batteryPercentage}>42%</Text>
+                        <Text numberOfLines={1} style={styles.batteryPercentage}>{car.soc}%</Text>
                     </View>
                 </CardItem>
             </Card>

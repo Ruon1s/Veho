@@ -92,6 +92,7 @@ const en = {
     title: 'Prioritize',
 
     // QueueInfo-component
+    currentlyChraging: "You're currently charging",
     numberOfCars: 'Number of cars in queue:',
     noCarsInQueue: 'The queue is empty',
     freeSpots: 'Free spots:',

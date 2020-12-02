@@ -1,6 +1,6 @@
 
 import React, { Component } from "react";
-import { Container, Header, Content, Picker, Form } from "native-base";
+import { Container, Header, Content, Picker, Form, Icon } from "native-base";
 import { useState, useEffect } from 'react'
 import useFirebase from "../hooks/FireBaseHook";
 import * as firebase from "firebase";
@@ -14,9 +14,7 @@ const DropDownMenu = (props) => {
     } = useFirebase();
 
     useEffect(() => {
-        getLocations().then(console.log('locations?', locations))
-        console.log('useEffect called')
-        console.log(locations)
+        getLocations();
     }, []);
 
     const itemsList = () => {
@@ -28,8 +26,10 @@ const DropDownMenu = (props) => {
     return (
         <Picker
             note
-            style={{ width: 160 }}
+            style={{ width: '100%' }}
             mode="dropdown"
+            iosIcon={<Icon name="arrow-down" />}
+            placeholder="Select your location"
             selectedValue={selected}
             onValueChange={(value) => { props.onSelect(value) }}>
             {itemsList()}

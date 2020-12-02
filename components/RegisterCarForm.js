@@ -16,7 +16,7 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
         errors
     } = useRegisterCarForm();
 
-    const { fetchVin, vin } = useApiHooks();
+    const { fetchVin } = useApiHooks();
 
 
 
@@ -25,24 +25,25 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
         const user = firebase.auth().currentUser;
         console.log(user)
         const db = firebase.firestore();
-        //TODO remove comments after we have everything in the fleet for testing
 
-        //    if (await fetchVin()) {  /* tried returning true from the function so that it can be tested with if sentence */
+        const vin = await fetchVin(inputs.licencePlate)
 
+        if (vin !== undefined) {
 
-        db.collection('users').doc(user.uid).collection('cars').add({
-            licencePlate: inputs.licencePlate,
-            name: inputs.carName,
-            vin: null,
-            priority: false
-        })
+            db.collection('users').doc(user.uid).collection('cars').add({
+                licencePlate: inputs.licencePlate,
+                name: inputs.carName,
+                vin: vin,
+                priority: false
+            })
 
-        navigation.replace('App')
-        //    }
-        //    else{
-        //        Alert('Car not found in the system');  /* Might aswell be console log */
-        // }
+            navigation.replace('App')
+        } else {
+            //TODO make an alert or something
+            console.log('car doesnt exist');
+        }
     }
+
 
     return (
         <Form>
