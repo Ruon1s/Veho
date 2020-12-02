@@ -6,6 +6,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import DropDownMenu from "./DropdownMenu";
 import { Platform } from 'react-native';
+import useApiHooks from "../hooks/ApiHooks";
 
 const RegisterForm = ({ navigation, toLogin }) => {
     const [loading, setLoading] = useState(false);
@@ -18,6 +19,7 @@ const RegisterForm = ({ navigation, toLogin }) => {
         inputs,
         errors
     } = useRegisterForm();
+
 
     const [selected, setSelected] = useState('');
 

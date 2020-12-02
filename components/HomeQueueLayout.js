@@ -8,18 +8,21 @@ import BatteryInfo from "./BatteryInfo";
 import QueueInfo from "./QueueInfo";
 import LocationInfo from "./LocationInfo";
 import useQueueHooks from "../hooks/QueueHooks";
-import useChargeHook from "../hooks/ChargeHook";
 import QueueButton from "./QueueButton";
 import { StyleSheet } from "react-native";
 import ErrorText from './ErrorText';
+import useFirebase from "../hooks/FireBaseHook";
+import useApiHooks from "../hooks/ApiHooks";
+import CarDropdown from "./carDropdown";
 
 const HomeQueueLayout = (props) => {
   const [available, setAvailable] = useState(); //To check if there is a spot available right away
+  const [selected, setSelected] = useState('');
 
   const {
     soc,
-    fetchSoc
-  } = useChargeHook();
+    fetchSoc,
+  } = useApiHooks();
 
   const {
     queue,
@@ -56,6 +59,15 @@ const HomeQueueLayout = (props) => {
     fetchSoc();
   }, [soc]); */
 
+  useEffect(() => {
+    console.log('selectedState ' + selected.licencePlate)
+  }, [selected])
+
+  const onSelect = (value) => {
+    setSelected(value)
+  }
+
+
   return (
     <View
       padder
@@ -68,9 +80,17 @@ const HomeQueueLayout = (props) => {
         charging={parkingSpots.inSpot}
         style={{ flex: 2 }}
       />
-      <LocationInfo user={props.user} style={{ flex: 1 }} />
+      <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <View style={{ flex: 1 }}>
+          <LocationInfo user={props.user} />
+        </View>
+        <View style={{ flex: 0.4 }}>
+          {!queue.inQueue && !parkingSpots.inSpot ?
+              <CarDropdown selected={selected} onSelect={onSelect} /> : null}
+        </View>
+      </View>
       <View style={{ display: "flex", justifyContent: "center", flex: 8 }}>
-        <BatteryInfo batteryStatus={soc} sizeVariable="large" charging={parkingSpots.inSpot} />
+        <BatteryInfo batteryStatus={selected.soc} sizeVariable="large" charging={parkingSpots.inSpot} />
         {parkingSpots.inSpot ? <Text style={styles.estimatedText}>Estimated time: TODO</Text> : null}
       </View>
       <View style={{ flex: 1 }}>
