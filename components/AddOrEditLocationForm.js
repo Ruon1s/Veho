@@ -1,6 +1,7 @@
 import { Form, Input, Item, View, Text, Spinner } from 'native-base';
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+import ErrorText from './ErrorText';
 import GlobalButton from './GlobalButton';
 
 const AddOrEditLocationForm = (props) => {
@@ -30,7 +31,7 @@ const AddOrEditLocationForm = (props) => {
             <Spinner />
             :
             error.type === 'addNewLocation' || error.type === location.id ?
-            <Text style={styles.errorMessage}> {error.message} </Text>
+            <ErrorText text={error.message} />
             :
             <>
                 <Form>

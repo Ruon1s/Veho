@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
-  Container,
-  Text,
-  Button,
-  View,
-  StyleProvider,
-  Toast,
-  Root,
   Spinner,
+  Text,
+  View,
 } from "native-base";
-import { Col, Grid } from "react-native-easy-grid";
-import GlobalStyles from "../styles/GlobalStyles";
 import BatteryInfo from "./BatteryInfo";
 import QueueInfo from "./QueueInfo";
-import CustomHeader from "./CustomHeader";
 import LocationInfo from "./LocationInfo";
 import useQueueHooks from "../hooks/QueueHooks";
-import useFirebase from "../hooks/FireBaseHook";
 import useChargeHook from "../hooks/ChargeHook";
+import QueueButton from "./QueueButton";
+import { StyleSheet } from "react-native";
+import ErrorText from './ErrorText';
 
 const HomeQueueLayout = (props) => {
   const [available, setAvailable] = useState(); //To check if there is a spot available right away
@@ -30,16 +24,18 @@ const HomeQueueLayout = (props) => {
   const {
     queue,
     parkingSpots,
+    errors,
     queueListener,
     parkingSpotListener,
     addUserToQueue,
     removeUserFromQueue,
     startCharging,
+    stopCharging,
     checkStatus,
   } = useQueueHooks();
 
   useEffect(() => {
-    if (props.user.location) {
+    if (props.user.location !== '' && props.user.location.id !== '') {
       const unsubscribeQueueListener = queueListener(props.user.location.id);
       const unsubscribeParkingSpotListener = parkingSpotListener(
         props.user.location.id
@@ -56,9 +52,9 @@ const HomeQueueLayout = (props) => {
     setAvailable(checkStatus());
   }, [parkingSpots, queue]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     fetchSoc();
-  }, [soc]);
+  }, [soc]); */
 
   return (
     <View
@@ -69,102 +65,74 @@ const HomeQueueLayout = (props) => {
         free={parkingSpots.available.length}
         queue={queue.size}
         queuePosition={queue.position}
+        charging={parkingSpots.inSpot}
         style={{ flex: 2 }}
       />
       <LocationInfo user={props.user} style={{ flex: 1 }} />
       <View style={{ display: "flex", justifyContent: "center", flex: 8 }}>
-        <BatteryInfo batteryStatus={soc} sizeVariable="large" />
+        <BatteryInfo batteryStatus={soc} sizeVariable="large" charging={parkingSpots.inSpot} />
+        {parkingSpots.inSpot ? <Text style={styles.estimatedText}>Estimated time: TODO</Text> : null}
       </View>
-
       <View style={{ flex: 1 }}>
-        {/*
-            <Button  large block transparent onPress={() => schedulePushNotification('Test', 'Hello', 123)}>
-                <Text>Test notification</Text>
-            </Button>
-            <Button  large block onPress={fetchToken}>
-                <Text>(DEV) Get Token</Text>
-            </Button>
-            <Button  large block onPress={fetchSoc}>
-                <Text>(DEV) Refresh SOC</Text>
-            </Button>
-*/}
-        {queue.inQueue && available ? (
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-evenly" }}
-          >
-            <Button
-              large
-              block
-              style={GlobalStyles.button}
-              onPress={() =>
-                startCharging(props.navigation, props.user.location.id)
-              }
-            >
-              <Text>Start Charging</Text>
-            </Button>
-            <Button
-              large
-              block
-              transparent
-              style={GlobalStyles.button}
+        {props.carArray.length === 0 || props.user.location.id === '' ?
+        <ErrorText text="Please add a car and/or a location in the settings." />
+        :
+        errors ?
+        <ErrorText text={errors} />
+        :
+        queue.processing ? 
+        <Spinner />
+        :
+        queue.inQueue && available ?
+        <View style={{ flexDirection: 'row'}}>
+            <QueueButton
+              onPress={ () => startCharging(props.user.location.id)}
+              text="Take the Spot"
+              style={{flex: 1.5}}
+            />
+            <QueueButton 
               onPress={() => removeUserFromQueue(props.user.location.id)}
-              disabled={queue.processing}
-            >
-              {queue.processing ? <Spinner /> : <Text>Skip</Text>}
-            </Button>
-          </View>
-        ) : null}
-        {!queue.inQueue && !available && !parkingSpots.inSpot ? (
-          <Button
-            large
-            block
-            style={GlobalStyles.button}
-            onPress={() => addUserToQueue(props.user.location.id)}
-            disabled={queue.processing}
-          >
-            {queue.processing ? <Spinner /> : <Text>Queue</Text>}
-          </Button>
-        ) : null}
-        {queue.inQueue && !available ? (
-          <Button
-            large
-            block
-            style={GlobalStyles.button}
-            onPress={() => removeUserFromQueue(props.user.location.id)}
-            disabled={queue.processing}
-          >
-            {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
-          </Button>
-        ) : null}
-        {!queue.inQueue && available ? (
-          <Button
-            large
-            block
-            style={GlobalStyles.button}
-            onPress={() =>
-              startCharging(props.navigation, props.user.location.id)
-            }
-          >
-            <Text>Start Charging</Text>
-          </Button>
-        ) : null}
-        {parkingSpots.inSpot ? (
-          <Button
-            large
-            block
-            style={GlobalStyles.button}
-            onPress={() =>
-              props.navigation.navigate("ChargingView", {
-                location: props.user.location.id,
-              })
-            }
-          >
-            <Text>To Charging View</Text>
-          </Button>
-        ) : null}
+              text="Skip"
+              transparent={true}
+              style={{flex: 0.5}}
+              danger={true}
+            />
+        </View>
+        :
+        !queue.inQueue && !available && !parkingSpots.inSpot ?
+        <QueueButton 
+          onPress={() => addUserToQueue(props.user.location.id)}
+          text="Queue"
+        />
+        :
+        queue.inQueue && !available ?
+        <QueueButton
+          onPress={() => removeUserFromQueue(props.user.location.id)}
+          text="Leave Queue"
+        />
+        :
+        !queue.inQueue && available ?
+        <QueueButton
+          onPress={() => startCharging(props.user.location.id)}
+          text="Take the Spot"
+        />
+        :
+        parkingSpots.inSpot ?
+        <QueueButton
+          onPress={() => stopCharging(props.user.location.id)}
+          text="Leave from Spot"
+        />
+        :
+        null}
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  estimatedText: {
+    fontSize: 24,
+  }
+})
 
 export default HomeQueueLayout;

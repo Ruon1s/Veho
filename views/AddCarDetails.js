@@ -6,7 +6,7 @@ import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import * as firebase from 'firebase';
 
-const AddCarDetails = ({ navigation }) => {
+const AddCarDetails = ({ navigation, route }) => {
     const [currentUser, setCurrentUser] = useState('')
 
     useEffect(() => {
@@ -14,10 +14,12 @@ const AddCarDetails = ({ navigation }) => {
         setCurrentUser(user.uid)
     });
 
+    const { fromRegister } = route.params;  //If the user comes from the register screen, disable the back button.
+
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>
-                <CustomHeader handleBackButton={() => navigation.goBack(null)} title='Add car details' />
+                <CustomHeader handleBackButton={fromRegister ? null : () => navigation.goBack(null)} title='Add car details' />
                 <Content padder>
                     <RegisterCarForm navigation={navigation} />
                 </Content>

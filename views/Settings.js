@@ -1,9 +1,8 @@
 import React from 'react';
-import { Container, Text, Content, StyleProvider, Label, Input, Item, Button, Form } from 'native-base';
+import { Container, Text, Content, StyleProvider, Button, Spinner } from 'native-base';
 import CustomHeader from '../components/CustomHeader';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
-import NotificationTest from '../components/NotificationTest';
 import useSettingsForm from '../hooks/SettingsHook.js'
 import { useState, useEffect } from 'react'
 import GlobalStyles from "../styles/GlobalStyles";
@@ -12,15 +11,18 @@ import 'firebase/firestore';
 import useFirebase from '../hooks/FireBaseHook';
 
 const Settings = ({ navigation }) => {
+    const [loading, setLoading] = useState();
     const { currentUser, getUser } = useFirebase();
 
     const toAddCar = () => {
-        navigation.navigate('AddCarDetails')
+        navigation.navigate('AddCarDetails', { fromRegister: false })
     }
 
-    const logout = async () => {                                                            //Functions that logs the user out (Need to be changed to Settings page later?)
+    const logout = async () => {    
+        setLoading(true);                                                        //Functions that logs the user out (Need to be changed to Settings page later?)
         await firebase.auth().signOut();
         navigation.replace('Auth');
+        setLoading(false);
     }
 
     const {
@@ -42,23 +44,28 @@ const Settings = ({ navigation }) => {
             <Container>
                 <CustomHeader title='Settings' />
                 <Content padder>
-                    <Button
+                    {loading ?
+                    <Spinner />
+                    :
+                    <>
+                        <Button
                         block
                         style={GlobalStyles.button}
                         onPress={toAddCar}>
                         <Text>Add new car</Text>
-                    </Button>
-                    {currentUser.role === 'admin'  && 
-                    <Button full style={ GlobalStyles.button } onPress={ () => navigation.navigate('AdminPanel', { user: currentUser }) }>
-                        <Text>Admin Panel</Text>
-                    </Button>}
-                    <Button
-                        block
-                        danger transparent
-                        style={GlobalStyles.button}
-                        onPress={logout}>
-                        <Text>Logout</Text>
-                    </Button>
+                        </Button>
+                        {currentUser.role === 'admin'  && 
+                        <Button full style={ GlobalStyles.button } onPress={ () => navigation.navigate('AdminPanel', { user: currentUser }) }>
+                            <Text>Admin Panel</Text>
+                        </Button>}
+                        <Button
+                            block
+                            danger transparent
+                            style={GlobalStyles.button}
+                            onPress={logout}>
+                            <Text>Logout</Text>
+                        </Button>
+                    </>}
                 </Content>
             </Container>
         </StyleProvider>

@@ -45,6 +45,7 @@ const AdminPanelSection = (props) => {
                     edit={editLocation}
                     switchToLocation={switchToLocation}
                     currentUser={currentUser}
+                    switching={processing.switching}
                 />
             </View>}
         </View>

@@ -15,6 +15,8 @@ const useAdminHooks = () => {
         removing: '',                                       //When we are removing location/user rights
         searching: false,                                   //When we are searching a user from the database
         editing: false,
+        switching: '',
+        success: '',
     });
     const [error, setError] = useState({                    //For notifying user if an error occurs (type = function name, message = catch methods error message)
         type: '',
@@ -281,8 +283,8 @@ const useAdminHooks = () => {
 
             setNewLocation({
                 name: '',
-                publicSpots: 0,
-                dedicatedSpots: 0,
+                publicSpots: '',
+                dedicatedSpots: '',
             });
 
             setProcessing(previousState => ({
@@ -362,6 +364,14 @@ const useAdminHooks = () => {
                 await firebase.firestore().collection('locations').doc(modalVisible.object.id).set({
                     name: newLocation.name,
                 }, { merge: true });
+                const usersInLocation = await firebase.firestore().collection('users').where('location.name', '==', modalVisible.object.name).get();
+                usersInLocation.forEach(async (user) => {
+                    await firebase.firestore().collection('users').doc(user.id).set({
+                        location: {
+                            name: newLocation.name,
+                        },
+                    }, { merge: true });
+                });
                 locationsCopy[editedLocationIndex].name = newLocation.name;
             }
 
@@ -428,13 +438,43 @@ const useAdminHooks = () => {
         }
     }
 
+    /**
+     * Switch to different location.
+     * 
+     * This function handles the switch to another locations (admin only).
+     * 
+     * @param {object} location 
+     */
     const switchToLocation = async (location) => {
         try {
+
+            setProcessing(previousState => ({
+                ...previousState,
+                switching: location.id,
+            }));
+
             const uid = firebase.auth().currentUser.uid;
 
             await firebase.firestore().collection('users').doc(uid).set({
-                location: location
+                location: {
+                    name: location.name,
+                    id: location.id
+                }
             }, { merge: true });
+
+            setProcessing(previousState => ({
+                ...previousState,
+                switching: '',
+                success: `Location changed to: ${location.name}, please reload the app`,
+            }));
+
+            setTimeout(() => {
+                setProcessing(previousState => ({
+                    ...previousState,
+                    success: ''
+                }));
+            }, 3000);
+            
         } catch (error) {
             handleError('switchLocation', error.message);
         }

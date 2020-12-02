@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Container, Content, Text, Button, View, StyleProvider, Card, CardItem, Body, List, ListItem } from 'native-base';
+import {  Text, View } from 'native-base';
 
 const LocationInfo = (props) => {
+    console.log(props.user.location);
     return (
         <View style={styles.locationView}>
-            <Icon color='#EAEAEA' name='map-marker' size={32}></Icon><Text style={styles.text}>{props.user.location && props.user.location.name}</Text>
+            <Icon color='#EAEAEA' name='map-marker' size={32}></Icon>
+            <Text style={styles.text}>{props.user.location && props.user.location.name}</Text>
         </View>
     )
 }

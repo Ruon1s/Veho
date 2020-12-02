@@ -1,9 +1,10 @@
-import { Card, CardItem, Text, Button, Right, Left, Spinner, View, Icon } from 'native-base';
-import React from 'react';
+import { Card, CardItem, Text, Button, Right, Left, Spinner, View, Icon, Body } from 'native-base';
+import React, { useEffect } from 'react';
 import GlobalStyles from '../styles/GlobalStyles';
 import GlobalButton from './GlobalButton';
+import ErrorText from './ErrorText';
 
-const AdminPanelListItem = ({ item, remove, removing, error, edit, currentUser, switchToLocation }) => {
+const AdminPanelListItem = ({ item, remove, removing, error, edit, currentUser, switchToLocation, switching }) => {
     return (
         <Card>
             <CardItem>
@@ -22,22 +23,24 @@ const AdminPanelListItem = ({ item, remove, removing, error, edit, currentUser, 
                     <Spinner />
                     :
                     error.type === item.id ?
-                    <Text> {error.message} </Text>
+                    <ErrorText text={error.message} />
                     :
-                    <Button transparent style={GlobalStyles.button} onPress={ () => remove(item.id) }>
-                        <Text>Remove</Text>
-                    </Button>
+                    <GlobalButton text="Remove" onPress={() => remove(item.id)} transparent={true} />
                     :
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         {item.id === currentUser.location.id ?
                         <Icon name="checkmark" /> 
                         :
+                        error.type === 'switchToLocation' ?
+                        <ErrorText text={error.message} />
+                        :
+                        switching === item.id ?
+                        <Spinner />
+                        :
                         <Button transparent style={GlobalStyles.button} onPress={() => switchToLocation(item)}>
                             <Icon name="sync" />
                         </Button>}
-                        <Button transparent style={ GlobalStyles.button} onPress={ () => edit('addLocation', true, item) } >
-                            <Text>Edit</Text>
-                        </Button>
+                        <GlobalButton text="Edit" onPress={() => edit('addLocation', true, item)} transparent={true} />
                     </View>}
                 </Right>
             </CardItem>
