@@ -5,6 +5,7 @@ import RegisterCarForm from '../components/RegisterCarForm';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import * as firebase from 'firebase';
+import i18n from 'i18n-js';
 
 const AddCarDetails = ({ navigation }) => {
     const [currentUser, setCurrentUser] = useState('')
@@ -17,7 +18,7 @@ const AddCarDetails = ({ navigation }) => {
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>
-                <CustomHeader handleBackButton={() => navigation.goBack(null)} title='Add car details' />
+                <CustomHeader handleBackButton={() => navigation.goBack(null)} title={i18n.t('addCarDetailsTitle')} />
                 <Content padder>
                     <RegisterCarForm navigation={navigation} />
                 </Content>

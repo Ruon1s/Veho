@@ -12,6 +12,7 @@ import HomeQueueLayout from '../components/HomeQueueLayout';
 import HomeListLayout from '../components/HomeListLayout';
 import useFirebase from "../hooks/FireBaseHook";
 import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
+import i18n from 'i18n-js';
 
 const Home = ({ navigation }) => {
     const [userType, setUserType] = useState('Normal');      // Values: Normal & Manager
@@ -28,7 +29,7 @@ const Home = ({ navigation }) => {
                 <StyleProvider style={getTheme(platform)}>
                     <Container>
                         <CustomHeader
-                            title='Home'
+                            title={i18n.t('home')}
                             subtitle={currentUser}
                         />
                         {currentUser.role === "standard" || currentUser.rol === "admin" ? <HomeQueueLayout user={currentUser} navigation={navigation} /> :

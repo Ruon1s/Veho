@@ -9,6 +9,7 @@ import Settings from '../views/Settings';
 import ChargingView from '../views/ChargingView';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import AdminPanel from '../views/AdminPanel';
+import i18n from 'i18n-js';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -21,12 +22,12 @@ const TabNavigator = () => {
                 let color;
 
                 switch (route.name) {
-                    case 'Home': {
+                    case i18n.t('home'): {
                         iconName = 'bolt'
                         color = focused ? '#000' : '#999999'
                         break;
                     }
-                    case 'Settings': {
+                    case i18n.t('settings'): {
                         iconName = 'cog'
                         color = focused ? '#000' : '#999999'
                         break;
@@ -42,8 +43,8 @@ const TabNavigator = () => {
                 inactiveBackgroundColor: '#FFFFFF'
             }}
         >
-            <Tab.Screen name='Home' component={Home} />
-            <Tab.Screen name='Settings' component={Settings} />
+            <Tab.Screen name={i18n.t('home')} component={Home} />
+            <Tab.Screen name={i18n.t('settings')} component={Settings} />
         </Tab.Navigator>
     );
 }
@@ -56,7 +57,7 @@ const Navigator = () => {
                 <Stack.Screen name='App' component={TabNavigator} />
                 <Stack.Screen name='AddCarDetails' component={AddCarDetails} />
                 <Stack.Screen name='ChargingView' component={ChargingView} />
-                <Stack.Screen name='AdminPanel' component={ AdminPanel } />
+                <Stack.Screen name='AdminPanel' component={AdminPanel} />
             </Stack.Navigator>
         </NavigationContainer>
     );

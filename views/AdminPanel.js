@@ -8,13 +8,14 @@ import AdminPanelSection from '../components/AdminPanelSection';
 import GlobalButton from '../components/GlobalButton';
 import AdminPanelModal from '../components/AdminPanelModal';
 import { StyleSheet } from 'react-native';
+import i18n from 'i18n-js';
 
-const AdminPanel = ({ navigation, route }) => { 
+const AdminPanel = ({ navigation, route }) => {
     const [managersVisible, setManagersVisible] = useState(false);      //Hide/Show managers list
     const [locationsVisible, setLocationsVisible] = useState(false);    //Hide/Show locations list
     const currentUser = route.params.user;
 
-    const { 
+    const {
         managers,
         locations,
         managerQuery,
@@ -53,49 +54,49 @@ const AdminPanel = ({ navigation, route }) => {
     const showLocations = locationQuery ? locations.filter(location => location.name.toLowerCase().includes(locationQuery.toLowerCase())) : locations;
 
     return (
-        <StyleProvider style={ getTheme(platform) }>
+        <StyleProvider style={getTheme(platform)}>
             <Container>
-                <CustomHeader title='Admin Panel' handleBackButton={ () => navigation.goBack() } />
+                <CustomHeader title={i18n.t('adminHeader')} handleBackButton={() => navigation.goBack()} />
                 <View style={styles.padder}>
-                    <GlobalButton 
-                        text={managersVisible ? `Hide Managers (${managers.length})` : `Show Managers (${managers.length})`}
+                    <GlobalButton
+                        text={managersVisible ? `${i18n.t('hideManagers')} (${managers.length})` : `${i18n.t('showManagers')} (${managers.length})`}
                         onPress={() => setManagersVisible(!managersVisible)}
-                     />
+                    />
                     {managersVisible ?
-                    <AdminPanelSection
-                        processing={processing}
-                        error={error}
-                        listData={ showManagers }
-                        addButtonText="Add a manager"
-                        addFunction={ () => openModal('addManager') }
-                        removeFunction={ removeManager }
-                        handleSearchTextChange={handleManagerQueryChange}
-                        searchInputPlaceHolder="Search by email..."
-                    />
-                    :
-                    null}
+                        <AdminPanelSection
+                            processing={processing}
+                            error={error}
+                            listData={showManagers}
+                            addButtonText={i18n.t('addManager')}
+                            addFunction={() => openModal('addManager')}
+                            removeFunction={removeManager}
+                            handleSearchTextChange={handleManagerQueryChange}
+                            searchInputPlaceHolder="Search by email..."
+                        />
+                        :
+                        null}
 
-                    <GlobalButton 
-                        text={locationsVisible ? `Hide Locations (${locations.length})` : `Show Locations (${locations.length})`}
-                        onPress={() => setLocationsVisible(!locationsVisible)} 
-                     />
-                    {locationsVisible ?
-                    <AdminPanelSection
-                        processing={processing}
-                        error={error}
-                        listData={showLocations}
-                        addButtonText="Add a location"
-                        addFunction={() => openModal('addLocation', false, {})}
-                        handleSearchTextChange={handleLocationQueryChange}
-                        searchInputPlaceHolder="Search by location name..."
-                        editLocation={openModal}
-                        switchToLocation={switchToLocation}
-                        currentUser={currentUser}
+                    <GlobalButton
+                        text={locationsVisible ? `${i18n.t('hideLocations')} (${locations.length})` : `${i18n.t('showLocations')} (${locations.length})`}
+                        onPress={() => setLocationsVisible(!locationsVisible)}
                     />
-                    :
-                    null}
-                    
-                    <AdminPanelModal 
+                    {locationsVisible ?
+                        <AdminPanelSection
+                            processing={processing}
+                            error={error}
+                            listData={showLocations}
+                            addButtonText={i18n.t('addLocation')}
+                            addFunction={() => openModal('addLocation', false, {})}
+                            handleSearchTextChange={handleLocationQueryChange}
+                            searchInputPlaceHolder={i18n.t('searchLocationPlaceholder')}
+                            editLocation={openModal}
+                            switchToLocation={switchToLocation}
+                            currentUser={currentUser}
+                        />
+                        :
+                        null}
+
+                    <AdminPanelModal
                         modalVisible={modalVisible}
                         closeModal={closeModal}
                         addManager={addManager}

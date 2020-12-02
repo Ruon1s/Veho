@@ -5,7 +5,7 @@ import useRegisterForm from '../hooks/RegisterHook.js';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import DropDownMenu from "./DropdownMenu";
-import useApiHooks from "../hooks/ApiHooks";
+import i18n from 'i18n-js';
 
 const RegisterForm = ({ navigation, toLogin, props }) => {
     const {
@@ -91,7 +91,9 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
         <Form>
             <DropDownMenu selected={selected} onSelect={onSelect} />
             <Item floatingLabel>
-                <Label>First Name {errors.firstName && inputs.firstName.length >= 0 && <Text style={{ color: "#FB3664" }}>*Must be at least 3 characters</Text>}</Label>
+                <Label>{i18n.t('firstName')} {errors.firstName && inputs.firstName.length >= 0 &&
+                    <Text style={{ color: "#FB3664" }}>{i18n.t('nameError')}</Text>}
+                </Label>
                 <Input
                     value={inputs.firstName}
                     onChangeText={handleFirstNameChange}
@@ -99,14 +101,18 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
 
             </Item>
             <Item floatingLabel>
-                <Label>Last Name {errors.lastName && inputs.lastName.length >= 0 && <Text style={{ color: "#FB3664" }}>*Must be at least 3 characters</Text>}</Label>
+                <Label>{i18n.t('lastName')} {errors.lastName && inputs.lastName.length >= 0 &&
+                    <Text style={{ color: "#FB3664" }}>{i18n.t('nameError')}</Text>}
+                </Label>
                 <Input
                     value={inputs.lastName}
                     onChangeText={handleLastNameChange}
                 />
             </Item>
             <Item floatingLabel>
-                <Label>Email {errors.email && inputs.email.length >= 0 && <Text style={{ color: "#FB3664" }}>*Not a valid email</Text>}</Label>
+                <Label>{i18n.t('email')} {errors.email && inputs.email.length >= 0 &&
+                    <Text style={{ color: "#FB3664" }}>{i18n.t('emailError')}</Text>}
+                </Label>
                 <Input
                     autoCapitalize='none'
                     keyboardType='email-address'
@@ -115,7 +121,9 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
                 />
             </Item>
             <Item floatingLabel>
-                <Label>Password  {errors.password && inputs.password.length >= 0 && <Text style={{ color: "#FB3664" }}>*Not strong enough</Text>}</Label>
+                <Label>{i18n.t('password')}  {errors.password && inputs.password.length >= 0 &&
+                    <Text style={{ color: "#FB3664" }}>{i18n.t('passwordError')}</Text>}
+                </Label>
                 <Input
                     autoCapitalize='none'
                     secureTextEntry
@@ -124,7 +132,7 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
                 />
             </Item>
             <Item floatingLabel>
-                <Label>Retype password</Label>
+                <Label>{i18n.t('repeatPassword')}</Label>
                 <Input
                     autoCapitalize='none'
                     secureTextEntry
@@ -147,15 +155,15 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
                     disabled
                     style={GlobalStyles.button}
                     onPress={register}
-                ><Text>Register</Text>
+                ><Text>{i18n.t('register')}</Text>
                 </Button> : <Button
                     full
                     style={GlobalStyles.button}
                     onPress={register}>
-                    <Text>Register</Text>
+                    <Text>{i18n.t('register')}</Text>
                 </Button>}
             <Button full transparent style={GlobalStyles.button} onPress={toLogin}>
-                <Text>Back to login</Text>
+                <Text>{i18n.t('backToLogin')}</Text>
             </Button>
         </Form>
     );

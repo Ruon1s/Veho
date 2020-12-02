@@ -5,7 +5,8 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import useRegisterCarForm from "../hooks/RegisterCarHook";
 import useApiHooks from "../hooks/ApiHooks";
-import {Alert} from "react-native-web";
+import { Alert } from "react-native-web";
+import i18n from 'i18n-js';
 
 const RegisterCarForm = ({ navigation, toLogin }) => {
     const {
@@ -15,7 +16,7 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
         errors
     } = useRegisterCarForm();
 
-    const {fetchVin, vin} = useApiHooks();
+    const { fetchVin, vin } = useApiHooks();
 
 
 
@@ -26,27 +27,27 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
         const db = firebase.firestore();
         //TODO remove comments after we have everything in the fleet for testing
 
-    //    if (await fetchVin()) {  /* tried returning true from the function so that it can be tested with if sentence */
+        //    if (await fetchVin()) {  /* tried returning true from the function so that it can be tested with if sentence */
 
 
-            db.collection('users').doc(user.uid).collection('cars').add({
-                licencePlate: inputs.licencePlate,
-                name: inputs.carName,
-                vin: null,
-                priority: false
-            })
+        db.collection('users').doc(user.uid).collection('cars').add({
+            licencePlate: inputs.licencePlate,
+            name: inputs.carName,
+            vin: null,
+            priority: false
+        })
 
-            navigation.replace('App')
-    //    }
-    //    else{
-    //        Alert('Car not found in the system');  /* Might aswell be console log */
-       // }
+        navigation.replace('App')
+        //    }
+        //    else{
+        //        Alert('Car not found in the system');  /* Might aswell be console log */
+        // }
     }
 
     return (
         <Form>
             <Item floatingLabel>
-                <Label>Licence plate number</Label>
+                <Label>{i18n.t('licensePlate')}</Label>
                 <Input
                     autoCapitalize='none'
                     value={inputs.licencePlate}
@@ -55,7 +56,7 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
             </Item>
 
             <Item floatingLabel>
-                <Label>Car name</Label>
+                <Label>{i18n.t('carName')}</Label>
                 <Input
                     value={inputs.carName}
                     onChangeText={handleCarNameChange}
@@ -67,12 +68,12 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
                     disabled
                     style={GlobalStyles.button}
                     onPress={registerVehicle}>
-                    <Text>Save</Text>
+                    <Text>{i18n.t('save')}</Text>
                 </Button> : <Button
                     full
                     style={GlobalStyles.button}
                     onPress={registerVehicle}>
-                    <Text>Save</Text>
+                    <Text>{i18n.t('save')}</Text>
                 </Button>
             }
         </Form>

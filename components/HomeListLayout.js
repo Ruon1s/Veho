@@ -3,28 +3,29 @@ import { StyleSheet, Alert } from 'react-native';
 import { Content, Text, View, Card, CardItem } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import useFirebase from "../hooks/FireBaseHook";
+import i18n from 'i18n-js';
 
 const HomeListLayout = (props) => {
     let carArray = props.carArray
 
     const createTwoButtonAlert = (car) => {                 // Manager clicks cardObject, they are asked to put car in queue or not
-        let message = `Mark ${car.name} to queue?`
+        let message = i18n.t(addCarMessage(car))
 
         if (car.priority === true) {                        // If car is already priority
-            message = `Remove ${car.name} from queue?`
+            message = i18n.t(removeCarMessage(car))
         }
 
         Alert.alert(
-            'Prioritize',
+            i18n.t('title'),
             message,
             [
                 {
-                    text: "Cancel",                         // Nothing happens
+                    text: i18n.t('cancel'),                         // Nothing happens
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
                 {
-                    text: "OK", onPress: () => {            // Set car on top of the list and mark the priority somehow -- firebase modifications needed
+                    text: i18n.t('ok'), onPress: () => {            // Set car on top of the list and mark the priority somehow -- firebase modifications needed
                         props.prioritizeCar(car)
                     }
                 }

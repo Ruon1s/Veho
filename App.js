@@ -8,6 +8,19 @@ import Navigator from './navigators/Navigator';
 import { registerForPushNotificationsAsync } from './services/NotificationService';
 import { firebaseConfig } from './utils/firebaseConfig';
 import { LogBox } from 'react-native';
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
+import en from './assets/languages/en';
+import fi from './assets/languages/fi';
+
+i18n.translations = {
+  en: en,
+  fi: fi,
+};
+
+i18n.locale = Localization.locale; // Set the locale at the beginning of the app
+i18n.fallbacks = true // Can change to different language if not available
+
 
 if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);

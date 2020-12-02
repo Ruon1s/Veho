@@ -7,6 +7,7 @@ import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import useQueueHooks from '../hooks/QueueHooks';
 import useApiHooks from "../hooks/ApiHooks";
+import i18n from 'i18n-js';
 
 const ChargingView = ({ navigation, route }) => {
     const [estimated, setEstimated] = useState(0)
@@ -19,11 +20,11 @@ const ChargingView = ({ navigation, route }) => {
     const {
         soc,
         fetchSoc
-      } = useApiHooks();
+    } = useApiHooks();
 
-      useEffect(() => {
+    useEffect(() => {
         fetchSoc();
-      }, [soc]);
+    }, [soc]);
 
     const location = route.params.location;
 
@@ -33,9 +34,9 @@ const ChargingView = ({ navigation, route }) => {
                 <CustomHeader title='Charging info' handleBackButton={handleBackButton} />
                 <View padder>
                     <BatteryInfo batteryStatus={soc} />
-                    <Text>Estimated time: {estimated}</Text>
-                    <Button full style={GlobalStyles.button} onPress={ () => stopCharging(navigation, location) } disabled={ queue.processing }>
-                        { queue.processing ? <Spinner /> : <Text>Stop Charging</Text> }
+                    <Text>{i18n.t('estimatedTime')} {estimated}</Text>
+                    <Button full style={GlobalStyles.button} onPress={() => stopCharging(navigation, location)} disabled={queue.processing}>
+                        {queue.processing ? <Spinner /> : <Text>{i18n.t('stopCharging')}</Text>}
                     </Button>
                 </View>
             </Container>

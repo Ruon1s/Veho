@@ -19,6 +19,7 @@ import useQueueHooks from "../hooks/QueueHooks";
 import useFirebase from "../hooks/FireBaseHook";
 import useApiHooks from "../hooks/ApiHooks";
 import CarDropdown from "./carDropdown";
+import i18n from 'i18n-js';
 
 const HomeQueueLayout = (props) => {
   const [available, setAvailable] = useState(); //To check if there is a spot available right away
@@ -88,7 +89,7 @@ const HomeQueueLayout = (props) => {
         </View>
         <View style={{ flex: 0.4 }}>
           {!queue.inQueue && !parkingSpots.inSpot ?
-              <CarDropdown selected={selected} onSelect={onSelect} /> : null}
+            <CarDropdown selected={selected} onSelect={onSelect} /> : null}
         </View>
       </View>
       <View style={{ display: "flex", justifyContent: "center", flex: 8 }}>
@@ -119,7 +120,7 @@ const HomeQueueLayout = (props) => {
                 startCharging(props.navigation, props.user.location.id)
               }
             >
-              <Text>Start Charging</Text>
+              <Text>{i18n.t('startCharging')}</Text>
             </Button>
             <Button
               large
@@ -129,7 +130,7 @@ const HomeQueueLayout = (props) => {
               onPress={() => removeUserFromQueue(props.user.location.id)}
               disabled={queue.processing}
             >
-              {queue.processing ? <Spinner /> : <Text>Skip</Text>}
+              {queue.processing ? <Spinner /> : <Text>{i18n.t('skip')}</Text>}
             </Button>
           </View>
         ) : null}
@@ -141,7 +142,7 @@ const HomeQueueLayout = (props) => {
             onPress={() => addUserToQueue(props.user.location.id)}
             disabled={queue.processing}
           >
-            {queue.processing ? <Spinner /> : <Text>Queue</Text>}
+            {queue.processing ? <Spinner /> : <Text>{i18n.t('queue')}</Text>}
           </Button>
         ) : null}
         {queue.inQueue && !available ? (
@@ -152,7 +153,7 @@ const HomeQueueLayout = (props) => {
             onPress={() => removeUserFromQueue(props.user.location.id)}
             disabled={queue.processing}
           >
-            {queue.processing ? <Spinner /> : <Text>Leave Queue</Text>}
+            {queue.processing ? <Spinner /> : <Text>{i18n.t('leaveQueue')}</Text>}
           </Button>
         ) : null}
         {!queue.inQueue && available ? (
@@ -164,7 +165,7 @@ const HomeQueueLayout = (props) => {
               startCharging(props.navigation, props.user.location.id)
             }
           >
-            <Text>Start Charging</Text>
+            <Text>{i18n.t('startCharging')}</Text>
           </Button>
         ) : null}
         {parkingSpots.inSpot ? (
@@ -178,7 +179,7 @@ const HomeQueueLayout = (props) => {
               })
             }
           >
-            <Text>To Charging View</Text>
+            <Text>{i18n.t('toChargingView')}</Text>
           </Button>
         ) : null}
       </View>

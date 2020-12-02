@@ -4,9 +4,10 @@ import { Modal, StyleSheet } from 'react-native';
 import AddManagerForm from './AddManagerForm';
 import AddOrEditLocationForm from './AddOrEditLocationForm';
 import GlobalButton from './GlobalButton';
+import i18n from 'i18n-js';
 
 const AdminPanelModal = (props) => {
-    const{
+    const {
         modalVisible,
         closeModal,
         addManager,
@@ -24,7 +25,7 @@ const AdminPanelModal = (props) => {
         editLocation,
     } = props;
 
-    return(
+    return (
         <Modal
             visible={modalVisible.visible}
             transparent
@@ -32,39 +33,39 @@ const AdminPanelModal = (props) => {
         >
             <View style={styles.modalContent}>
                 {modalVisible.type === 'addManager' ?
-                <AddManagerForm
-                    search={search}
-                    add={addManager}
-                    searching={processing.searching}
-                    clear={clearUser}
-                    adding={processing.adding}
-                    handleEmailInput={handleEmailChange}
-                    foundUser={foundUser}
-                    error={error}
-                />
-                :
-                <AddOrEditLocationForm 
-                    addLocation={addLocation}
-                    location={modalVisible.object}
-                    adding={processing.adding}
-                    error={error}
-                    editLocation={editLocation}
-                    editing={processing.editing}
-                    remove={removeLocation}
-                    removing={processing.removing}
-                    handleLocationName={handleLocationNameChange}
-                    handlePublicSpots={handleNewLocationPublicSpotCountChange}
-                    handleDedicatedSpots={handleNewLocationDedicatedSpotCountChange}
-                />}
-                <View style={styles.closeButton}> 
-                    <GlobalButton text="Close" transparent={true} onPress={closeModal}  />
+                    <AddManagerForm
+                        search={search}
+                        add={addManager}
+                        searching={processing.searching}
+                        clear={clearUser}
+                        adding={processing.adding}
+                        handleEmailInput={handleEmailChange}
+                        foundUser={foundUser}
+                        error={error}
+                    />
+                    :
+                    <AddOrEditLocationForm
+                        addLocation={addLocation}
+                        location={modalVisible.object}
+                        adding={processing.adding}
+                        error={error}
+                        editLocation={editLocation}
+                        editing={processing.editing}
+                        remove={removeLocation}
+                        removing={processing.removing}
+                        handleLocationName={handleLocationNameChange}
+                        handlePublicSpots={handleNewLocationPublicSpotCountChange}
+                        handleDedicatedSpots={handleNewLocationDedicatedSpotCountChange}
+                    />}
+                <View style={styles.closeButton}>
+                    <GlobalButton text={i18n.t('close')} transparent={true} onPress={closeModal} />
                 </View>
             </View>
         </Modal>
     );
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     modalBackDrop: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.7)'
