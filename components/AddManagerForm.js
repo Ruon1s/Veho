@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Item, Input, Text, Spinner } from 'native-base';
 import { StyleSheet } from 'react-native';
 import GlobalButton from './GlobalButton';
+import ErrorText from './ErrorText';
 
 const AddManagerForm = (props) => {
 
@@ -35,7 +36,7 @@ const AddManagerForm = (props) => {
             <Spinner />
             :
             error.type ==='searchUser' ?
-            <Text style={styles.errorMessage}>{error.message}</Text>
+            <ErrorText text={error.message} />
             :
             <>
                 <Form>
@@ -56,11 +57,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 20,
     },
-    errorMessage: {
-        alignSelf: "center",
-        fontSize: 15,
-        color: "#FB3664",
-    }
 });
 
 export default AddManagerForm;

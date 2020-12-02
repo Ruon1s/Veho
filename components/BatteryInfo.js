@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Col, Row, Grid } from 'react-native-easy-grid';
+import { Row, Grid } from 'react-native-easy-grid';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 
 const BatteryInfo = (props) => {
@@ -50,7 +50,7 @@ const BatteryInfo = (props) => {
     const CenterText = () => {                          // Component in the middle of the piechart, contains the bolt-icon and the number
         return <Grid style={styles.batteryGrid}>
             <Row size={2}>
-                <Icon name="bolt" size={textSize.iconSize} color="#000"></Icon>
+                <Icon name="bolt" size={textSize.iconSize} color={props.charging ? '#4fd966' : '#000'}></Icon>
             </Row>
             <Row size={1}>
                 <Text style={styles.batteryText}>{batteryStatus}%</Text>
@@ -77,7 +77,8 @@ const BatteryInfo = (props) => {
         batteryText: {
             width: '100%',
             textAlign: 'center',
-            fontSize: textSize.batteryTextFontSize
+            fontSize: textSize.batteryTextFontSize,
+            color: props.charging ? '#4fd966' : '#000'
         }
     });
 
@@ -88,7 +89,7 @@ const BatteryInfo = (props) => {
                 standalone={true}
                 width={pieSize.radius}
                 height={pieSize.radius}
-                colorScale={['#000', '#EAEAEA']}
+                colorScale={props.charging ? ['#4fd966', '#EAEAEA'] : ['#000', '#EAEAEA']}
                 innerRadius={pieSize.innerRadius}
                 padding={pieSize.padding}
                 data={data}

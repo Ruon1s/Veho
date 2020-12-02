@@ -1,51 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Content, StyleProvider } from 'native-base';
+import React, { useState } from 'react';
+import { Container, Content, Spinner, StyleProvider, View } from 'native-base';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import ResetPasswordForm from '../components/ResetPasswordForm';
 import CustomHeader from '../components/CustomHeader';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
-import firebase from 'firebase';
-import useFirebase from "../hooks/FireBaseHook";
+import { StyleSheet } from 'react-native';
 
 const Authentication = ({ navigation }) => {
-    const [active, setActive] = useState('login');
-    const {getLocations, locations} = useFirebase()
-
-    //If the user is found and authenticated, redirect to home
-    useEffect(() => {
-        firebase.auth().onAuthStateChanged(user => {
-            if (user !== null) {
-                navigation.replace('App');
-            }
-        })
-    }, []);
+    const [active, setActive] = useState('login');  //To switch between the forms
 
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>
                 <CustomHeader title='Authentication' />
                 <Content padder>
-                    {active === 'login' &&
-                        <LoginForm
-                            toResetPassword={() => setActive('resetPassword')}
+                    <View>
+                        {active === 'login' ?
+                        <LoginForm 
+                            navigation={navigation}
                             toRegister={() => setActive('register')}
+                            toResetPassword={() => setActive('resetPassword')}
+                        />
+                        :
+                        active === 'register' ?
+                        <RegisterForm 
                             navigation={navigation}
-                        />}
-
-                    {active === 'resetPassword' &&
-                        <ResetPasswordForm toLogin={() => setActive('login')} />}
-
-                    {active === 'register' &&
-                        <RegisterForm
                             toLogin={() => setActive('login')}
-                            navigation={navigation}
-                        />}
+                        />
+                        :
+                        active === 'resetPassword' ?
+                        <ResetPasswordForm
+                            toLogin={() => setActive('login')}
+                        />
+                        :
+                        null}
+                    </View>
                 </Content>
             </Container>
         </StyleProvider>
     );
 };
+
+const styles = StyleSheet.create({
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+});
 
 export default Authentication;

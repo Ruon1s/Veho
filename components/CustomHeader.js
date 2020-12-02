@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Header, Body, Title, Left, Right, Button, Subtitle, Text } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
+import { StyleSheet } from 'react-native';
 
 // For cleaner code, need in many views anyway
 const CustomHeader = (props) => {
@@ -13,13 +13,19 @@ const CustomHeader = (props) => {
             </Button>}
         </Left>
         <Body>
-            <Title>{props.title}</Title>
+            <Title style={styles.white}>{props.title}</Title>
 
-            { props.subtitle && <Subtitle>{props.subtitle.firstname}</Subtitle> }
+            { props.subtitle && <Subtitle style={styles.white}>{props.subtitle.firstname}</Subtitle> }
 
         </Body>
         <Right/>
     </Header>)
 };
+
+const styles = StyleSheet.create({
+    white: {
+        color: 'white'
+    }
+});
 
 export default CustomHeader;

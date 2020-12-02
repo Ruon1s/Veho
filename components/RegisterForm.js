@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import GlobalStyles from '../styles/GlobalStyles';
-import { Button, Form, Input, Container, Text, Item, Label, Content, View } from 'native-base';
+import { Button, Form, Input, Container, Text, Item, Label, Content, View, Spinner } from 'native-base';
 import useRegisterForm from '../hooks/RegisterHook.js';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import DropDownMenu from "./DropdownMenu";
+import { Platform } from 'react-native';
 import useApiHooks from "../hooks/ApiHooks";
 
-const RegisterForm = ({ navigation, toLogin, props }) => {
+const RegisterForm = ({ navigation, toLogin }) => {
+    const [loading, setLoading] = useState(false);
     const {
         handleEmailChange,
         handleFirstNameChange,
@@ -31,6 +33,7 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
     }, [selected])
 
     const register = async () => {
+        setLoading(true);
         let check = true;
         console.log('inputs', inputs);
         if (inputs.firstName !== '' && inputs.lastName !== '' && inputs.email !== '' && inputs.password !== '' && inputs.confirmPassword !== '' && inputs.password === inputs.confirmPassword) {
@@ -43,14 +46,14 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
                 check = false
             });
 
-            await firebase.auth().signInWithEmailAndPassword(inputs.email, inputs.password).catch(function (error) {
+            /* await firebase.auth().signInWithEmailAndPassword(inputs.email, inputs.password).catch(function (error) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 console.log(errorCode);
                 console.log(errorMessage);
                 check = false;
-            });
+            }); */
 
             const db = firebase.firestore();
             const user = firebase.auth().currentUser;
@@ -63,7 +66,7 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
             });
 
             if (check === true) {
-                navigation.replace('AddCarDetails')
+                navigation.replace('AddCarDetails', { fromRegister: true })
             } else {
                 console.log("account not created")
             }
@@ -84,11 +87,17 @@ const RegisterForm = ({ navigation, toLogin, props }) => {
                 await handleConfirmPasswordChange(inputs.confirmPassword)
             }
         }
-        console.log("register pushed", errors)
+        setLoading(false);
     };
 
     return (
+        loading ?
+        <Spinner />
+        :
         <Form>
+            <>
+                {Platform.OS === 'android' ? <Text style={{fontWeight: 'bold'}}>Select your location</Text> : null}
+            </>
             <DropDownMenu selected={selected} onSelect={onSelect} />
             <Item floatingLabel>
                 <Label>First Name {errors.firstName && inputs.firstName.length >= 0 && <Text style={{ color: "#FB3664" }}>*Must be at least 3 characters</Text>}</Label>

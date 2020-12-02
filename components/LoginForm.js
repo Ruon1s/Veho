@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
-import { Container, Button, Input, Form, Text, Item, Label, Content } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid';
+import React, { useState } from 'react';
+import { Button, Input, Form, Text, Item, Label, Spinner } from 'native-base';
+import { Col, Grid } from 'react-native-easy-grid';
 import GlobalStyles from '../styles/GlobalStyles';
-import Picker from "./DropdownMenu";
 import useLoginForm from '../hooks/LoginHook';
 import firebase from 'firebase'
+import ErrorText from './ErrorText';
 
 
 const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState();
     const {
         handlePasswordChange,
         handleEmailChange,
@@ -15,24 +17,32 @@ const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
     } = useLoginForm();
 
     const login = async () => {
-        let check = true;
-        await firebase.auth().signInWithEmailAndPassword(inputs.email, inputs.password).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
-            check = false;
-        });
-        if(check === true){
-            navigation.replace('App')
-        }else {
-            console.log("sumtingwong")
+        try {
+            setLoading(true);
+
+            await firebase.auth().signInWithEmailAndPassword(inputs.email, inputs.password);
+
+            navigation.replace('App');
+
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            setError(error.message);
+
+            setTimeout(() => {
+                setError();
+            }, 2000);
         }
     };
 
 
     return (
+        loading ?
+        <Spinner />
+        :
+        error ?
+        <ErrorText text={error} />
+        :
         <Form>
             <Item floatingLabel>
                 <Label>Email</Label>
@@ -54,7 +64,7 @@ const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
 
             <Grid>
                 <Col>
-                    <Button style={GlobalStyles.button} full onPress={login}>
+                    <Button style={GlobalStyles.button} full onPress={login} disabled={!inputs.email || !inputs.password}>
                         <Text>Login</Text>
                     </Button>
                 </Col>
