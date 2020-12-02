@@ -70,16 +70,16 @@ const useFirebase = () => {
         const snapshot = await carsRef.get();
 
         setCars([]);
-        snapshot.forEach(doc => {
+        snapshot.forEach(async doc => {
             const carData = doc.data();
         //TODO remove comments after we get registeration numbers to the fleet
 
-        //   const soc = fetchSoc(carData.vin)
+           const soc = await fetchSoc(carData.vin);
             setCars(previousState => ([
                 ...previousState, {
                     ...carData,
                     id: doc.id,
-                 //   soc: soc
+                    soc: soc
                 }
             ]));
         });

@@ -21,7 +21,7 @@ const useApiHooks = () => {
    * @returns {Promise<number>}
    */
   //TODO put vin as a parameter after we have all necessary information in the fleet
-  const fetchSoc = async () => {
+  const fetchSoc = async (vin) => {
     console.log('Executing fetchSoc');
     const token = await SecureStore.getItemAsync("token");
     try {
@@ -39,7 +39,7 @@ const useApiHooks = () => {
 
       //TODO use vin in the fetch
       const res = await fetch(
-        "https://api.connect-business.net/fleet/v1/fleets/1A3D13CCC6694F03ADBC1BC6CFADCB4B/vehicles.dynamic/W1K2132111A869249",
+        "https://api.connect-business.net/fleet/v1/fleets/1A3D13CCC6694F03ADBC1BC6CFADCB4B/vehicles.dynamic/" + vin,
         options
       );
 
@@ -91,11 +91,13 @@ const useApiHooks = () => {
       );
 
       if (res.status == 200) {
+        console.log(licPlate)
         console.log("fetchVin: Status OK, " + res.status);
         const toJSON = await res.json();
+        console.log("items[0].vin: " + toJSON.items[0].vin);
         setVin(toJSON.items[0].vin);
-        console.log("items[0].vin: " + toJSON.items[0].vin)
-        return true
+        console.log(vin)
+        return toJSON.items[0].vin
       } else if (res.status == 401) {
         console.log("fetchVin: Status Unauthorized, " + res.status);
         fetchToken();

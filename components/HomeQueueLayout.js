@@ -67,9 +67,6 @@ const HomeQueueLayout = (props) => {
     setSelected(value)
   }
 
-  useEffect(() => {
-    fetchSoc();
-  }, [soc]);
 
   return (
     <View
@@ -92,7 +89,7 @@ const HomeQueueLayout = (props) => {
         </View>
       </View>
       <View style={{ display: "flex", justifyContent: "center", flex: 8 }}>
-        <BatteryInfo batteryStatus={soc} sizeVariable="large" />
+        <BatteryInfo batteryStatus={selected.soc} sizeVariable="large" />
       </View>
 
       <View style={{ flex: 1 }}>
