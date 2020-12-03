@@ -3,6 +3,7 @@ import {
   Spinner,
   Text,
   View,
+  Animated,
 } from "native-base";
 import BatteryInfo from "./BatteryInfo";
 import QueueInfo from "./QueueInfo";
