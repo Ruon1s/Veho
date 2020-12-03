@@ -24,12 +24,12 @@ const TabNavigator = () => {
                 switch (route.name) {
                     case i18n.t('home'): {
                         iconName = 'bolt'
-                        color = focused ? '#000' : '#999999'
+                        color = focused ? '#000' : '#EAEAEA'
                         break;
                     }
                     case i18n.t('settings'): {
                         iconName = 'cog'
-                        color = focused ? '#000' : '#999999'
+                        color = focused ? '#000' : '#EAEAEA'
                         break;
                     }
                 }
@@ -38,9 +38,9 @@ const TabNavigator = () => {
         })}
             tabBarOptions={{
                 activeTintColor: '#000',
-                inactiveTintColor: '#999999',
-                activeBackgroundColor: '#FFFFFF',
-                inactiveBackgroundColor: '#FFFFFF'
+                inactiveTintColor: '#EAEAEA',
+                activeBackgroundColor: '#00ADEF',
+                inactiveBackgroundColor: '#00ADEF'
             }}
         >
             <Tab.Screen name={i18n.t('home')} component={Home} />

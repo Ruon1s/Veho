@@ -3,7 +3,6 @@ import {
   Spinner,
   Text,
   View,
-  Animated,
 } from "native-base";
 import BatteryInfo from "./BatteryInfo";
 import QueueInfo from "./QueueInfo";
@@ -93,7 +92,9 @@ const HomeQueueLayout = (props) => {
       </View>
       <View style={{ display: "flex", justifyContent: "center", flex: 8 }}>
         <BatteryInfo batteryStatus={selected.soc} sizeVariable="large" charging={parkingSpots.inSpot} />
+        {/** 
         {parkingSpots.inSpot ? <Text style={styles.estimatedText}>Estimated time: TODO</Text> : null}
+        */}
       </View>
       <View style={{ flex: 1 }}>
         {props.carArray.length === 0 || props.user.location.id === '' ?
