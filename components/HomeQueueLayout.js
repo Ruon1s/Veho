@@ -87,7 +87,7 @@ const HomeQueueLayout = (props) => {
         </View>
         <View style={{ flex: 0.4 }}>
           {!queue.inQueue && !parkingSpots.inSpot ?
-            <CarDropdown selected={selected} onSelect={onSelect} /> : null}
+            <CarDropdown selected={selected} onSelect={onSelect} carArray={props.carArray} /> : null}
         </View>
       </View>
       <View style={{ display: "flex", justifyContent: "center", flex: 8 }}>

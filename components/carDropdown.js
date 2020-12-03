@@ -1,9 +1,6 @@
 
-import React, { Component } from "react";
-import { Container, Header, Content, Picker, Form } from "native-base";
-import { useState, useEffect } from 'react'
-import useFirebase from "../hooks/FireBaseHook";
-import * as firebase from "firebase";
+import React from "react";
+import { Picker } from "native-base";
 
 /**
  * component that displays a custom picker view with users cars in it
@@ -14,20 +11,11 @@ import * as firebase from "firebase";
 const CarDropdown = (props) => {
     const selected = props.selected
 
-    const {
-        getUserCars,
-        carArray,
-    } = useFirebase();
-
-    useEffect(() => {
-        getUserCars()
-    }, []);
-
     /**
      * Sets the array of cars to the picker in order
      */
     const itemsList = () => {
-        return (carArray.map((item, index) => {
+        return (props.carArray.map((item, index) => {
             return ((<Picker.Item label={item.name} key={index} value={item} />))
         }));
     };
