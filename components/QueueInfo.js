@@ -1,60 +1,56 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Animated } from 'react-native';
+import { StyleSheet, Animated, LayoutAnimation, UIManager } from 'react-native';
 import { Text, View, Button } from 'native-base';
 import i18n from 'i18n-js';
 
 const QueueInfo = (props) => {
     const charging = props.charging
 
-    let height = null
-    let fontSize = 24
-    let borderBottomWidth = 1
-    let padding = 12
+    const [state, setState] = useState({
+        height: null,
+        fontSize: 24,
+        borderBottomWidth: 1,
+        padding: 12
+    })
 
-    if (charging == true) {
-        height = 0
-        fontSize = 0
-        borderBottomWidth = 0
-        padding = 0
-    } else {
-        height = null
-        fontSize = 24
-        borderBottomWidth = 1
-        padding = 12
-    }
-
-    /*
-    const fadeAnim = useRef(new Animated.value(0)).current
-
-    const fadeIn = () => {
-        // Will change fadeAnim value to 1 in 1 second
-        Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 1000,
-        }).start()
-    }
-
-    const fadeOut = () => {
-        Animated.timing(fadeAnim, {
-            toValue: 0,
-            duration: 1000
-        }).start()
-    }
-*/
+    useEffect(() => {
+        switch (charging) {
+            case (true): {
+                // TODO: Invoke closing animation here
+                setState({
+                    height: 0,
+                    fontSize: 0,
+                    borderBottomWidth: 0,
+                    padding: 0
+                });
+                break;
+            }
+            default: {
+                // TODO: Invoke opening animation here
+                setState({
+                    height: null,
+                    fontSize: 24,
+                    borderBottomWidth: 1,
+                    padding: 12
+                });
+                break;
+            }
+        }
+    }, [charging])
 
     const styles = StyleSheet.create({
         textParent: {
             position: 'relative',
             borderBottomColor: '#EAEAEA',
-            borderBottomWidth: borderBottomWidth,
-            paddingBottom: padding,
-            height: height,
+            borderBottomWidth: state.borderBottomWidth,
+            paddingBottom: state.padding,
+            height: state.height,
         },
         infoText: {
-            fontSize: fontSize,
+            fontSize: state.fontSize,
         },
         charginText: {
-            fontSize: fontSize,
+            fontSize: state.fontSize,
             color: '#4fd966',
         }
     });

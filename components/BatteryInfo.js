@@ -50,10 +50,10 @@ const BatteryInfo = (props) => {
     const CenterText = () => {                          // Component in the middle of the piechart, contains the bolt-icon and the number
         return <Grid style={styles.batteryGrid}>
             <Row size={2}>
-                <Icon name="bolt" size={textSize.iconSize} color='#000'></Icon>
+                {batteryStatus ? <Icon name="bolt" size={textSize.iconSize} color='#000'></Icon> : <Icon name="bolt" size={textSize.iconSize} color='#EAEAEA'></Icon>}
             </Row>
             <Row size={1}>
-                <Text style={styles.batteryText}>{batteryStatus}%</Text>
+                {batteryStatus && <Text style={styles.batteryText}>{batteryStatus}%</Text>}
             </Row>
         </Grid>
     }

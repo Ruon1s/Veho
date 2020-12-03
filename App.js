@@ -6,7 +6,7 @@ import * as firebase from 'firebase';
 import Navigator from './navigators/Navigator';
 import { registerForPushNotificationsAsync } from './services/NotificationService';
 import { firebaseConfig } from './utils/firebaseConfig';
-import { LogBox } from 'react-native';
+import { LogBox, UIManager } from 'react-native';
 import useQueueHooks from './hooks/QueueHooks';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
@@ -45,6 +45,13 @@ const App = () => {
   const notificationListener = useRef();
   const responseListener = useRef();
   const { sendFirstReminder, finalNotification } = useQueueHooks();
+
+  if (
+    Platform.OS === "android" &&
+    UIManager.setLayoutAnimationEnabledExperimental
+  ) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
 
   useEffect(() => {
     LogBox.ignoreLogs(['Setting a timer for a long period of time']); // <-- Hide unnecessary warnings with android and firestore
