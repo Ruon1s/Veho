@@ -85,8 +85,8 @@ const fi = {
     toChargingView: 'Latausnäkymään',
 
     //managerLayout, for the alert message
-    addCarMessage: (car) => { return `Aseta ${car.name} prioriteetiksi?` },
-    removeCarMessage: (car) => { return `Poista ${car.name} prioriteeteistä?` },
+    addCarMessage: `Lisää auto prioriteetteihin? Auto:`,
+    removeCarMessage: `Poista auto prioriteeteistä? Auto: `,
     title: 'Priorisoi',
 
     // QueueInfo-component

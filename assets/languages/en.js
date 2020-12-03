@@ -87,8 +87,8 @@ const en = {
     toChargingView: 'To Charging View',
 
     //managerLayout, for the alert message
-    addCarMessage: (car) => { return `Mark ${car.name} to queue?` },
-    removeCarMessage: (car) => { return `Remove ${car.name} from queue?` },
+    addCarMessage: `Mark to queue? Car:`,
+    removeCarMessage: `Remove from queue? Car: `,
     title: 'Prioritize',
 
     // QueueInfo-component

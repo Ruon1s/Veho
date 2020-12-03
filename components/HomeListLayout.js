@@ -9,10 +9,10 @@ const HomeListLayout = (props) => {
     let carArray = props.carArray
 
     const createTwoButtonAlert = (car) => {                 // Manager clicks cardObject, they are asked to put car in queue or not
-        let message = i18n.t(addCarMessage(car))
+        let message = `${i18n.t('addCarMessage')} ${car.name}`
 
         if (car.priority === true) {                        // If car is already priority
-            message = i18n.t(removeCarMessage(car))
+            message = `${i18n.t('removeCarMessage')} ${car.name}`
         }
 
         Alert.alert(
