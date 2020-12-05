@@ -57,7 +57,8 @@ const updateSoc = async () => {
     console.log('received update: ', toJSON.items);
 
     //If the car is fully charged, send notifications
-    if (toJSON.items.soc === 100) {
+    
+    if (Math.round(toJSON.items.soc) === 100) {
       await TaskManager.unregisterTaskAsync('bgFetch');
       await Notifications.scheduleNotificationAsync({
         content: {
