@@ -22,17 +22,12 @@ import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
 
 let selectedCar;
-let setUpdatedSoc;
 
 const updateSoc = async () => {
   try {
 
-    console.log('Updating in bg..');
-
     //Do the basic fetch, same as ApiHooks..
     const token = await SecureStore.getItemAsync('token');
-
-    console.log('token: ', token);
 
     const headers = {
       "Cache-Control": "no-cache",
@@ -46,19 +41,12 @@ const updateSoc = async () => {
       headers,
     };
 
-    console.log('Headers: ', headers);
-    console.log('Options: ', options);
-
     const response = await fetch(`https://api.connect-business.net/fleet/v1/fleets/1A3D13CCC6694F03ADBC1BC6CFADCB4B/vehicles.dynamic/${selectedCar.vin}`, options);
     const toJSON = await response.json();
 
-    console.log('Selected Car: ', selectedCar);
-
-    console.log('received update: ', toJSON.items);
-
     //If the car is fully charged, send notifications
     if (toJSON.items.soc === 100) {
-      await TaskManager.unregisterTaskAsync('bgFetch');
+      await TaskManager.unregisterTaskAsync('updateSoc');
       await Notifications.scheduleNotificationAsync({
         content: {
           title: `${selectedCar.name} is ready!`,
@@ -71,7 +59,6 @@ const updateSoc = async () => {
     }
     return toJSON ? BackgroundFetch.Result.NewData : BackgroundFetch.Result.NoData;
   } catch (error) {
-    console.log('Error: ', error.message);
     return BackgroundFetch.Result.Failed;
   }
 }
@@ -79,7 +66,6 @@ const updateSoc = async () => {
 const initializeBackgroundFetch = async (taskName, taskFunction, interval = 60 * 15) => {
   try {
     if (!TaskManager.isTaskDefined(taskName)) {
-      console.log('Task: ', taskName, ' is going to be defined');
       TaskManager.defineTask(taskName, taskFunction);
     }
 
@@ -94,7 +80,6 @@ const HomeQueueLayout = (props) => {
   const [selected, setSelected] = useState('');
   const { getUserCars } = useFirebase();
   selectedCar = selected;
-  setUpdatedSoc = setSelected;
 
   const {
     soc,
@@ -136,13 +121,26 @@ const HomeQueueLayout = (props) => {
     fetchSoc();
   }, [soc]); */
 
-  useEffect(() => {
-    console.log('selectedState ' + selected.licencePlate)
-    initializeBackgroundFetch('bgFetch', updateSoc, 5);
-  }, [selected])
-
   const onSelect = (value) => {
     setSelected(value)
+  }
+
+  const handleStartCharging = async () => {
+    try {
+      await startCharging(props.user.location.id);
+      await initializeBackgroundFetch('updateSoc', updateSoc, 5);
+    } catch (error) {
+      console.log(`Start Charging error: ${error.message}`);
+    }
+  }
+
+  const handleStopCharging = async () => {
+    try {
+      await stopCharging(props.user.location.id);
+      await TaskManager.unregisterTaskAsync('updateSoc');
+    } catch (error) {
+      console.log(`Error stopping the charging: ${error.message}`);
+    }
   }
 
 
@@ -184,7 +182,7 @@ const HomeQueueLayout = (props) => {
               queue.inQueue && available ?
                 <View style={{ flexDirection: 'row' }}>
                   <QueueButton
-                    onPress={() => startCharging(props.user.location.id)}
+                    onPress={handleStartCharging}
                     text={i18n.t('startCharging')}
                     style={{ flex: 1.5 }}
                   />
@@ -211,13 +209,13 @@ const HomeQueueLayout = (props) => {
                     :
                     !queue.inQueue && available ?
                       <QueueButton
-                        onPress={() => startCharging(props.user.location.id)}
+                        onPress={handleStartCharging}
                         text={i18n.t('startCharging')}
                       />
                       :
                       parkingSpots.inSpot ?
                         <QueueButton
-                          onPress={() => stopCharging(props.user.location.id)}
+                          onPress={handleStopCharging}
                           text={i18n.t('stopCharging')}
                         />
                         :
