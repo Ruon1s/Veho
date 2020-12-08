@@ -45,6 +45,9 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
             //TODO make an alert or something
             console.log('car doesnt exist');
             setError('Car does not exist in the Veho fleet')
+            setTimeout(() => {
+                setError()
+            }, 3000);
         }
     }
 
