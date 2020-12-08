@@ -5,7 +5,6 @@ import { StyleSheet } from 'react-native';
 
 // For cleaner code, need in many views anyway
 const CustomHeader = (props) => {
-    console.log('props.subtitle: ', props.subtitle);
     return (<Header>
         <Left>
             {props.handleBackButton && <Button transparent onPress={props.handleBackButton}>
@@ -15,10 +14,10 @@ const CustomHeader = (props) => {
         <Body>
             <Title style={styles.white}>{props.title}</Title>
 
-            { props.subtitle && <Subtitle style={styles.white}>{props.subtitle.firstname}</Subtitle> }
+            {props.subtitle && <Subtitle style={styles.white}>{props.subtitle.firstname}</Subtitle>}
 
         </Body>
-        <Right/>
+        <Right />
     </Header>)
 };
 
