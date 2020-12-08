@@ -25,6 +25,8 @@ const en = {
     licensePlate: 'License plate number',
     carName: 'Car name',
     addCarDetailsTitle: 'Add car details',
+    registerCarInfo: 'As you need to own a car to use this application, please input asked car info below. ',
+    registerCarDemoInfo: 'For demo-purposes you can use this license number: OXZ-408',
 
     // Labels for inputs
     firstName: 'First Name',
@@ -80,9 +82,10 @@ const en = {
     dedicatedStationsConditional: 'Number of dedicated charging stations...',
 
     // QueueLayout 
-    startCharging: 'Start Charging',
-    stopCharging: 'Stop Charging',
-    skip: 'Skip',
+    startCharging: 'Occupy a spot',
+    stopCharging: 'Mark spot as free',
+    skipMessage: `Can't accept the space?`,
+    skip: 'Give away',
     queue: 'Queue',
     leaveQueue: 'Leave Queue',
     toChargingView: 'To Charging View',
@@ -105,7 +108,7 @@ const en = {
     estimatedTime: 'Estimated time:',
 
     // Errors
-    pleaseRestart: 'Please restart the application',
+    pleaseRestart: 'If you have a car registered, restart the application',
 
     // Notifications
     stationAvailableTitle: 'You are next in queue!',

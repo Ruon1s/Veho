@@ -25,6 +25,8 @@ const fi = {
     licensePlate: 'Rekisterinumero',
     carName: 'Auton nimi',
     addCarDetailsTitle: 'Lisää auton tiedot',
+    registerCarInfo: 'Käyttääksesi applikaatiota, sinun tulee omistaa vehon tiedoissa oleva auto. Syötä pyydetyt tiedot autosta alle.',
+    registerCarDemoInfo: 'Voit demotarkoituksiin käyttää tätä rekisteriotetta: OXZ-408',
 
     // Labels for inputs
     firstName: 'Etunimi',
@@ -80,9 +82,10 @@ const fi = {
     dedicatedStationsConditional: 'Varattujen asemien määrä...',
 
     // QueueLayout 
-    startCharging: 'Aloita lataus',
-    stopCharging: 'Lopeta lataus',
-    skip: 'ohita',
+    startCharging: 'Varaa latauspaikka',
+    stopCharging: 'Merkkaa paikka vapautetuksi',
+    skipMessage: `Et voi varata paikkaa?`,
+    skip: 'Anna seuraavalle',
     queue: 'Jonota',
     leaveQueue: 'Poistu jonosta',
     toChargingView: 'Latausnäkymään',
@@ -105,7 +108,7 @@ const fi = {
     estimatedTime: 'Arvioitu aika:',
 
     // Errors
-    pleaseRestart: 'Käynnistä sovellus uudelleen',
+    pleaseRestart: 'Jos olet jo lisännyt auton, käynnistä sovellus uudelleen',
 
     // Notifications
     stationAvailableTitle: 'Jonotus palkittiin!',

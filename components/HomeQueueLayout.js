@@ -4,6 +4,7 @@ import {
   Text,
   View,
 } from "native-base";
+import { Grid, Row, Col } from 'react-native-easy-grid';
 import BatteryInfo from "./BatteryInfo";
 import QueueInfo from "./QueueInfo";
 import LocationInfo from "./LocationInfo";
@@ -148,7 +149,7 @@ const HomeQueueLayout = (props) => {
   return (
     <View
       padder
-      style={{ flex: 1, justifyContent: "space-between", marginBottom: 24 }}
+      style={{ flex: 1, justifyContent: "space-between", marginBottom: 30 }}
     >
       <QueueInfo
         free={parkingSpots.available.length}
@@ -183,41 +184,45 @@ const HomeQueueLayout = (props) => {
               <Spinner />
               :
               queue.inQueue && available ?
-                <View style={{ flexDirection: 'row' }}>
+                <Grid>
                   <QueueButton
                     onPress={() => startCharging(props.user.location.id)}
                     text={i18n.t('startCharging')}
-                    style={{ flex: 1.5 }}
+                    style={{ flex: 1 }}
                   />
                   <QueueButton
                     onPress={() => removeUserFromQueue(props.user.location.id)}
                     text={i18n.t('skip')}
                     transparent={true}
-                    style={{ flex: 0.5 }}
+                    style={{ flex: 0.7 }}
                     danger={true}
                   />
-                </View>
+                </Grid>
                 :
                 !queue.inQueue && !available && !parkingSpots.inSpot ?
                   <QueueButton
+                    large={true}
                     onPress={() => addUserToQueue(props.user.location.id)}
                     text={i18n.t('queue')}
                   />
                   :
                   queue.inQueue && !available ?
                     <QueueButton
+                      large={true}
                       onPress={() => removeUserFromQueue(props.user.location.id)}
                       text={i18n.t('leaveQueue')}
                     />
                     :
                     !queue.inQueue && available ?
                       <QueueButton
+                        large={true}
                         onPress={() => startCharging(props.user.location.id)}
                         text={i18n.t('startCharging')}
                       />
                       :
                       parkingSpots.inSpot ?
                         <QueueButton
+                          large={true}
                           onPress={() => stopCharging(props.user.location.id)}
                           text={i18n.t('stopCharging')}
                         />

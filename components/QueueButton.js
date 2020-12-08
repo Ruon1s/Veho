@@ -5,7 +5,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 const QueueButton = (props) => {
     return (
         <Button
-            large
+            large={props.large}
             block
             style={{ ...props.style, ...GlobalStyles.button }}
             onPress={props.onPress}
