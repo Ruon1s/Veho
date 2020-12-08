@@ -13,7 +13,7 @@ import { StyleSheet } from "react-native";
 import ErrorText from './ErrorText';
 import useFirebase from "../hooks/FireBaseHook";
 import useApiHooks from "../hooks/ApiHooks";
-import CarDropdown from "./carDropdown";
+import CarDropdown from "./CarDropdown";
 import i18n from 'i18n-js';
 import * as TaskManager from 'expo-task-manager';
 import * as BackgroundFetch from 'expo-background-fetch';
