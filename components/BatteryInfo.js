@@ -4,6 +4,7 @@ import { Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Row, Grid } from 'react-native-easy-grid';
 import { VictoryPie, VictoryLabel } from 'victory-native';
+import i18n from 'i18n-js';
 
 const BatteryInfo = (props) => {
     const batteryStatus = props.batteryStatus           // Number between 0-100
@@ -53,7 +54,7 @@ const BatteryInfo = (props) => {
                 {batteryStatus ? <Icon name="bolt" size={textSize.iconSize} color='#000'></Icon> : <Icon name="bolt" size={textSize.iconSize} color='#EAEAEA'></Icon>}
             </Row>
             <Row size={1}>
-                {batteryStatus && <Text style={styles.batteryText}>{batteryStatus}%</Text>}
+                {batteryStatus ? <Text style={styles.batteryText}>{batteryStatus}%</Text> : <Text error>{i18n.t('pleaseRestart')}</Text>}
             </Row>
         </Grid>
     }

@@ -2,6 +2,7 @@ const fi = {
     // Navigation
     home: 'Koti',
     settings: 'Asetukset',
+    authentication: 'Kirjautuminen',
 
     // Login and register forms' buttons
     back: 'takaisin',
@@ -33,6 +34,7 @@ const fi = {
     repeatPassword: 'Kirjoita salasana uudelleen',
     login: 'Kirjaudu',
     register: 'Rekisteröidy',
+    createUser: 'Luo käyttäjä',
 
     // Buttons for login and register screens
     forgotPassword: 'Unohditko salasanan?',
@@ -100,6 +102,9 @@ const fi = {
 
     // Charging view
     estimatedTime: 'Arvioitu aika:',
+
+    // Errors
+    pleaseRestart: 'Käynnistä sovellus uudelleen',
 }
 
 export default fi;

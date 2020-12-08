@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Input, Form, Text, Item, Label, Spinner } from 'native-base';
-import { Col, Grid } from 'react-native-easy-grid';
+import { Col, Grid, Row } from 'react-native-easy-grid';
 import GlobalStyles from '../styles/GlobalStyles';
 import useLoginForm from '../hooks/LoginHook';
 import firebase from 'firebase'
@@ -70,15 +70,16 @@ const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
                             </Button>
                         </Col>
                         <Col>
-                            <Button style={GlobalStyles.button} full onPress={toRegister}>
-                                <Text>{i18n.t('register')}</Text>
+                            <Button transparent style={GlobalStyles.button} full onPress={toRegister}>
+                                <Text>{i18n.t('createUser')}</Text>
                             </Button>
                         </Col>
                     </Grid>
-
-                    <Button transparent style={GlobalStyles.button} full onPress={toResetPassword}>
+                    <Button danger transparent style={GlobalStyles.button} full onPress={toResetPassword}>
                         <Text>{i18n.t('forgotPassword')}</Text>
                     </Button>
+
+
                 </Form>
     );
 };

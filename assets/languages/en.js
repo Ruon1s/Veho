@@ -33,12 +33,11 @@ const en = {
     repeatPassword: 'Retype Password',
     login: 'Login',
     register: 'Register',
+    createUser: 'Luo käyttäjä',
 
     // Buttons for login and register screens
     forgotPassword: 'Forgot password?',
     backToLogin: 'Back to Login',
-    login: 'Login',
-    register: 'Register',
 
     // RegisterHints
     nameError: '*Must be at least 3 characters',
@@ -102,6 +101,9 @@ const en = {
 
     // Charging view
     estimatedTime: 'Estimated time:',
+
+    // Errors
+    pleaseRestart: 'Please restart the application',
 }
 
 export default en;
