@@ -24,7 +24,8 @@
       "package": "com.niklar.Veho"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.niklar.Veho"
     },
     "web": {
       "favicon": "./assets/favicon.png"

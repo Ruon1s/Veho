@@ -74,7 +74,6 @@ const AdminPanel = ({ navigation, route }) => {
             <Root>
                 <Container>
                     <CustomHeader title={i18n.t('adminHeader')} handleBackButton={() => navigation.goBack()} />
-                    <View style={styles.padder}>
                         <GlobalButton
                             text={managersVisible ? `${i18n.t('hideManagers')} (${managers.length})` : `${i18n.t('showManagers')} (${managers.length})`}
                             onPress={() => setManagersVisible(!managersVisible)}
@@ -130,7 +129,6 @@ const AdminPanel = ({ navigation, route }) => {
                             handleNewLocationPublicSpotCountChange={handleNewLocationPublicSpotCountChange}
                             handleNewLocationDedicatedSpotCountChange={handleNewLocationDedicatedSpotCountChange}
                         />
-                    </View>
                 </Container>
             </Root>
         </StyleProvider>

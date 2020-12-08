@@ -45,7 +45,7 @@ const updateSoc = async () => {
     const toJSON = await response.json();
 
     //If the car is fully charged, send notifications
-    if (toJSON.items.soc === 100) {
+    if (Math.round(toJSON.items.soc) === 100) {
       await TaskManager.unregisterTaskAsync('updateSoc');
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -63,7 +63,7 @@ const updateSoc = async () => {
   }
 }
 
-const initializeBackgroundFetch = async (taskName, taskFunction, interval = 60 * 15) => {
+const initializeBackgroundFetch = async (taskName, taskFunction, interval = 60 * 10) => {
   try {
     if (!TaskManager.isTaskDefined(taskName)) {
       TaskManager.defineTask(taskName, taskFunction);
@@ -128,7 +128,7 @@ const HomeQueueLayout = (props) => {
   const handleStartCharging = async () => {
     try {
       await startCharging(props.user.location.id);
-      await initializeBackgroundFetch('updateSoc', updateSoc, 5);
+      await initializeBackgroundFetch('updateSoc', updateSoc, 600);
     } catch (error) {
       console.log(`Start Charging error: ${error.message}`);
     }
@@ -142,7 +142,6 @@ const HomeQueueLayout = (props) => {
       console.log(`Error stopping the charging: ${error.message}`);
     }
   }
-
 
   return (
     <View

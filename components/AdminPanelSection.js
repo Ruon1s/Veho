@@ -3,6 +3,7 @@ import React from 'react';
 import AdminPanelList from './AdminPanelList';
 import GlobalButton from '../components/GlobalButton';
 import SearchInput from './SeacrhInput';
+import { ScrollView } from 'react-native';
 
 const AdminPanelSection = (props) => {
     const {
@@ -20,14 +21,13 @@ const AdminPanelSection = (props) => {
     } = props;
 
     return(
-        <View>
-            {processing.fetching ?
+            processing.fetching ?
             <Spinner />
             :
             error.type === 'fetch' ?
             <Text> {error.message} </Text>
             :
-            <View>
+            <>
                 <GlobalButton 
                     text={addButtonText}
                     onPress={addFunction}
@@ -47,8 +47,7 @@ const AdminPanelSection = (props) => {
                     currentUser={currentUser}
                     switching={processing.switching}
                 />
-            </View>}
-        </View>
+            </>
     );
 }
 
