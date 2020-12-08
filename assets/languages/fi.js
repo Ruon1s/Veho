@@ -51,7 +51,8 @@ const fi = {
     foundUser: 'Käyttäjä löytyi!',
 
     // placeholder
-    emailPlaceholder: 'Syötä sähköposti...',
+    emailPlaceholder: 'Etsi sähköpostilla...',
+    locationPlaceholder: 'Etsi sijainnin nimellä...',
 
     //buttons: 
     addAsManager: 'Lisää managerina',
@@ -105,6 +106,14 @@ const fi = {
 
     // Errors
     pleaseRestart: 'Käynnistä sovellus uudelleen',
+
+    // Notifications
+    stationAvailableTitle: 'Jonotus palkittiin!',
+    stationAvailableBody: 'Latauspiste on auennut, voit nyt mennä siirtämään autosi',
+
+    carIsFullPrefix: 'Autosi',
+    carIsFullTitle: 'on latautunut!',
+    carIsFullBody: 'Seuraavia ajatellen, harkitse siirtäväsi autosi muualle',
 }
 
 export default fi;

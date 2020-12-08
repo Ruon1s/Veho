@@ -60,8 +60,8 @@ const updateSoc = async () => {
       await TaskManager.unregisterTaskAsync('bgFetch');
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: `${selectedCar.name} is ready!`,
-          body: `Your car ${selectedCar.name} has been fully charged`
+          title: `${i18n.t('carIsFullPrefix')} ${selectedCar.name} ${i18n.t('carIsFullTitle')}`,
+          body: i18n.t('carIsFullBody')
         },
         trigger: {
           seconds: 2,

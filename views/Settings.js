@@ -34,7 +34,7 @@ const Settings = ({ navigation }) => {
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>
-                <CustomHeader title='Settings' />
+                <CustomHeader title={i18n.t('settings')} />
                 <Content padder>
                     {loggingOut ?
                         <Spinner />

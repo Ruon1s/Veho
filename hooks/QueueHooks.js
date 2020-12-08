@@ -3,6 +3,7 @@ import 'firebase/firestore';
 import { useState } from 'react';
 import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
+import i18n from 'i18n-js';
 
 const useQueueHooks = () => {
     const [queue, setQueue] = useState({
@@ -79,7 +80,7 @@ const useQueueHooks = () => {
                         available: [...parkingSpots.available, document.id],
                     }));
                 }
-                
+
                 if (data.userId === userId) {                                                                           //If the userID matches the userid in spot it means that the user is charging in that spot
                     setParkingSpots(parkingSpots => ({
                         ...parkingSpots,
@@ -143,7 +144,7 @@ const useQueueHooks = () => {
             const queueId = await SecureStore.getItemAsync('queueId');                              //Get the queue collections document ID from the secure store
             await firebase.firestore().collection('locations').doc(locationId).collection('queue').doc(queueId).delete();                   //Remove the document from the collection
 
-            if (queue.position === 1 && queue.size > 1){
+            if (queue.position === 1 && queue.size > 1) {
                 await notifyNextUser(locationId);
                 await Notifications.cancelAllScheduledNotificationsAsync();
             }
@@ -222,9 +223,9 @@ const useQueueHooks = () => {
             const chargingStationId = await SecureStore.getItemAsync('chargingStationId');          //Get the document id from the secure store
 
             await firebase.firestore().collection('locations').doc(locationId).collection('parkingspots').doc(chargingStationId).set({      //Update the document in the firestore
-                    availability: true,
-                    userId: '',
-                }, { merge: true });
+                availability: true,
+                userId: '',
+            }, { merge: true });
             await SecureStore.deleteItemAsync('chargingStationId');                                 //Delete the id from the secure store
 
             if (queue.size > 0) {
@@ -266,8 +267,8 @@ const useQueueHooks = () => {
             const message = {                                                                   //Create the message body
                 to: notifToken,
                 sound: 'default',
-                title: 'Free charging station available!',
-                body: 'There is a free charging station available.',
+                title: i18n.t('stationAvailableTitle'),
+                body: i18n.t('stationAvailableBody'),
                 data: {
                     type: 'freeSpot',
                     location: locationId
@@ -298,7 +299,7 @@ const useQueueHooks = () => {
      * 
      * @param {string} locationId
      */
-    const sendFirstReminder = async (locationId) => {
+    const sendFirstReminder = async (locationId) => {           // These reminders aren't in use currently as background timers didn't work, need back-end functions
         try {
             console.log('Scheduling first reminder');
             await Notifications.scheduleNotificationAsync({

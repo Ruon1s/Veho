@@ -2,6 +2,7 @@ const en = {
     // Navigation
     home: 'Home',
     settings: 'Settings',
+    authentication: 'Authentication',
 
     // Login and register forms' buttons
     back: 'back',
@@ -50,7 +51,8 @@ const en = {
     foundUser: 'Found user!',
 
     // placeholder
-    emailPlaceholder: 'Enter email...',
+    emailPlaceholder: 'Search by email..',
+    locationPlaceholder: 'Search by location name...',
 
     //buttons: 
     addAsManager: 'Add as a manager',
@@ -104,6 +106,14 @@ const en = {
 
     // Errors
     pleaseRestart: 'Please restart the application',
+
+    // Notifications
+    stationAvailableTitle: 'You are next in queue!',
+    stationAvailableBody: 'Charging station opened up. You can go and move your car to charge',
+
+    carIsFullPrefix: 'Your car',
+    carIsFullTitle: 'has charged!',
+    carIsFullBody: 'Please consider moving it so others can charge theirs',
 }
 
 export default en;

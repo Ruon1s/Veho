@@ -88,7 +88,7 @@ const AdminPanel = ({ navigation, route }) => {
                                 addFunction={() => openModal('addManager')}
                                 removeFunction={removeManager}
                                 handleSearchTextChange={handleManagerQueryChange}
-                                searchInputPlaceHolder="Search by email..."
+                                searchInputPlaceHolder={i18n.t('emailPlaceholder')}
                             />
                             :
                             null}
@@ -105,7 +105,7 @@ const AdminPanel = ({ navigation, route }) => {
                                 addButtonText={i18n.t('addLocation')}
                                 addFunction={() => openModal('addLocation', false, {})}
                                 handleSearchTextChange={handleLocationQueryChange}
-                                searchInputPlaceHolder="Search by location name..."
+                                searchInputPlaceHolder={i18n.t('locationPlaceholder')}
                                 editLocation={openModal}
                                 switchToLocation={switchToLocation}
                                 currentUser={currentUser}

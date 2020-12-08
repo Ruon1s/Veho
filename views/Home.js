@@ -11,7 +11,6 @@ import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 import i18n from 'i18n-js';
 
 const Home = ({ navigation }) => {
-    const [userType, setUserType] = useState('Normal');      // Values: Normal & Manager
     const { currentUser, getUser, loading, getUserCars, carArray, prioritizeCar } = useFirebase();
 
     useEffect(() => {
