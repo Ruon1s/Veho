@@ -42,7 +42,9 @@
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
     "validate.js": "^0.13.1",
-    "victory-native": "^35.3.0"
+    "victory-native": "^35.3.0",
+    "expo-task-manager": "~8.5.0",
+    "expo-background-fetch": "~8.5.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

@@ -15,10 +15,85 @@ import useFirebase from "../hooks/FireBaseHook";
 import useApiHooks from "../hooks/ApiHooks";
 import CarDropdown from "./carDropdown";
 import i18n from 'i18n-js';
+import * as TaskManager from 'expo-task-manager';
+import * as BackgroundFetch from 'expo-background-fetch';
+import * as Notifications from 'expo-notifications';
+import * as SecureStore from 'expo-secure-store';
+
+let selectedCar;
+let setUpdatedSoc;
+
+const updateSoc = async () => {
+  try {
+
+    console.log('Updating in bg..');
+
+    //Do the basic fetch, same as ApiHooks..
+    const token = await SecureStore.getItemAsync('token');
+
+    console.log('token: ', token);
+
+    const headers = {
+      "Cache-Control": "no-cache",
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    };
+
+    const options = {
+      method: "GET",
+      withCredentials: true,
+      headers,
+    };
+
+    console.log('Headers: ', headers);
+    console.log('Options: ', options);
+
+    const response = await fetch(`https://api.connect-business.net/fleet/v1/fleets/1A3D13CCC6694F03ADBC1BC6CFADCB4B/vehicles.dynamic/${selectedCar.vin}`, options);
+    const toJSON = await response.json();
+
+    console.log('Selected Car: ', selectedCar);
+
+    console.log('received update: ', toJSON.items);
+
+    //If the car is fully charged, send notifications
+    if (toJSON.items.soc === 100) {
+      await TaskManager.unregisterTaskAsync('bgFetch');
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: `${selectedCar.name} is ready!`,
+          body: `Your car ${selectedCar.name} has been fully charged`
+        },
+        trigger: {
+          seconds: 2,
+        },
+      });
+    }
+    return toJSON ? BackgroundFetch.Result.NewData : BackgroundFetch.Result.NoData;
+  } catch (error) {
+    console.log('Error: ', error.message);
+    return BackgroundFetch.Result.Failed;
+  }
+}
+
+const initializeBackgroundFetch = async (taskName, taskFunction, interval = 60 * 15) => {
+  try {
+    if (!TaskManager.isTaskDefined(taskName)) {
+      console.log('Task: ', taskName, ' is going to be defined');
+      TaskManager.defineTask(taskName, taskFunction);
+    }
+
+    await BackgroundFetch.registerTaskAsync(taskName, { minimumInterval: interval });
+  } catch (error) {
+    console.log(`Error initializing background fetch: ${error.message}`);
+  }
+}
 
 const HomeQueueLayout = (props) => {
   const [available, setAvailable] = useState(); //To check if there is a spot available right away
   const [selected, setSelected] = useState('');
+  const { getUserCars } = useFirebase();
+  selectedCar = selected;
+  setUpdatedSoc = setSelected;
 
   const {
     soc,
@@ -62,6 +137,7 @@ const HomeQueueLayout = (props) => {
 
   useEffect(() => {
     console.log('selectedState ' + selected.licencePlate)
+    initializeBackgroundFetch('bgFetch', updateSoc, 5);
   }, [selected])
 
   const onSelect = (value) => {
