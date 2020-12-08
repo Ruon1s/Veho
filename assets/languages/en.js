@@ -34,7 +34,7 @@ const en = {
     repeatPassword: 'Retype Password',
     login: 'Login',
     register: 'Register',
-    createUser: 'Luo käyttäjä',
+    createUser: 'Create user',
 
     // Buttons for login and register screens
     forgotPassword: 'Forgot password?',
