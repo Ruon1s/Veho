@@ -4,6 +4,7 @@ import { Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Row, Grid } from 'react-native-easy-grid';
 import { VictoryPie, VictoryLabel } from 'victory-native';
+import i18n from 'i18n-js';
 
 const BatteryInfo = (props) => {
     const batteryStatus = props.batteryStatus           // Number between 0-100
@@ -50,12 +51,23 @@ const BatteryInfo = (props) => {
     const CenterText = () => {                          // Component in the middle of the piechart, contains the bolt-icon and the number
         return <Grid style={styles.batteryGrid}>
             <Row size={2}>
-                <Icon name="bolt" size={textSize.iconSize} color={props.charging ? '#4fd966' : '#000'}></Icon>
+                {batteryStatus ?
+                    <Icon
+                        name="bolt"
+                        size={textSize.iconSize}
+                        color='#000' /> :
+
+                    <Icon
+                        name="bolt"
+                        size={textSize.iconSize}
+                        color='#EAEAEA' />}
             </Row>
             <Row size={1}>
-                <Text style={styles.batteryText}>{batteryStatus}%</Text>
+                {batteryStatus ?
+                    <Text style={styles.batteryText}>{batteryStatus}%</Text> :
+                    <Text error>{i18n.t('pleaseRestart')}</Text>}
             </Row>
-        </Grid>
+        </Grid >
     }
 
     const styles = StyleSheet.create({
@@ -78,7 +90,7 @@ const BatteryInfo = (props) => {
             width: '100%',
             textAlign: 'center',
             fontSize: textSize.batteryTextFontSize,
-            color: props.charging ? '#4fd966' : '#000'
+            color: '#000'
         }
     });
 

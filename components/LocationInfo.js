@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {  Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 
 const LocationInfo = (props) => {
     console.log(props.user.location);

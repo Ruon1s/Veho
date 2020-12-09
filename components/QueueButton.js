@@ -3,15 +3,15 @@ import React from 'react';
 import GlobalStyles from '../styles/GlobalStyles';
 
 const QueueButton = (props) => {
-    return(
+    return (
         <Button
-            large
+            large={props.large}
             block
-            style={{...props.style, ...GlobalStyles.button}}
+            style={{ ...props.style, ...GlobalStyles.button }}
             onPress={props.onPress}
             transparent={props.transparent}
         >
-            <Text style={props.danger ? {color: '#fb3664'} : {}} > {props.text} </Text>
+            <Text style={props.danger ? { color: '#fb3664' } : {}} > {props.text} </Text>
         </Button>
     )
 }

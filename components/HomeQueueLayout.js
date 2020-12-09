@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Dimensions } from 'react-native';
 import {
   Spinner,
   Text,
   View,
-  Animated,
 } from "native-base";
+import { Grid, Row, Col } from 'react-native-easy-grid';
 import BatteryInfo from "./BatteryInfo";
 import QueueInfo from "./QueueInfo";
 import LocationInfo from "./LocationInfo";
@@ -14,7 +15,7 @@ import { StyleSheet } from "react-native";
 import ErrorText from './ErrorText';
 import useFirebase from "../hooks/FireBaseHook";
 import useApiHooks from "../hooks/ApiHooks";
-import CarDropdown from "./carDropdown";
+import CarDropdown from "./CarDropdown";
 import i18n from 'i18n-js';
 import * as TaskManager from 'expo-task-manager';
 import * as BackgroundFetch from 'expo-background-fetch';
@@ -49,8 +50,8 @@ const updateSoc = async () => {
       await TaskManager.unregisterTaskAsync('updateSoc');
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: `${selectedCar.name} is ready!`,
-          body: `Your car ${selectedCar.name} has been fully charged`
+          title: `${i18n.t('carIsFullPrefix')} ${selectedCar.name} ${i18n.t('carIsFullTitle')}`,
+          body: i18n.t('carIsFullBody')
         },
         trigger: {
           seconds: 2,
@@ -142,11 +143,13 @@ const HomeQueueLayout = (props) => {
       console.log(`Error stopping the charging: ${error.message}`);
     }
   }
+  let large = true
+  if (Dimensions.get('window').width < 400) { large = false }
 
   return (
     <View
       padder
-      style={{ flex: 1, justifyContent: "space-between", marginBottom: 24 }}
+      style={{ flex: 1, justifyContent: "space-between", marginBottom: 30 }}
     >
       <QueueInfo
         free={parkingSpots.available.length}
@@ -165,8 +168,11 @@ const HomeQueueLayout = (props) => {
         </View>
       </View>
       <View style={{ display: "flex", justifyContent: "center", flex: 8 }}>
-        <BatteryInfo batteryStatus={selected.soc} sizeVariable="large" charging={parkingSpots.inSpot} />
+        {large ? <BatteryInfo batteryStatus={selected.soc} sizeVariable="large" charging={parkingSpots.inSpot} /> :
+          <BatteryInfo batteryStatus={selected.soc} sizeVariable="small" charging={parkingSpots.inSpot} />}
+        {/** 
         {parkingSpots.inSpot ? <Text style={styles.estimatedText}>Estimated time: TODO</Text> : null}
+        */}
       </View>
       <View style={{ flex: 1 }}>
         {props.carArray.length === 0 || props.user.location.id === '' ?
@@ -179,29 +185,33 @@ const HomeQueueLayout = (props) => {
               <Spinner />
               :
               queue.inQueue && available ?
-                <View style={{ flexDirection: 'row' }}>
+                <Grid>
                   <QueueButton
-                    onPress={handleStartCharging}
+                    onPress={() => startCharging(props.user.location.id)}
+                    large={false}
                     text={i18n.t('startCharging')}
-                    style={{ flex: 1.5 }}
+                    style={{ flex: 1 }}
                   />
                   <QueueButton
                     onPress={() => removeUserFromQueue(props.user.location.id)}
+                    large={false}
                     text={i18n.t('skip')}
                     transparent={true}
-                    style={{ flex: 0.5 }}
+                    style={{ flex: 0.7 }}
                     danger={true}
                   />
-                </View>
+                </Grid>
                 :
                 !queue.inQueue && !available && !parkingSpots.inSpot ?
                   <QueueButton
+                    large={large}
                     onPress={() => addUserToQueue(props.user.location.id)}
                     text={i18n.t('queue')}
                   />
                   :
                   queue.inQueue && !available ?
                     <QueueButton
+                      large={large}
                       onPress={() => removeUserFromQueue(props.user.location.id)}
                       text={i18n.t('leaveQueue')}
                     />
@@ -209,12 +219,14 @@ const HomeQueueLayout = (props) => {
                     !queue.inQueue && available ?
                       <QueueButton
                         onPress={handleStartCharging}
+                        large={large}
                         text={i18n.t('startCharging')}
                       />
                       :
                       parkingSpots.inSpot ?
                         <QueueButton
                           onPress={handleStopCharging}
+                          large={large}
                           text={i18n.t('stopCharging')}
                         />
                         :

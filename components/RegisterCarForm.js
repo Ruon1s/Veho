@@ -54,6 +54,12 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
 
     return (
         <Form>
+            <Text>
+                {i18n.t('registerCarInfo')}
+            </Text>
+            <Text>
+                {i18n.t('registerCarDemoInfo')}
+            </Text>
             <Item floatingLabel>
                 <Label>{i18n.t('licensePlate')}</Label>
                 <Input
@@ -70,19 +76,20 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
                     onChangeText={handleCarNameChange}
                 />
             </Item>
-            {errors.licencePlate || errors.carName || !inputs.licencePlate || !inputs.carName ?
-                <Button
-                    full
-                    disabled
-                    style={GlobalStyles.button}
-                    onPress={registerVehicle}>
-                    <Text>{i18n.t('save')}</Text>
-                </Button> : <Button
-                    full
-                    style={GlobalStyles.button}
-                    onPress={registerVehicle}>
-                    <Text>{i18n.t('save')}</Text>
-                </Button>
+            {
+                errors.licencePlate || errors.carName || !inputs.licencePlate || !inputs.carName ?
+                    <Button
+                        full
+                        disabled
+                        style={GlobalStyles.button}
+                        onPress={registerVehicle}>
+                        <Text>{i18n.t('save')}</Text>
+                    </Button> : <Button
+                        full
+                        style={GlobalStyles.button}
+                        onPress={registerVehicle}>
+                        <Text>{i18n.t('save')}</Text>
+                    </Button>
             }
             { error ?
                 <ErrorText text={error} /> : null

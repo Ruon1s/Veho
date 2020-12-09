@@ -52,8 +52,8 @@ export default {
   badgePadding: 0,
 
   // Button
-  buttonFontFamily: 'Roboto',
-  buttonDisabledBg: '#b5b5b5',
+  buttonFontFamily: 'OpenSans_Bold',
+  buttonDisabledBg: '#EAEAEA',
   buttonPadding: 6,
   get buttonPrimaryBg() {
     return this.brandPrimary;
@@ -143,7 +143,7 @@ export default {
 
   // Font
   DefaultFontSize: 16,
-  fontFamily: 'Roboto',
+  fontFamily: 'OpenSans_Light',
   fontSizeBase: 15,
   get fontSizeH1() {
     return this.fontSizeBase * 1.8;

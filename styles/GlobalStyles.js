@@ -9,7 +9,7 @@ const GlobalStyles = StyleSheet.create({
         margin: 8,
         marginEnd: 4,
         marginStart: 4,
-        marginBottom: 4
+        marginBottom: 4,
     }
 });
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Dimensions } from 'react-native';
 import { Container, StyleProvider, Spinner } from 'native-base';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
@@ -11,8 +12,11 @@ import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 import i18n from 'i18n-js';
 
 const Home = ({ navigation }) => {
-    const [userType, setUserType] = useState('Normal');      // Values: Normal & Manager
     const { currentUser, getUser, loading, getUserCars, carArray, prioritizeCar } = useFirebase();
+
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+    console.log('Dimensions: ' + windowWidth, windowHeight)
 
     useEffect(() => {
         getUser()

@@ -7,6 +7,7 @@ import CustomHeader from '../components/CustomHeader';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 import { StyleSheet } from 'react-native';
+import i18n from 'i18n-js';
 
 const Authentication = ({ navigation }) => {
     const [active, setActive] = useState('login');  //To switch between the forms
@@ -14,28 +15,28 @@ const Authentication = ({ navigation }) => {
     return (
         <StyleProvider style={getTheme(platform)}>
             <Container>
-                <CustomHeader title='Authentication' />
+                <CustomHeader title={i18n.t('authentication')} />
                 <Content padder>
                     <View>
                         {active === 'login' ?
-                        <LoginForm 
-                            navigation={navigation}
-                            toRegister={() => setActive('register')}
-                            toResetPassword={() => setActive('resetPassword')}
-                        />
-                        :
-                        active === 'register' ?
-                        <RegisterForm 
-                            navigation={navigation}
-                            toLogin={() => setActive('login')}
-                        />
-                        :
-                        active === 'resetPassword' ?
-                        <ResetPasswordForm
-                            toLogin={() => setActive('login')}
-                        />
-                        :
-                        null}
+                            <LoginForm
+                                navigation={navigation}
+                                toRegister={() => setActive('register')}
+                                toResetPassword={() => setActive('resetPassword')}
+                            />
+                            :
+                            active === 'register' ?
+                                <RegisterForm
+                                    navigation={navigation}
+                                    toLogin={() => setActive('login')}
+                                />
+                                :
+                                active === 'resetPassword' ?
+                                    <ResetPasswordForm
+                                        toLogin={() => setActive('login')}
+                                    />
+                                    :
+                                    null}
                     </View>
                 </Content>
             </Container>

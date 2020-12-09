@@ -2,6 +2,7 @@ const fi = {
     // Navigation
     home: 'Koti',
     settings: 'Asetukset',
+    authentication: 'Kirjautuminen',
 
     // Login and register forms' buttons
     back: 'takaisin',
@@ -25,6 +26,8 @@ const fi = {
     carName: 'Auton nimi',
     addCarDetailsTitle: 'Lisää auton tiedot',
     addCarErrorMessage: 'Autoa ei löydy tietokannasta',
+    registerCarInfo: 'Käyttääksesi applikaatiota, sinun tulee omistaa vehon tiedoissa oleva auto. Syötä pyydetyt tiedot autosta alle.',
+    registerCarDemoInfo: 'Voit demotarkoituksiin käyttää tätä rekisteriotetta: OXZ-408',
 
     // Labels for inputs
     firstName: 'Etunimi',
@@ -34,6 +37,7 @@ const fi = {
     repeatPassword: 'Kirjoita salasana uudelleen',
     login: 'Kirjaudu',
     register: 'Rekisteröidy',
+    createUser: 'Luo käyttäjä',
 
     // Buttons for login and register screens
     forgotPassword: 'Unohditko salasanan?',
@@ -50,7 +54,8 @@ const fi = {
     foundUser: 'Käyttäjä löytyi!',
 
     // placeholder
-    emailPlaceholder: 'Syötä sähköposti...',
+    emailPlaceholder: 'Etsi sähköpostilla...',
+    locationPlaceholder: 'Etsi sijainnin nimellä...',
 
     //buttons: 
     addAsManager: 'Lisää managerina',
@@ -78,9 +83,11 @@ const fi = {
     dedicatedStationsConditional: 'Varattujen asemien määrä...',
 
     // QueueLayout 
-    startCharging: 'Aloita lataus',
-    stopCharging: 'Lopeta lataus',
-    skip: 'ohita',
+    currentlyCharging: "Autosi on latauspaikalla",
+    startCharging: 'Varaa latauspaikka',
+    stopCharging: 'Merkkaa paikka vapautetuksi',
+    skipMessage: `Et voi varata paikkaa?`,
+    skip: 'Anna seuraavalle',
     queue: 'Jonota',
     leaveQueue: 'Poistu jonosta',
     toChargingView: 'Latausnäkymään',
@@ -101,6 +108,17 @@ const fi = {
 
     // Charging view
     estimatedTime: 'Arvioitu aika:',
+
+    // Errors
+    pleaseRestart: 'Käynnistä sovellus uudellelleen',
+
+    // Notifications
+    stationAvailableTitle: 'You are next in queue!',
+    stationAvailableBody: 'Charging station opened up. You can go and move your car to charge',
+
+    carIsFullPrefix: 'Your car',
+    carIsFullTitle: 'has charged!',
+    carIsFullBody: 'Please consider moving it so others can charge theirs',
 }
 
 export default fi;
