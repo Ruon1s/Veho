@@ -146,9 +146,8 @@ const HomeQueueLayout = (props) => {
     setSelected(value)
   }
 
-  const windowWidth = Dimensions.get('window').width;
   let large = true
-  if (windowWidth < 400) { large = false }
+  if (Dimensions.get('window').width < 400) { large = false }
 
   return (
     <View

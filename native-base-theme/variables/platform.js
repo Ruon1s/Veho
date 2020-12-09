@@ -54,8 +54,8 @@ export default {
   badgePadding: platform === PLATFORM.IOS ? 3 : 0,
 
   // Button
-  buttonFontFamily: platform === PLATFORM.IOS ? 'System' : 'Roboto_medium',
-  buttonDisabledBg: '#b5b5b5',
+  buttonFontFamily: 'OpenSans_Bold',
+  buttonDisabledBg: '#EAEAEA',
   buttonPadding: 6,
   buttonDefaultActiveOpacity: 0.5,
   buttonDefaultFlex: 1,
@@ -226,9 +226,9 @@ export default {
 
   // InputGroup
   inputFontSize: 17,
-  inputBorderColor: '#D9D5DC',
-  inputSuccessBorderColor: '#2b8339',
-  inputErrorBorderColor: '#ed2f2f',
+  inputBorderColor: '#EAEAEA',
+  inputSuccessBorderColor: '#4FD966',
+  inputErrorBorderColor: '#FB3664',
   inputHeightBase: 50,
   get inputColor() {
     return this.textColor;
@@ -243,7 +243,7 @@ export default {
   lineHeightH2: 27,
   lineHeightH3: 25,
   lineHeight: platform === PLATFORM.IOS ? 20 : 24,
-  listItemSelected: platform === PLATFORM.IOS ? '#007aff' : '#3F51B5',
+  listItemSelected: '#00ADEF',
 
   // List
   listBg: 'transparent',
@@ -260,23 +260,23 @@ export default {
 
   // Radio Button
   radioBtnSize: platform === PLATFORM.IOS ? 25 : 23,
-  radioSelectedColorAndroid: '#3F51B5',
+  radioSelectedColorAndroid: '#00ADEF',
   radioBtnLineHeight: platform === PLATFORM.IOS ? 29 : 24,
   get radioColor() {
     return this.brandPrimary;
   },
 
   // Segment
-  segmentBackgroundColor: platform === PLATFORM.IOS ? '#F8F8F8' : '#3F51B5',
-  segmentActiveBackgroundColor: platform === PLATFORM.IOS ? '#007aff' : '#fff',
-  segmentTextColor: platform === PLATFORM.IOS ? '#007aff' : '#fff',
-  segmentActiveTextColor: platform === PLATFORM.IOS ? '#fff' : '#3F51B5',
-  segmentBorderColor: platform === PLATFORM.IOS ? '#007aff' : '#fff',
-  segmentBorderColorMain: platform === PLATFORM.IOS ? '#a7a6ab' : '#3F51B5',
+  segmentBackgroundColor: platform === PLATFORM.IOS ? '#fff' : '#00ADEF',
+  segmentActiveBackgroundColor: platform === PLATFORM.IOS ? '#00ADEF' : '#fff',
+  segmentTextColor: platform === PLATFORM.IOS ? '#00ADEF' : '#fff',
+  segmentActiveTextColor: platform === PLATFORM.IOS ? '#fff' : '#00ADEF',
+  segmentBorderColor: platform === PLATFORM.IOS ? '#00ADEF' : '#fff',
+  segmentBorderColorMain: platform === PLATFORM.IOS ? '#fff' : '#00ADEF',
 
   // Spinner
-  defaultSpinnerColor: '#45D56E',
-  inverseSpinnerColor: '#1A191B',
+  defaultSpinnerColor: '#4FD966',
+  inverseSpinnerColor: '#000',
 
   // Tab
   tabBarDisabledTextColor: '#BDBDBD',
@@ -302,8 +302,8 @@ export default {
   titleFontfamily: 'OpenSans_Bold',
   titleFontSize: platform === PLATFORM.IOS ? 17 : 19,
   subTitleFontSize: platform === PLATFORM.IOS ? 11 : 14,
-  subtitleColor: platform === PLATFORM.IOS ? '#8e8e93' : '#FFF',
-  titleFontColor: platform === PLATFORM.IOS ? '#000' : '#FFF',
+  subtitleColor: '#FFF',
+  titleFontColor: '#FFF',
 
   // Other
   borderRadiusBase: platform === PLATFORM.IOS ? 5 : 2,
