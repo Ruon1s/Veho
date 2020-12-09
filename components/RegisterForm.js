@@ -172,7 +172,7 @@ const RegisterForm = ({ navigation, toLogin }) => {
                         onPress={register}>
                         <Text>{i18n.t('register')}</Text>
                     </Button>}
-                <Button full transparent style={GlobalStyles.button} onPress={toLogin}>
+                <Button full bordered style={GlobalStyles.button} onPress={toLogin}>
                     <Text>{i18n.t('backToLogin')}</Text>
                 </Button>
             </Form>

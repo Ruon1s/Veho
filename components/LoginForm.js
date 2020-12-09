@@ -70,7 +70,7 @@ const LoginForm = ({ navigation, toResetPassword, toRegister }) => {
                             </Button>
                         </Col>
                         <Col>
-                            <Button transparent style={GlobalStyles.button} full onPress={toRegister}>
+                            <Button bordered style={GlobalStyles.button} full onPress={toRegister}>
                                 <Text>{i18n.t('createUser')}</Text>
                             </Button>
                         </Col>

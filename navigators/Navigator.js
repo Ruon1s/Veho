@@ -33,14 +33,16 @@ const TabNavigator = () => {
                         break;
                     }
                 }
-                return <Icon name={iconName} size={24} color={color} />
+                return <Icon name={iconName} size={26} color={color} />
             }
         })}
             tabBarOptions={{
                 activeTintColor: '#000',
                 inactiveTintColor: '#EAEAEA',
                 activeBackgroundColor: '#00ADEF',
-                inactiveBackgroundColor: '#00ADEF'
+                inactiveBackgroundColor: '#00ADEF',
+                labelStyle: { fontFamily: 'OpenSans_Light', fontSize: 14 },
+                labelPosition: "beside-icon"
             }}
         >
             <Tab.Screen name={i18n.t('home')} component={Home} />
