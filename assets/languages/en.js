@@ -111,12 +111,12 @@ const en = {
     pleaseRestart: 'Please restart the applikation',
 
     // Notifications
-    stationAvailableTitle: 'Jonotus palkittiin!',
-    stationAvailableBody: 'Latauspiste on auennut, voit nyt mennä siirtämään autosi',
+    stationAvailableTitle: 'You are next in queue!',
+    stationAvailableBody: 'Charging station opened up. You can go and move your car to charge',
 
-    carIsFullPrefix: 'Autosi',
-    carIsFullTitle: 'on latautunut!',
-    carIsFullBody: 'Seuraavia ajatellen, harkitse siirtäväsi autosi muualle',
+    carIsFullPrefix: 'Your car',
+    carIsFullTitle: 'has charged!',
+    carIsFullBody: 'Please consider moving it so others can charge theirs',
 }
 
 export default en;
