@@ -24,12 +24,12 @@ const TabNavigator = () => {
                 switch (route.name) {
                     case i18n.t('home'): {
                         iconName = 'bolt'
-                        color = focused ? '#000' : '#EAEAEA'
+                        color = focused ? '#000' : '#eaeaea'
                         break;
                     }
                     case i18n.t('settings'): {
                         iconName = 'cog'
-                        color = focused ? '#000' : '#EAEAEA'
+                        color = focused ? '#000' : '#eaeaea'
                         break;
                     }
                 }
@@ -38,7 +38,7 @@ const TabNavigator = () => {
         })}
             tabBarOptions={{
                 activeTintColor: '#000',
-                inactiveTintColor: '#EAEAEA',
+                inactiveTintColor: '#eaeaea',
                 activeBackgroundColor: '#00ADEF',
                 inactiveBackgroundColor: '#00ADEF',
                 labelStyle: { fontFamily: 'OpenSans_Light', fontSize: 14 },
