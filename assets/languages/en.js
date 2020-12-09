@@ -20,10 +20,11 @@ const en = {
     adminPanel: 'Admin panel',
     logout: 'Logout',
 
-    // Login and register
+    // Login and register and registerCar
     licensePlate: 'License plate number',
     carName: 'Car name',
     addCarDetailsTitle: 'Add car details',
+    addCarErrorMessage: 'Car does not exist in the Veho fleet',
 
     // Labels for inputs
     firstName: 'First Name',

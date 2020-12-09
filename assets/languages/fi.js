@@ -24,6 +24,7 @@ const fi = {
     licensePlate: 'Rekisterinumero',
     carName: 'Auton nimi',
     addCarDetailsTitle: 'Lisää auton tiedot',
+    addCarErrorMessage: 'Autoa ei löydy tietokannasta',
 
     // Labels for inputs
     firstName: 'Etunimi',

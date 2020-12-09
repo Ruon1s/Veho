@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "66614112440",
+    "firebase_url": "https://veho-go-business-charge.firebaseio.com",
+    "project_id": "veho-go-business-charge",
+    "storage_bucket": "veho-go-business-charge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66614112440:android:0aa9f231b8b0701f54044d",
+        "android_client_info": {
+          "package_name": "com.niklar.Veho"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "66614112440-qgai70ku3srka0egsc0e2b685vag1bal.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMH9VR824mKo7zqjZrue4FFokOKX4UqMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "66614112440-qgai70ku3srka0egsc0e2b685vag1bal.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

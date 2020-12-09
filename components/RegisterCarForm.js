@@ -5,7 +5,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import useRegisterCarForm from "../hooks/RegisterCarHook";
 import useApiHooks from "../hooks/ApiHooks";
-import {useState} from 'react'
+import { useState } from 'react'
 import { Alert } from "react-native-web";
 import i18n from 'i18n-js';
 import ErrorText from "./ErrorText";
@@ -44,7 +44,7 @@ const RegisterCarForm = ({ navigation, toLogin }) => {
         } else {
             //TODO make an alert or something
             console.log('car doesnt exist');
-            setError('Car does not exist in the Veho fleet')
+            setError(i18n.t('addCarErrorMessage'))
             setTimeout(() => {
                 setError()
             }, 3000);
