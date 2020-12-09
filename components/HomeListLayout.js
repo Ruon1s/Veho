@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Alert } from "react-native";
+import { AUTH, GRANT, UNAME, PASS } from "@env";
 import { Content, Text, View, Card, CardItem } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import useFirebase from "../hooks/FireBaseHook";
@@ -30,8 +31,11 @@ const updateSocs = async () => {
 };
 
 const fetchSocs = async (vin) => {
-  try {
+  try { 
+    //Do the basic fetch, same as ApiHooks..
+    
     console.log("Updating in bg (fetchSocs)");
+    fetchToken();
 
     const token = await SecureStore.getItemAsync("token");
     console.log("token: ", token);
@@ -55,8 +59,8 @@ const fetchSocs = async (vin) => {
       `https://api.connect-business.net/fleet/v1/fleets/1A3D13CCC6694F03ADBC1BC6CFADCB4B/vehicles.dynamic/${vin}`,
       options
     );
-    const toJSON = await response.json();
 
+    const toJSON = await response.json();
     console.log("Fetched soc for vin " + vin + ": " + toJSON.items.soc);
 
     //If the car is fully charged, send notifications
@@ -79,6 +83,52 @@ const fetchSocs = async (vin) => {
   } catch (error) {
     console.log("Error: ", error.message);
     return BackgroundFetch.Result.Failed;
+  }
+};
+
+const fetchToken = async () => {
+  //Do the basic fetch, same as ApiHooks..
+  console.log("Executing fetchToken");
+  try {
+    const data = {
+      grant_type: GRANT,
+      username: UNAME,
+      password: PASS,
+    };
+
+    const headers = {
+      "Cache-Control": "no-cache",
+      Authorization: AUTH,
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    };
+
+    const formBody = Object.keys(data)
+      .map(
+        (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+      )
+      .join("&");
+
+    const options = {
+      method: "POST",
+      headers,
+      body: formBody,
+    };
+
+    const res = await fetch(
+      "https://api.connect-business.net/fleet/v1/oauth/token",
+      options
+    );
+
+    if (res.status == 200) {
+      console.log("FetchToken: Status OK, " + res.status);
+      const toJSON = await res.json();
+      console.log("access token: " + toJSON.access_token);
+      await SecureStore.setItemAsync("token", toJSON.access_token);
+    } else {
+      console.log("FetchToken: Status BAD, " + res.status);
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 

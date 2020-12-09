@@ -23,7 +23,12 @@ const useApiHooks = () => {
   //TODO put vin as a parameter after we have all necessary information in the fleet
   const fetchSoc = async (vin) => {
     console.log('Executing fetchSoc');
-    const token = await SecureStore.getItemAsync("token");
+    let tokenCheck = await SecureStore.getItemAsync("token");
+    if (tokenCheck == null) {
+      fetchToken();
+    }
+    token = tokenCheck;
+
     try {
       const headers = {
         "Cache-Control": "no-cache",
