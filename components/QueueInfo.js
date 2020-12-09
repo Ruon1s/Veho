@@ -14,7 +14,7 @@ const QueueInfo = (props) => {
     })
 
     useEffect(() => {
-        switch (charging) {
+        /* switch (charging) {
             case (true): {
                 // TODO: Invoke closing animation here
                 setState({
@@ -35,7 +35,7 @@ const QueueInfo = (props) => {
                 });
                 break;
             }
-        }
+        } */
     }, [charging])
 
     const styles = StyleSheet.create({
@@ -55,6 +55,7 @@ const QueueInfo = (props) => {
         }
     });
 
+
     return (<View style={styles.textParent}>
         {props.queue > 0 ?
             <Text style={styles.infoText}>{i18n.t('numberOfCars')} {props.queue}</Text> : <Text style={styles.infoText}>{i18n.t('noCarsInQueue')}</Text>
@@ -64,9 +65,10 @@ const QueueInfo = (props) => {
             <Text style={styles.infoText}>{i18n.t('freeSpots')} {props.free}</Text> : <Text style={styles.infoText}>{i18n.t('noSpots')}</Text>
         }
 
-        {props.queuePosition > 0 ?
+        {props.charging ? <Text style={styles.infoText}>{i18n.t('currentlyCharging')}</Text> : props.queuePosition > 0 ?
             <Text style={styles.infoText}>{i18n.t('yourPosition')} {props.queuePosition}</Text> : <Text style={styles.infoText}>{i18n.t('notInQueue')}</Text>
         }
+
     </View>)
 }
 

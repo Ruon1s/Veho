@@ -96,7 +96,7 @@ const en = {
     title: 'Prioritize',
 
     // QueueInfo-component
-    currentlyChraging: "You're currently charging",
+    currentlyCharging: "Your car is in charging spot",
     numberOfCars: 'Number of cars in queue:',
     noCarsInQueue: 'The queue is empty',
     freeSpots: 'Free spots:',
@@ -108,7 +108,7 @@ const en = {
     estimatedTime: 'Estimated time:',
 
     // Errors
-    pleaseRestart: 'If you have a car registered, restart the application',
+    pleaseRestart: 'Please restart the applikation',
 
     // Notifications
     stationAvailableTitle: 'You are next in queue!',

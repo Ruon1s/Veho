@@ -21,7 +21,8 @@
       "permissions": [
         "VIBRATE"
       ],
-      "package": "com.niklar.Veho"
+      "package": "com.niklar.Veho",
+      "googleServicesFile": "./google-services.json"
     },
     "ios": {
       "supportsTablet": true

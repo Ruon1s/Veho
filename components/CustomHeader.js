@@ -12,18 +12,20 @@ const CustomHeader = (props) => {
             </Button>}
         </Left>
         <Body>
-            <Title style={styles.white}>{props.title}</Title>
-
-            {props.subtitle && <Subtitle style={styles.white}>{props.subtitle.firstname}</Subtitle>}
-
+            <Title style={styles.title}>{props.title}</Title>
+            {props.subtitle && <Subtitle style={styles.subtitle}>{props.subtitle.firstname}</Subtitle>}
         </Body>
         <Right />
     </Header>)
 };
 
 const styles = StyleSheet.create({
-    white: {
+    title: {
         color: 'white'
+    },
+    subtitle: {
+        color: 'white',
+        fontFamily: 'OpenSans_Light'
     }
 });
 

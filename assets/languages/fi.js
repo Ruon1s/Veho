@@ -82,6 +82,7 @@ const fi = {
     dedicatedStationsConditional: 'Varattujen asemien määrä...',
 
     // QueueLayout 
+    currentlyCharging: "Autosi on latauspaikalla",
     startCharging: 'Varaa latauspaikka',
     stopCharging: 'Merkkaa paikka vapautetuksi',
     skipMessage: `Et voi varata paikkaa?`,
@@ -108,7 +109,7 @@ const fi = {
     estimatedTime: 'Arvioitu aika:',
 
     // Errors
-    pleaseRestart: 'Jos olet jo lisännyt auton, käynnistä sovellus uudelleen',
+    pleaseRestart: 'Käynnistä sovellus uudellelleen',
 
     // Notifications
     stationAvailableTitle: 'Jonotus palkittiin!',
